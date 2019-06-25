@@ -1,38 +1,42 @@
 package model.users;
 
 public abstract class User {
-    int id;
-    String login;
-    String password;
-    String firstName;
-    String lastName;
-    int phoneNum;
-    String adress;
+    private int id;
+    private String login;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private int phoneNum;
+    private String adress;
+    private String userType;
 
     User(){}
 
-    User(int id, String login, String password, String firstName, String lastName, int phoneNum, String adress) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNum = phoneNum;
-        this.adress = adress;
+
+
+    User(int id, String login, String password, String firstName, String lastName, int phoneNum, String adress, String userType) {
+        this.setId(id);
+        this.setLogin(login);
+        this.setPassword(password);
+        this.setFirstName(firstName);
+        this.setLastName(lastName);
+        this.setPhoneNum(phoneNum);
+        this.setAdress(adress);
+        this.userType = userType;
     }
 
     public User(int id, String login, String password){
-        this.id = id;
-        this.login = login;
-        this.password = password;
+        this.setId(id);
+        this.setLogin(login);
+        this.setPassword(password);
     }
 
     public User(int id, String firstName, String lastName, int phoneNum, String adress) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNum = phoneNum;
-        this.adress = adress;
+        this.setId(id);
+        this.setFirstName(firstName);
+        this.setLastName(lastName);
+        this.setPhoneNum(phoneNum);
+        this.setAdress(adress);
     }
 
     public int getId() {
@@ -89,6 +93,14 @@ public abstract class User {
 
     public void setAdress(String adress) {
         this.adress = adress;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 }
 
