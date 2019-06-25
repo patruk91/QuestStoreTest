@@ -4,12 +4,33 @@ package model.users;
 import java.util.List;
 
 public class Admin extends User {
-    List<Mentor> mentorList;
-    List<Codecooler> codecoolerList;
-    List<Integer> listOfLevels;
+    private List<Mentor> mentorList;
+    private List<Codecooler> codecoolerList;
+    private List<Integer> listOfLevels;
 
-    public Admin(Builder builder) {
+    public Admin(int id, String login, String password, String firstName, String lastName, int phoneNum, String adress, List<Mentor> mentorList, List<Codecooler> codecoolerList, List<Integer> listOfLevels) {
+        super(id, login, password, firstName, lastName, phoneNum, adress);
+        this.mentorList = mentorList;
+        this.codecoolerList = codecoolerList;
+        this.listOfLevels = listOfLevels;
     }
 
-    public static class Builder{}
+    public Admin(int id, List<Mentor> mentorList, List<Codecooler> codecoolerList, List<Integer> listOfLevels) {
+        setId(id);
+        this.mentorList = mentorList;
+        this.codecoolerList = codecoolerList;
+        this.listOfLevels = listOfLevels;
+    }
+
+    public List<Mentor> getMentorList() {
+        return mentorList;
+    }
+
+    public List<Codecooler> getCodecoolerList() {
+        return codecoolerList;
+    }
+
+    public List<Integer> getListOfLevels() {
+        return listOfLevels;
+    }
 }

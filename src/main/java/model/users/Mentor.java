@@ -3,13 +3,20 @@ package model.users;
 
 
 public class Mentor extends User {
-    int roomID;
+    private int roomID;
 
-    public Mentor() {
-
+    public Mentor(int id, String login, String password, String firstName, String lastName, int phoneNum, String adress, int roomID) {
+        super(id, login, password, firstName, lastName, phoneNum, adress);
+        this.roomID = roomID;
     }
 
-    public static class builder{
+    public Mentor(int id, int roomID){
+        super();
+        setId(id);
+        this.roomID = roomID;
+    }
 
+    public int getRoomID() {
+        return roomID;
     }
 }
