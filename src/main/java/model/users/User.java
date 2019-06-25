@@ -9,10 +9,26 @@ public abstract class User {
     int phoneNum;
     String adress;
 
-    public User(int id, String login, String password, String firstName, String lastName, int phoneNum, String adress) {
+    User(){}
+
+    User(int id, String login, String password, String firstName, String lastName, int phoneNum, String adress) {
         this.id = id;
         this.login = login;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNum = phoneNum;
+        this.adress = adress;
+    }
+
+    public User(int id, String login, String password){
+        this.id = id;
+        this.login = login;
+        this.password = password;
+    }
+
+    public User(int id, String firstName, String lastName, int phoneNum, String adress) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNum = phoneNum;
