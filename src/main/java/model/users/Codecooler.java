@@ -11,11 +11,12 @@ public class Codecooler extends User {
     List<Quest> questList;
     int lvlOfExp;
 
-    public Codecooler(Builder builder) {
 
-    }
-
-    public static class Builder{
-
+    public Codecooler(int id, String login, String password, String firstName, String lastName, int phoneNum, String adress, int ammountOfCoins, int roomID, List<Quest> questList, int lvlOfExp) {
+        super(id, login, password, firstName, lastName, phoneNum, adress);
+        this.ammountOfCoins = ammountOfCoins;
+        this.roomID = roomID;
+        this.questList = questList;
+        this.lvlOfExp = lvlOfExp;
     }
 }
