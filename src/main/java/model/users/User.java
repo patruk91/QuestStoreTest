@@ -7,6 +7,7 @@ public abstract class User {
     private String firstName;
     private String lastName;
     private int phoneNum;
+    private String email;
     private String adress;
     private String userType;
 
@@ -14,13 +15,14 @@ public abstract class User {
 
 
 
-    User(int id, String login, String password, String firstName, String lastName, int phoneNum, String adress, String userType) {
+    User(int id, String login, String password, String firstName, String lastName, int phoneNum, String email, String adress, String userType) {
         this.setId(id);
         this.setLogin(login);
         this.setPassword(password);
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.setPhoneNum(phoneNum);
+        this.email = email;
         this.setAdress(adress);
         this.userType = userType;
     }
@@ -101,6 +103,14 @@ public abstract class User {
 
     public void setUserType(String userType) {
         this.userType = userType;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
 

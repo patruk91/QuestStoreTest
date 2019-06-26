@@ -12,8 +12,8 @@ public class Codecooler extends User {
     private int lvlOfExp;
 
 
-    public Codecooler(int id, String login, String password, String firstName, String lastName, int phoneNum, String adress,String userType, int ammountOfCoins, int roomID, List<Quest> questList, int lvlOfExp) {
-        super(id, login, password, firstName, lastName, phoneNum, adress, userType);
+    public Codecooler(int id, String login, String password, String firstName, String lastName, int phoneNum, String email, String adress,String userType, int ammountOfCoins, int roomID, List<Quest> questList, int lvlOfExp) {
+        super(id, login, password, firstName, lastName, phoneNum, email, adress, userType);
         this.ammountOfCoins = ammountOfCoins;
         this.roomID = roomID;
         this.questList = questList;
