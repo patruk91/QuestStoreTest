@@ -1,5 +1,11 @@
-//package
-//imports
+package dao;
+
+
+import model.items.Artifact;
+import model.items.Quest;
+import model.users.Codecooler;
+
+import java.util.Map;
 
 public interface IMentorDAO {
 

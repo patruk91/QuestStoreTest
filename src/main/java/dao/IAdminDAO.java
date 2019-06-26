@@ -1,5 +1,5 @@
-//package
-//imports
+package dao;
+
 
 public interface IAdminDAO{
     void addMentor();
