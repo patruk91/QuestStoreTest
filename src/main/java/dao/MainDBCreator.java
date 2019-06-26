@@ -10,13 +10,15 @@ public class MainDBCreator {
         try {
             DBCreator dbCreator = new DBCreator();
             dbCreator.connectToDatabase();
-            dbCreator.executeStatement();
+            //dbCreator.executeStatement();
 
-            AdminDAO adminDAO = new AdminDAO();
+            //AdminDAO adminDAO = new AdminDAO();
 
-            Mentor mentor = adminDAO.getMentor(5);
+            //Mentor mentor = adminDAO.getMentor(5);
 
-            System.out.println(mentor.getFirstName() + " " + mentor.getLastName());
+            UserDAO userDAO = new UserDAO();
+
+            System.out.println(userDAO.seeArtifactsList());
         }catch (SQLException e){
             e.printStackTrace();
         }

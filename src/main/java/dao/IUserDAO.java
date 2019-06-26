@@ -12,7 +12,7 @@ import java.util.List;
 public interface IUserDAO {
 
 
-    ArrayList<Artifact> seeArtifactsList();
+    List<Artifact> seeArtifactsList() throws  SQLException;
     List<Quest> seeQuestsList() throws SQLException;
     User seeProfile();
     void updateMyProfile();
