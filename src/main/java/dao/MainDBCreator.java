@@ -15,6 +15,8 @@ public class MainDBCreator {
 
 
 
+
+
             System.out.println(mentor.getFirstName() + " " + mentor.getLastName());
             System.out.println("mentors roomID: " + mentor.getRoomID());
         }catch (SQLException e){
