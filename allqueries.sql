@@ -1,12 +1,12 @@
 create table if not exists Classes (
 	id INT,
 	class_id INT,
-	mentor_id INT
+	user_id INT
 );
-insert into Classes (id, class_id, mentor_id) values (1, 4, 11);
-insert into Classes (id, class_id, mentor_id) values (2, 4, 9);
-insert into Classes (id, class_id, mentor_id) values (3, 3, 1);
-insert into Classes (id, class_id, mentor_id) values (4, 2, 2);
+insert into Classes (id, class_id, user_id) values (1, 4, 11);
+insert into Classes (id, class_id, user_id) values (2, 4, 9);
+insert into Classes (id, class_id, user_id) values (3, 3, 1);
+insert into Classes (id, class_id, user_id) values (4, 2, 2);
 
 
 create table if not exists Level_of_exp (
