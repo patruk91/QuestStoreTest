@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
@@ -10,9 +11,14 @@ public class CodecoolerDAO implements ICodecoolerDAO {
     public int showWallet(int id) throws SQLException {
         DBCreator dbCreator = new DBCreator();
         Connection connection = dbCreator.connectToDatabase();
-        PreparedStatement stm = connection.prepareStatement("select coolcoins from studentspersonals where user_id = ? ");
+        PreparedStatement stm = connection.prepareStatement("select coolcoins from studentpersonals where user_id = ? ");
         stm.setInt(1, id);
-        stm.executeQuery();
+        ResultSet result = stm.executeQuery();
+
+        while(result.next()){
+            int codecoolerCoins = result.getInt("coolcoins");
+            return codecoolerCoins;
+        }
         return 0;
     }
 
