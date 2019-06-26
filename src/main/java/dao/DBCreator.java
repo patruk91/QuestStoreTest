@@ -13,12 +13,13 @@ public class DBCreator {
     private Connection connection = null;
     private PreparedStatement statement = null;
 
-    public void connectToDatabase() throws SQLException {
+    public Connection connectToDatabase() throws SQLException {
         String database = "jdbc:postgresql://localhost:5432/questostore";
         String user = "patrynio";
         String password = "9wyszlozminasmorgul";
-        connection = DriverManager.getConnection(database, user, password);
         System.out.println("Opened database successfully");
+        return connection = DriverManager.getConnection(database, user, password);
+
     }
 
     private String readStatement(String filename) {

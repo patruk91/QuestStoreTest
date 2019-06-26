@@ -1,6 +1,13 @@
 package dao;
 
+import model.users.Mentor;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
 public class AdminDAO implements IAdminDAO {
+    DBCreator dbCreator = new DBCreator();
+
     public void addMentor() {
 
     }
@@ -13,8 +20,13 @@ public class AdminDAO implements IAdminDAO {
 
     }
 
-    public void getMentor() {
+    public Mentor getMentor(int id) throws SQLException {
+        Connection connection = dbCreator.connectToDatabase();
+        return null;
+    }
 
+    public Mentor getMentor(String firstName, String lastName) {
+        return null;
     }
 
     public void addLevel() {
