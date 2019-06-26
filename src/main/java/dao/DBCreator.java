@@ -14,7 +14,7 @@ public class DBCreator {
     private PreparedStatement statement = null;
 
     public void connectToDatabase() throws SQLException {
-        String database = "jdbc:postgresql://localhost:5432/Questostore";
+        String database = "jdbc:postgresql://localhost:5432/questostore";
         String user = "hp";
         String password = "dupa";
         connection = DriverManager.getConnection(database, user, password);
