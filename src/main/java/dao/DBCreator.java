@@ -15,8 +15,8 @@ public class DBCreator {
 
     public void connectToDatabase() throws SQLException {
         String database = "jdbc:postgresql://localhost:5432/questostore";
-        String user = "hp";
-        String password = "dupa";
+        String user = "patrynio";
+        String password = "9wyszlozminasmorgul";
         connection = DriverManager.getConnection(database, user, password);
         System.out.println("Opened database successfully");
     }
@@ -41,7 +41,7 @@ public class DBCreator {
 
 
     public void executeStatement() throws SQLException {
-        statement = connection.prepareStatement(readStatement("/home/hp/codecool/aWebModule/3SI/questostore/allqueries.sql"));
+        statement = connection.prepareStatement(readStatement("/home/patrynio/codecool/web/questostore/allqueries.sql"));
         statement.execute();
         System.out.println("DB created");
     }
