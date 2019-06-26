@@ -29,16 +29,33 @@ public class AdminDAO implements IAdminDAO {
         stm.setInt(1, id);
         ResultSet result = stm.executeQuery();
 
-        String firstName = result.getString("first_name");
-        String lastName = result.getString("last_name");
-        int phoneNum = result.getInt("phone_number");
-        String address = result.getString("address");
+        String firstName;
+        String lastName;
+        String phoneNum;
+        String email;
+        String address;
+        int classID;
 
+        Mentor mentor;
 
-        Mentor mentor = new Mentor(id,5);
+        while (result.next()){
+            firstName = result.getString("first_name");
+            lastName = result.getString("last_name");
+            phoneNum = result.getString("phone_number");
+            email = result.getString("email");
+            address = result.getString("address");
+            classID = result.getInt("class_id");
+            mentor = new Mentor(id, firstName, lastName, phoneNum, email,address, classID);
+            return mentor;
+        }
+
 
         connection.close();
-        return mentor;
+
+        return null;
+
+
+
     }
 
     public Mentor getMentor(String firstName, String lastName) {
