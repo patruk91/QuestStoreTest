@@ -4,13 +4,14 @@ package dao;
 import model.items.Artifact;
 import model.items.Quest;
 import model.users.Codecooler;
+import model.users.User;
 
 import java.sql.SQLException;
 import java.util.Map;
 
 public interface IMentorDAO {
 
-    Codecooler createCodecooler();
+    void createCodecooler(User user, Codecooler codecooler);
     Quest createNewQuest();
     void addQuestToAvailable();
     void addQuestCategory();
