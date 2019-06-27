@@ -7,6 +7,6 @@ public interface ICodecoolerDAO{
     int showWallet(int id) throws SQLException;
     void buyArtifact(int userID, int artifactID) throws SQLException;
     void buyArtifactWithTeammates();
-    void showLevelOfExperience();
 
-}
+    int showLevelOfExperience(int id) throws SQLException;
+

@@ -38,8 +38,18 @@ public class CodecoolerDAO implements ICodecoolerDAO {
 
     }
 
-    public void showLevelOfExperience() {
+    public int showLevelOfExperience(int id) throws SQLException {
+        DBCreator dbCreator = new DBCreator();
+        Connection connection = dbCreator.connectToDatabase();
+        PreparedStatement stm = connection.prepareStatement("select experience_points from studentpersonals where user_id = ? ");
+        stm.setInt(1, id);
+        ResultSet result = stm.executeQuery();
 
+        while(result.next()){
+            int experiencePoints = result.getInt("experience_points");
+            return experiencePoints;
+        }
+        return 0;
     }
 
     private void updateMoneyAmount(int userID, int artifactID) throws SQLException{
