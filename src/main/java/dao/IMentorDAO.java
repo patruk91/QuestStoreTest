@@ -21,6 +21,6 @@ public interface IMentorDAO {
     void markAchivedQuests();
     void markBoughtArtifacts();
     int seeStudentWallet(int id) throws SQLException;
-    Map<Integer, Integer> seeStudentsWallet(int id) throws SQLException;
+    Map<Integer, Integer> seeStudentsWallets() throws SQLException;
 
 }
