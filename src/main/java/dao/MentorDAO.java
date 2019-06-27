@@ -32,11 +32,30 @@ public class MentorDAO implements IMentorDAO {
         return null;
     }
 
-    public void updateQuest() {
-
+    public void updateQuest(String questName, int newValue) {
+        DBCreator dbCreator = new DBCreator();
+        try {
+            Connection connection = dbCreator.connectToDatabase();
+            PreparedStatement stm = connection.prepareStatement("update  Quests set quest_award = ? where quest_name like ?");
+            stm.setInt(1, newValue);
+            stm.setString(2, questName);
+            stm.executeUpdate();
+        }catch (SQLException e){
+            System.out.println(e);
+        }
     }
 
-    public void updateArtifact() {
+    public void updateArtifact(String artifactName, int newPrice) {
+        DBCreator dbCreator = new DBCreator();
+        try {
+            Connection connection = dbCreator.connectToDatabase();
+            PreparedStatement stm = connection.prepareStatement("update  Artifacts set artifact_price = ? where artifact_name like ?");
+            stm.setInt(1, newPrice);
+            stm.setString(2, artifactName);
+            stm.executeUpdate();
+        }catch (SQLException e){
+            System.out.println(e);
+        }
 
     }
 
