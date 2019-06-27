@@ -15,7 +15,7 @@ public class UserDAO implements IUserDAO{
     DBCreator dbCreator = new DBCreator();
 
     public List<Artifact> seeArtifactsList() throws SQLException{
-        List<Artifact> allArtifacts = new ArrayList<>();
+        List<Artifact> allArtifacts = new ArrayList();
 
         Connection con = dbCreator.connectToDatabase();
         Statement stmt = null;
@@ -47,7 +47,7 @@ public class UserDAO implements IUserDAO{
     }
 
     public List<Quest> seeQuestsList() throws SQLException {
-        List<Quest> allQuests = new ArrayList<>();
+        List<Quest> allQuests = new ArrayList();
 
         Connection con = dbCreator.connectToDatabase();
         Statement stmt = null;
