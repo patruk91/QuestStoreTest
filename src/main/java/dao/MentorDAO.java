@@ -175,8 +175,26 @@ public class MentorDAO implements IMentorDAO {
 
     }
 
-    public Artifact createArtifact() {
-        return null;
+    public void createArtifact(Artifact artifact) {
+        String query = "INSERT INTO Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability)" +
+                " VALUES (?,?,?,?,?)";
+        PreparedStatement statement = null;
+        try {
+            connection = dbCreator.connectToDatabase();
+            statement = connection.prepareStatement(query);
+
+            statement.setString(1, artifact.getName());
+            statement.setString(2, artifact.getCategory());
+            statement.setString(3, artifact.getDiscription());
+            statement.setInt(4, artifact.getPrice());
+            statement.setBoolean(5, artifact.isAvaliability());
+
+            statement.executeUpdate();
+            connection.close();
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public void updateQuest(String questName, int newValue) {
