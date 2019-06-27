@@ -33,6 +33,15 @@ public class Codecooler extends User {
         setLogin(login);
         setPassword(password);
         setUserType(userType);
+
+    public Codecooler(int id,  String firstName, String lastName, String phoneNum, String email, String adress,  int roomID) {
+        setId(id);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setPhoneNum(phoneNum);
+        setEmail(email);
+        setAdress(adress);
+        this.roomID = roomID;
     }
 
     public int getAmmountOfCoins() {
