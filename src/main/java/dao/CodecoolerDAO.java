@@ -50,7 +50,7 @@ public class CodecoolerDAO implements ICodecoolerDAO {
         int coolcoins = getCoolCoins(userID);
         int artifactCost = getArtifactCost(artifactID);
         int restCoins = coolcoins - artifactCost;
-
+        System.out.println(restCoins);
         PreparedStatement stm = connection.prepareStatement("update  studentpersonals set coolcoins = ? where user_id = ?");
         stm.setInt(1, restCoins);
         stm.setInt(2, userID);
