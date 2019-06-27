@@ -73,6 +73,7 @@ public class CodecoolerDAO implements ICodecoolerDAO {
 
     public void buyArtifactWithTeammates() {
 
+
     }
 
     public int showLevelOfExperience(int id) throws SQLException {
@@ -159,4 +160,7 @@ public class CodecoolerDAO implements ICodecoolerDAO {
         connection.close();
         return artifactCost;
     }
+
+
+
 }
