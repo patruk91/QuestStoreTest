@@ -33,6 +33,7 @@ public class Codecooler extends User {
         setLogin(login);
         setPassword(password);
         setUserType(userType);
+    }
 
     public Codecooler(int id,  String firstName, String lastName, String phoneNum, String email, String adress,  int roomID) {
         setId(id);
