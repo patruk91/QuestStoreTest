@@ -43,17 +43,18 @@ public class CodecoolerDAO implements ICodecoolerDAO {
     }
 
     private void updateMoneyAmount(int userID, int artifactID) throws SQLException{
-        int cost = getArtifactCost(artifactID);
+
         DBCreator dbCreator = new DBCreator();
         Connection connection = dbCreator.connectToDatabase();
 
         int coolcoins = getCoolCoins(userID);
         int artifactCost = getArtifactCost(artifactID);
-        int restCoins = coolcoins = artifactCost;
+        int restCoins = coolcoins - artifactCost;
 
         PreparedStatement stm = connection.prepareStatement("update  studentpersonals set coolcoins = ? where user_id = ?");
         stm.setInt(1, restCoins);
         stm.setInt(2, userID);
+        stm.executeUpdate();
 
 
 
@@ -61,7 +62,16 @@ public class CodecoolerDAO implements ICodecoolerDAO {
     }
 
     //todo
-    private void addArtifactToItems(int userID, int artifactID) throws SQLException{}
+    private void addArtifactToItems(int userID, int artifactID) throws SQLException{
+        DBCreator dbCreator = new DBCreator();
+        Connection connection = dbCreator.connectToDatabase();
+
+
+        PreparedStatement stm = connection.prepareStatement("insert into  users_artifacts (user_id, artifact_id ) values  (?,?)");
+        stm.setInt(1, userID);
+        stm.setInt(2, artifactID);
+        stm.executeUpdate();
+    }
 
     private boolean checkIfTransactionPossible(int userID, int artifactID) throws SQLException {
 

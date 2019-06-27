@@ -1,5 +1,5 @@
 create table if not exists Classes (
-	id INT,
+	id SER INT,
 	class_id INT,
 	user_id INT
 );
