@@ -5,6 +5,7 @@ import model.items.Artifact;
 import model.items.Quest;
 import model.users.Codecooler;
 
+import java.sql.SQLException;
 import java.util.Map;
 
 public interface IMentorDAO {
@@ -19,6 +20,7 @@ public interface IMentorDAO {
     void addArtifactCategory();
     void markAchivedQuests();
     void markBoughtArtifacts();
-    Map<Integer, Integer> seeStudentWallet();
+    int seeStudentWallet(int id) throws SQLException;
+    Map<Integer, Integer> seeStudentsWallet(int id) throws SQLException;
 
 }
