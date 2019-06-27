@@ -205,7 +205,9 @@ insert into Users_artifacts (user_id, artifact_id) values (33, 8);
 insert into Users_artifacts (user_id, artifact_id) values (33, 4);
 
 
-create table if not exists  (
+
+create table if not exists Users_quests (
+
 	id serial PRIMARY KEY NOT NULL,
 	user_id INT,
 	quest_id INT
