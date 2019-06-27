@@ -33,6 +33,7 @@ public class Codecooler extends User {
         setLogin(login);
         setPassword(password);
         setUserType(userType);
+    }
 
     public Codecooler(int id,  String firstName, String lastName, String phoneNum, String email, String adress,  int roomID) {
         setId(id);
@@ -42,6 +43,21 @@ public class Codecooler extends User {
         setEmail(email);
         setAdress(adress);
         this.roomID = roomID;
+    }
+
+    public Codecooler(int id,String login,String password,String firstName,String lastName,String phoneNumber,String email,String address,int classID,int experiencePoints,int coolcoins){
+        setId(id);
+        setLogin(login);
+        setPassword(password);
+        setPassword(password);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setPhoneNum(phoneNumber);
+        setEmail(email);
+        setAdress(address);
+        this.roomID = classID;
+        this.lvlOfExp = experiencePoints;
+        this.ammountOfCoins = coolcoins;
     }
 
     public int getAmmountOfCoins() {

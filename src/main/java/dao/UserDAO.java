@@ -75,7 +75,20 @@ public class UserDAO implements IUserDAO{
         return allQuests;
     }
 
-    public User seeProfile() {
+    public User seeProfile(int id) throws SQLException {
+        Connection connection = dbCreator.connectToDatabase();
+        PreparedStatement stm = connection.prepareStatement("select usertype from users where id=? ");
+        stm.setInt(1, id);
+        ResultSet result = stm.executeQuery();
+        String userType = new String();
+        if(result.next()){
+            userType = result.getString("usertype");
+        }
+
+        if (userType.equals("codecooler")){
+            Codecooler codecooler = getFullCodecoolerObject(id);
+            return codecooler;
+        }
         return null;
     }
 
@@ -86,9 +99,28 @@ public class UserDAO implements IUserDAO{
 
     private Codecooler getFullCodecoolerObject(int id) throws SQLException{
         Connection connection = dbCreator.connectToDatabase();
-        PreparedStatement stm = connection.prepareStatement("select * from studentpersonals where user_id = ? ");
-        stm.setInt(1, id);
+        PreparedStatement stm = connection.prepareStatement("select * from users join  studentpersonals on users.id=studentpersonals.user_id  where usertype = ? ");
+        stm.setString(1, "usertype");
         ResultSet result = stm.executeQuery();
+        Codecooler codecooler;
+        while (result.next()){
+            int user_id = result.getInt("id");
+            String login = result.getString(("login"));
+            String password = result.getString("password");
+            String firstName = result.getString("first_name");
+            String lastName = result.getString("last_name");
+            String phoneNumber = result.getString("phone_number");
+            String email = result.getString("email");
+            String address = result.getString("address");
+            int classID = result.getInt("class_id");
+            int experiencePoints = result.getInt("experience_points");
+            int coolcoins = result.getInt("coolcoins");
+
+            codecooler = new Codecooler(id, login, password, firstName, lastName,phoneNumber, email, address, classID, experiencePoints, coolcoins);
+            return codecooler;
+
+
+        }
         return null;
     }
 }
