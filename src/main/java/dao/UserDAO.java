@@ -103,7 +103,8 @@ public class UserDAO implements IUserDAO{
         Connection connection = creator.connectToDatabase();
         System.out.println("connected");
         PreparedStatement stm = connection.prepareStatement("select * from users left  join  studentpersonals on users.id=studentpersonals.user_id  where id= ? ");
-        stm.setInt(1,id);
+        stm.setInt(1 ,id);
+
         ResultSet result = stm.executeQuery();
         System.out.println("query executed");
         Codecooler codecooler;
