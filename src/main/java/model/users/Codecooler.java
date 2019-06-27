@@ -28,6 +28,13 @@ public class Codecooler extends User {
         this.lvlOfExp = lvlOfExp;
     }
 
+    public Codecooler(int id, String login, String password, String userType) {
+        setId(id);
+        setLogin(login);
+        setPassword(password);
+        setUserType(userType);
+    }
+
     public int getAmmountOfCoins() {
         return ammountOfCoins;
     }
