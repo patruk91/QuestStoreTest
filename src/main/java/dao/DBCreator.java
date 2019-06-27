@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class DBCreator {
 
 
-    public Connection connection = null;
+    private Connection connection = null;
     private PreparedStatement statement = null;
 
     public Connection connectToDatabase() throws SQLException {

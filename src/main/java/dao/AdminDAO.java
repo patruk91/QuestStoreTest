@@ -2,6 +2,7 @@ package dao;
 
 import model.users.Codecooler;
 import model.users.Mentor;
+import model.users.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,9 +12,104 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class AdminDAO implements IAdminDAO {
+    Connection connection;
     DBCreator dbCreator = new DBCreator();
 
     public void addMentor() {
+
+    }
+
+    public void createMentor(User user, Mentor mentor) {
+        createUser(user);
+        try {
+            int userID = getUserIdWithLogin(user);
+            mentor.setId(userID);
+            createMentor(mentor);
+        } catch(Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to fetch user with this login");
+        }
+
+    }
+
+    private void createUser(User user){
+        String query = "INSERT INTO users(login, password, usertype) VALUES (?,?,?)";
+        PreparedStatement statement = null;
+
+        try {
+            connection = dbCreator.connectToDatabase();
+            statement = connection.prepareStatement(query);
+
+
+            statement.setString(1, user.getLogin());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getUserType());
+
+
+            statement.executeUpdate();
+            dbCreator.connectToDatabase().close();
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private void createMentor(Mentor mentor){
+        String query = "INSERT INTO mentorpersonals(user_id, first_name, last_name, phone_number, email, adress) VALUES(?,?,?,?,?,?);";
+        PreparedStatement statement = null;
+
+        try {
+            connection = dbCreator.connectToDatabase();
+
+            statement = connection.prepareStatement(query);
+
+            statement.setInt(1, mentor.getId());
+            statement.setString(2, mentor.getFirstName());
+            statement.setString(3, mentor.getLastName());
+            statement.setString(4, mentor.getPhoneNum());
+            statement.setString(5, mentor.getEmail());
+            statement.setString(6, mentor.getAdress());
+            statement.executeUpdate();
+
+            dbCreator.connectToDatabase().close();
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private int getUserIdWithLogin(User user) throws Exception {
+        ResultSet results = null;
+        PreparedStatement statement = null;
+        String query = "SELECT * FROM users WHERE login = ?;";
+        try {
+
+            connection = dbCreator.connectToDatabase();
+
+
+            statement = connection.prepareStatement(query);
+
+            statement.setString(1, user.getLogin());
+
+            results = statement.executeQuery();
+
+            results.next();
+
+            return results.getInt("id");
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception("Did not find user with this login SLQ Exception");
+
+        } catch (Exception e){
+            e.printStackTrace();
+            throw new Exception("Did not find user with this login");
+        }
+
 
     }
 
