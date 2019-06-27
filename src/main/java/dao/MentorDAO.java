@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MentorDAO implements IMentorDAO {
+    Connection connection;
     DBCreator dbCreator;
 
     public MentorDAO() {
@@ -38,8 +39,9 @@ public class MentorDAO implements IMentorDAO {
         PreparedStatement statement = null;
 
         try {
-            dbCreator.connectToDatabase();
-            statement = dbCreator.connection.prepareStatement(query);
+
+            connection = dbCreator.connectToDatabase();
+            statement = connection.prepareStatement(query);
 
 
             statement.setString(1, user.getLogin());
@@ -48,7 +50,7 @@ public class MentorDAO implements IMentorDAO {
 
 
             statement.executeUpdate();
-            dbCreator.connectToDatabase().close();
+            connection.close();
 
         } catch (SQLException e){
             e.printStackTrace();
@@ -62,9 +64,9 @@ public class MentorDAO implements IMentorDAO {
         PreparedStatement statement = null;
 
         try {
-            dbCreator.connectToDatabase();
+            connection = dbCreator.connectToDatabase();
 
-            statement = dbCreator.connection.prepareStatement(query);
+            statement = connection.prepareStatement(query);
 
 
             statement.setString(1, codecooler.getAdress());
@@ -82,7 +84,7 @@ public class MentorDAO implements IMentorDAO {
 
             statement.executeUpdate();
 
-            dbCreator.connectToDatabase().close();
+            connection.close();
 
         } catch (SQLException e){
             e.printStackTrace();
@@ -96,10 +98,10 @@ public class MentorDAO implements IMentorDAO {
         String query = "SELECT * FROM users WHERE login = ?;";
         try {
 
-            dbCreator.connectToDatabase();
+            connection = dbCreator.connectToDatabase();
 
 
-            statement = dbCreator.connection.prepareStatement(query);
+            statement = connection.prepareStatement(query);
 
             statement.setString(1, user.getLogin());
 
@@ -107,7 +109,11 @@ public class MentorDAO implements IMentorDAO {
 
             results.next();
 
-            return results.getInt("id");
+            int id = results.getInt("id");
+
+            connection.close();
+
+            return id;
 
 
 
@@ -124,15 +130,48 @@ public class MentorDAO implements IMentorDAO {
     }
 
 
-    public Quest createNewQuest() {
-        return null;
+    public void createNewQuest(Quest quest) {
+        String query = "INSERT INTO quests(quest_award, quest_category, quest_description, quest_name) VALUES (?,?,?,?)";
+        PreparedStatement statement = null;
+        try {
+            connection = dbCreator.connectToDatabase();
+            statement = connection.prepareStatement(query);
+
+
+            statement.setInt(1, quest.getReward());
+            statement.setString(2, quest.getCategory());
+            statement.setString(3, quest.getDiscription());
+            statement.setString(4, quest.getName());
+
+            statement.executeUpdate();
+            connection.close();
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public void addQuestToAvailable() {
 
     }
 
-    public void addQuestCategory() {
+    public void updateQuestCategory(Quest quest) {
+        // Update based on quest id
+        String query = "UPDATE quests SET quest_category = ? WHERE id = ?";
+        PreparedStatement statement = null;
+        try{
+            connection = dbCreator.connectToDatabase();
+            statement = connection.prepareStatement(query);
+
+            statement.setString(1, quest.getCategory());
+            statement.setInt(2, quest.getId());
+
+            statement.executeUpdate();
+            connection.close();
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
 
     }
 
