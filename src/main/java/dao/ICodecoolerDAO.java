@@ -10,3 +10,5 @@ public interface ICodecoolerDAO{
 
     int showLevelOfExperience(int id) throws SQLException;
 
+}
+
