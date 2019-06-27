@@ -159,4 +159,7 @@ public class CodecoolerDAO implements ICodecoolerDAO {
         connection.close();
         return artifactCost;
     }
+
+
+
 }
