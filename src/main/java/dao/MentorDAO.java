@@ -213,17 +213,20 @@ public class MentorDAO implements IMentorDAO {
         return 0;
     }
 
-    public Map<Integer, Integer> seeStudentsWallet(int id) throws SQLException {
+    public Map<Integer, Integer> seeStudentsWallets() throws SQLException {
         DBCreator dbCreator = new DBCreator();
         Connection connection = dbCreator.connectToDatabase();
-        PreparedStatement stm = connection.prepareStatement("select coolcoins from studentpersonals where user_id = ? ");
-        stm.setInt(1, id);
+        PreparedStatement stm = connection.prepareStatement("select user_id, experience_points, coolcoins from studentpersonals ");
         ResultSet result = stm.executeQuery();
         Map<Integer, Integer> resultmap = new HashMap<Integer, Integer>();
 
         while(result.next()){
+            int codecoolerID = result.getInt("user_id");
+            int codecoolerExperiencePoints = result.getInt("experience_points");
             int codecoolerCoins = result.getInt("coolcoins");
-            return null;
+            int balance = codecoolerExperiencePoints - codecoolerCoins;
+            resultmap.put(codecoolerID, balance);
+            return resultmap;
         }
         return null;
     }
