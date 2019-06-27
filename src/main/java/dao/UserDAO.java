@@ -2,12 +2,10 @@ package dao;
 
 import model.items.Artifact;
 import model.items.Quest;
+import model.users.Codecooler;
 import model.users.User;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,5 +81,14 @@ public class UserDAO implements IUserDAO{
 
     public void updateMyProfile() {
 
+    }
+
+
+    private Codecooler getFullCodecoolerObject(int id) throws SQLException{
+        Connection connection = dbCreator.connectToDatabase();
+        PreparedStatement stm = connection.prepareStatement("select * from studentpersonals where user_id = ? ");
+        stm.setInt(1, id);
+        ResultSet result = stm.executeQuery();
+        return null;
     }
 }
