@@ -15,9 +15,10 @@ public class MainDBCreator {
 
             UserDAO userDAO = new UserDAO();
 
-            User user = userDAO.seeProfile(20);
+            User user = userDAO.seeProfile(3);
 
-            System.out.println(user.getFirstName());
+            user.getLogin();
+
 
 
         }catch (SQLException e){
