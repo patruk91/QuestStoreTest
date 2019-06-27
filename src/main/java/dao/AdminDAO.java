@@ -15,11 +15,7 @@ public class AdminDAO implements IAdminDAO {
     Connection connection;
     DBCreator dbCreator = new DBCreator();
 
-    public void addMentor() {
-
-    }
-
-    public void createMentor(User user, Mentor mentor) {
+    public void addMentor(User user, Mentor mentor) {
         createUser(user);
         try {
             int userID = getUserIdWithLogin(user);
