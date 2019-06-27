@@ -74,18 +74,18 @@ insert into Artifacts (artifact_name, artifact_category, artifact_description, a
 insert into Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values ('Magic', 'Tipping the fanfare-guy
 ', 'The student can use jukebox exclusively for half day
 ', 253, true);
-insert into Artifacts (id, artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values (10, 'Crown of prestige
+insert into Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values ('Crown of prestige
 ', 'Magic', 'You can wear the Crown of prestige for a whole day and thus everyone in your room should call you by a title of your choice (first student who pays on that day)
 ', 249, true);
-insert into Artifacts (id, artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values (11, 'Royal game session
+insert into Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values ('Royal game session
 ', 'Magic', 'You can choose from a huge list of boardgames to rent for a game afternoon (Arcadia Quest, Arcadia Quest Inferno - KS exclusive edition, Rising Sun - KS exclusive edition, Mechs vs Minions, Dead of Winter - Hungarian edition, Captain Sonar, Hero Realms, Clank in Space, Sheriff of Nottingham etc.)
 ', 95, true);
-insert into Artifacts (id, artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values (12, 'Circle of Sorcery
+insert into Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values ('Circle of Sorcery
 ', 'Magic', '60 min workshop by a mentor(s) of the chosen topic (mentors will organize it within a month)
 ', 129, false);
-insert into Artifacts (id, artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values (13, 'Myobloc', 'Zathin', 'ES', 215, false);
-insert into Artifacts (id, artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values (14, 'Argentum Nitricum', 'Cookley', 'Jetta', 275, true);
-insert into Artifacts (id, artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values (15, 'Foaming Hand Wash', 'Subin', 'Econoline E250', 123, true);
+insert into Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values ('Myobloc', 'Zathin', 'ES', 215, false);
+insert into Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values ( 'Argentum Nitricum', 'Cookley', 'Jetta', 275, true);
+insert into Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values ( 'Foaming Hand Wash', 'Subin', 'Econoline E250', 123, true);
 
 
 create table if not exists Quests (
