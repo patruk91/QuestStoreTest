@@ -86,6 +86,7 @@ public class UserDAO implements IUserDAO{
         }
 
         if (userType.equals("codecooler")){
+            System.out.println("i am codecooler");
             Codecooler codecooler = getFullCodecoolerObject(id);
             return codecooler;
         }
@@ -98,14 +99,19 @@ public class UserDAO implements IUserDAO{
 
 
     private Codecooler getFullCodecoolerObject(int id) throws SQLException{
-        Connection connection = dbCreator.connectToDatabase();
-        PreparedStatement stm = connection.prepareStatement("select * from users join  studentpersonals on users.id=studentpersonals.user_id  where usertype = ? ");
-        stm.setString(1, "usertype");
+        DBCreator creator = new DBCreator();
+        Connection connection = creator.connectToDatabase();
+        System.out.println("connected");
+        PreparedStatement stm = connection.prepareStatement("select * from users left  join  studentpersonals on users.id=studentpersonals.user_id  where id= ? ");
+        stm.setInt(1,id);
         ResultSet result = stm.executeQuery();
+        System.out.println("query executed");
         Codecooler codecooler;
         while (result.next()){
             int user_id = result.getInt("id");
+
             String login = result.getString(("login"));
+            System.out.println(login);
             String password = result.getString("password");
             String firstName = result.getString("first_name");
             String lastName = result.getString("last_name");
@@ -116,7 +122,7 @@ public class UserDAO implements IUserDAO{
             int experiencePoints = result.getInt("experience_points");
             int coolcoins = result.getInt("coolcoins");
 
-            codecooler = new Codecooler(id, login, password, firstName, lastName,phoneNumber, email, address, classID, experiencePoints, coolcoins);
+            codecooler = new Codecooler(user_id, login, password, firstName, lastName,phoneNumber, email, address, classID, experiencePoints, coolcoins);
             return codecooler;
 
 
