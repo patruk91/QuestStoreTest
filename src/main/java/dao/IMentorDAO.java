@@ -12,9 +12,9 @@ import java.util.Map;
 public interface IMentorDAO {
 
     void createCodecooler(User user, Codecooler codecooler);
-    Quest createNewQuest();
+    void createNewQuest(Quest quest);
     void addQuestToAvailable();
-    void addQuestCategory();
+    void updateQuestCategory(Quest quest);
     Artifact createArtifact();
     void updateQuest();
     void updateArtifact();
