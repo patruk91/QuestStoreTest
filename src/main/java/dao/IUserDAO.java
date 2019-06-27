@@ -5,13 +5,15 @@ import model.items.Artifact;
 import model.items.Quest;
 import model.users.User;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface IUserDAO {
 
 
-    ArrayList<Artifact> seeArtifactsList();
-    ArrayList<Quest> seeQuestsList();
+    List<Artifact> seeArtifactsList() throws  SQLException;
+    List<Quest> seeQuestsList() throws SQLException;
     User seeProfile();
     void updateMyProfile();
 

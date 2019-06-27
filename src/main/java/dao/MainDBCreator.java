@@ -8,14 +8,15 @@ public class MainDBCreator {
 
     public static void main(String[] args) {
         try {
+            DBCreator dbCreator = new DBCreator();
+            dbCreator.connectToDatabase();
+            dbCreator.executeStatement();
+
             AdminDAO adminDAO = new AdminDAO();
 
             Mentor mentor = adminDAO.getMentor(5);
 
-            CodecoolerDAO codecoolerDAO = new CodecoolerDAO();
-
-            codecoolerDAO.buyArtifact(31,2);
-
+            System.out.println(mentor.getFirstName() + " " + mentor.getLastName());
         }catch (SQLException e){
             e.printStackTrace();
         }
