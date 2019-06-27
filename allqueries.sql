@@ -1,22 +1,22 @@
 create table if not exists Classes (
-	id INT,
+	id serial PRIMARY KEY NOT NULL,
 	class_id INT,
 	user_id INT
 );
-insert into Classes (id, class_id, user_id) values (1, 4, 11);
-insert into Classes (id, class_id, user_id) values (2, 4, 9);
-insert into Classes (id, class_id, user_id) values (3, 3, 1);
-insert into Classes (id, class_id, user_id) values (4, 2, 2);
+insert into Classes (class_id, user_id) values (4, 11);
+insert into Classes (class_id, user_id) values (4, 9);
+insert into Classes (class_id, user_id) values (3, 1);
+insert into Classes (class_id, user_id) values (2, 2);
 
 
 create table if not exists Level_of_exp (
-	id INT,
+	id serial PRIMARY KEY NOT NULL,
 	name VARCHAR(20),
 	max_value INT
 );
-insert into Level_of_exp (id, name, max_value) values (1, 'easy', 30);
-insert into Level_of_exp (id, name, max_value) values (2, 'normal', 60);
-insert into Level_of_exp (id, name, max_value) values (3, 'hard', 90);
+insert into Level_of_exp (name, max_value) values ('easy', 30);
+insert into Level_of_exp (name, max_value) values ('normal', 60);
+insert into Level_of_exp (name, max_value) values ('hard', 90);
 
 
 create table if not exists AdminPersonals (
@@ -56,22 +56,22 @@ insert into MentorsPersonals (user_id, first_name, last_name, phone_number, emai
 insert into MentorsPersonals (user_id, first_name, last_name, phone_number, email, address) values (17, 'Herman', 'Wabb', '571-947-0409', 'hwabbe@sina.com.cn', '1123 Homewood Junction');
 
 create table if not exists Artifacts (
-	id INT,
+	id serial PRIMARY KEY NOT NULL,
 	artifact_name VARCHAR(50),
 	artifact_category VARCHAR(50),
 	artifact_description TEXT,
 	artifact_price INT,
 	artifact_availability VARCHAR(50)
 );
-insert into Artifacts (id, artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values (1, 'Combat training', 'Basic', 'Private mentoring', 136, false);
-insert into Artifacts (id, artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values (2, 'Sanctuary', 'Basic', 'You can spend a day in home office', 74, true);
-insert into Artifacts (id, artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values (3, 'Time Travel', 'Basic', 'extend SI week assignment deadline by one day', 223, false);
-insert into Artifacts (id, artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values (4, 'Circle of Sorcery', 'Magic', '60 min workshop by a mentor(s) of the chosen topic', 290, true);
-insert into Artifacts (id, artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values (5, 'Summon Code Elemental', 'Magic', 'Mentor joins a students team for a one hour', 190, true);
-insert into Artifacts (id, artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values (6, 'Tome of knowledge', 'Magic', 'Extra material for the current topic', 137, false);
-insert into Artifacts (id, artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values (7, 'Transform mentors', 'Magic', 'All mentors should dress up as pirates (or just funny) for the day ', 118, true);
-insert into Artifacts (id, artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values (8, 'Teleport', 'Magic', 'The whole course goes to an off-school program instead for a day', 221, false);
-insert into Artifacts (id, artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values (9, 'Magic', 'Tipping the fanfare-guy
+insert into Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values ('Combat training', 'Basic', 'Private mentoring', 136, false);
+insert into Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values ('Sanctuary', 'Basic', 'You can spend a day in home office', 74, true);
+insert into Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values ('Time Travel', 'Basic', 'extend SI week assignment deadline by one day', 223, false);
+insert into Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values ('Circle of Sorcery', 'Magic', '60 min workshop by a mentor(s) of the chosen topic', 290, true);
+insert into Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values ('Summon Code Elemental', 'Magic', 'Mentor joins a students team for a one hour', 190, true);
+insert into Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values ('Tome of knowledge', 'Magic', 'Extra material for the current topic', 137, false);
+insert into Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values ('Transform mentors', 'Magic', 'All mentors should dress up as pirates (or just funny) for the day ', 118, true);
+insert into Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values ('Teleport', 'Magic', 'The whole course goes to an off-school program instead for a day', 221, false);
+insert into Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values ('Magic', 'Tipping the fanfare-guy
 ', 'The student can use jukebox exclusively for half day
 ', 253, true);
 insert into Artifacts (id, artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability) values (10, 'Crown of prestige
@@ -89,27 +89,27 @@ insert into Artifacts (id, artifact_name, artifact_category, artifact_descriptio
 
 
 create table if not exists Quests (
-	id INT,
+	id serial PRIMARY KEY NOT NULL,
 	quest_name VARCHAR(50),
 	quest_category VARCHAR(50),
 	quest_description TEXT,
 	quest_award INT
 );
-insert into Quests (id, quest_name, quest_category, quest_description, quest_award) values (1, 'Exploring a dungeon', 'Basic', 'Finishing a Teamwork week', 70);
-insert into Quests (id, quest_name, quest_category, quest_description, quest_award) values (2, 'Solving the magic puzzle', 'Basic', 'Finishing an SI assignment', 60);
-insert into Quests (id, quest_name, quest_category, quest_description, quest_award) values (3, 'Spot trap', 'Extra', 'Spot a major mistake in the assignment', 50);
-insert into Quests (id, quest_name, quest_category, quest_description, quest_award) values (4, 'Taming a pet', 'Extra', 'Doing a demo about a pet project', 80);
-insert into Quests (id, quest_name, quest_category, quest_description, quest_award) values (5, 'Recruiting some n00bs', 'Extra', 'Taking part in the student screening process', 50);
-insert into Quests (id, quest_name, quest_category, quest_description, quest_award) values (6, 'Forging weapons', 'Extra', 'Organizing a workshop for other students', 10);
-insert into Quests (id, quest_name, quest_category, quest_description, quest_award) values (7, 'Master the mornings', 'Extra', 'Attend 1 months without being late', 70);
-insert into Quests (id, quest_name, quest_category, quest_description, quest_award) values (8, 'Fast as un unicorn', 'Extra', 'Deliver 4 consecutive SI week assignments on time', 30);
-insert into Quests (id, quest_name, quest_category, quest_description, quest_award) values (9, 'Achiever', 'Extra', 'Set up a SMART goal accepted by a mentor, then achieve it', 30);
-insert into Quests (id, quest_name, quest_category, quest_description, quest_award) values (10, 'Fortune', 'Extra', 'Students choose the best project of the week. Selected team scores', 50);
-insert into Quests (id, quest_name, quest_category, quest_description, quest_award) values (11, 'Creating an enchanted scroll', 'Extra', 'Creating extra material for the current TW/SI topic (should be revised by mentors)', 70);
-insert into Quests (id, quest_name, quest_category, quest_description, quest_award) values (12, 'Enter the arena', 'Extra', 'Do a presentation on a meet-up', 80);
-insert into Quests (id, quest_name, quest_category, quest_description, quest_award) values (13, 'Slaying a dragon', 'Basic', 'Passing a Checkpoint', 30);
-insert into Quests (id, quest_name, quest_category, quest_description, quest_award) values (14, 'Visiting the wiseman', 'Extra', 'Going to a company interview', 10);
-insert into Quests (id, quest_name, quest_category, quest_description, quest_award) values (15, 'Treasure hunt!', 'Extra', 'Solving the riddle announced random times in the given time frame', 20);
+insert into Quests (quest_name, quest_category, quest_description, quest_award) values ('Exploring a dungeon', 'Basic', 'Finishing a Teamwork week', 70);
+insert into Quests (quest_name, quest_category, quest_description, quest_award) values ('Solving the magic puzzle', 'Basic', 'Finishing an SI assignment', 60);
+insert into Quests (quest_name, quest_category, quest_description, quest_award) values ('Spot trap', 'Extra', 'Spot a major mistake in the assignment', 50);
+insert into Quests (quest_name, quest_category, quest_description, quest_award) values ('Taming a pet', 'Extra', 'Doing a demo about a pet project', 80);
+insert into Quests (quest_name, quest_category, quest_description, quest_award) values ('Recruiting some n00bs', 'Extra', 'Taking part in the student screening process', 50);
+insert into Quests (quest_name, quest_category, quest_description, quest_award) values ('Forging weapons', 'Extra', 'Organizing a workshop for other students', 10);
+insert into Quests (quest_name, quest_category, quest_description, quest_award) values ('Master the mornings', 'Extra', 'Attend 1 months without being late', 70);
+insert into Quests (quest_name, quest_category, quest_description, quest_award) values ('Fast as un unicorn', 'Extra', 'Deliver 4 consecutive SI week assignments on time', 30);
+insert into Quests (quest_name, quest_category, quest_description, quest_award) values ('Achiever', 'Extra', 'Set up a SMART goal accepted by a mentor, then achieve it', 30);
+insert into Quests (quest_name, quest_category, quest_description, quest_award) values ('Fortune', 'Extra', 'Students choose the best project of the week. Selected team scores', 50);
+insert into Quests (quest_name, quest_category, quest_description, quest_award) values ('Creating an enchanted scroll', 'Extra', 'Creating extra material for the current TW/SI topic (should be revised by mentors)', 70);
+insert into Quests (quest_name, quest_category, quest_description, quest_award) values ('Enter the arena', 'Extra', 'Do a presentation on a meet-up', 80);
+insert into Quests (quest_name, quest_category, quest_description, quest_award) values ('Slaying a dragon', 'Basic', 'Passing a Checkpoint', 30);
+insert into Quests (quest_name, quest_category, quest_description, quest_award) values ('Visiting the wiseman', 'Extra', 'Going to a company interview', 10);
+insert into Quests (quest_name, quest_category, quest_description, quest_award) values ('Treasure hunt!', 'Extra', 'Solving the riddle announced random times in the given time frame', 20);
 
 
 create table if not exists StudentPersonals (
@@ -146,73 +146,74 @@ insert into StudentPersonals (user_id, first_name, last_name, phone_number, emai
 
 
 create table if not exists Users (
-	id INT,
+	id serial PRIMARY KEY NOT NULL,
 	login VARCHAR(50),
 	password VARCHAR(50),
 	usertype VARCHAR(50)
 );
-insert into Users (id, login, password, usertype) values (1, 'kdavid0', 'FhNbwi4mq', 'admin');
-insert into Users (id, login, password, usertype) values (2, 'aaykroyd1', '7zuouW89', 'admin');
-insert into Users (id, login, password, usertype) values (3, 'lclinch2', 'WhShzKui6r3', 'mentor');
-insert into Users (id, login, password, usertype) values (4, 'cshere3', 'QWY2y6', 'mentor');
-insert into Users (id, login, password, usertype) values (5, 'kwitchard4', 'PJtYV4H1', 'mentor');
-insert into Users (id, login, password, usertype) values (6, 'tdifilippo5', 'ekUYcLgl4', 'mentor');
-insert into Users (id, login, password, usertype) values (7, 'aflipek6', '6NcUD0LwYDGA', 'mentor');
-insert into Users (id, login, password, usertype) values (8, 'rmacnish7', 'bmxg6PoEqM', 'mentor');
-insert into Users (id, login, password, usertype) values (9, 'sguppie8', 'GKUk9F', 'mentor');
-insert into Users (id, login, password, usertype) values (10, 'mslimming9', 'Go1zfN8Du4', 'mentor');
-insert into Users (id, login, password, usertype) values (11, 'cendacotta', 'HKyfjOxj', 'mentor');
-insert into Users (id, login, password, usertype) values (12, 'aiskovb', 'xta6tXVNAwD', 'mentor');
-insert into Users (id, login, password, usertype) values (13, 'sseabornec', 'J0mNqg', 'mentor');
-insert into Users (id, login, password, usertype) values (14, 'ascourfieldd', '8lb7DnRJPbG', 'mentor');
-insert into Users (id, login, password, usertype) values (15, 'afairleme', 'dvclZVAnbE5', 'mentor');
-insert into Users (id, login, password, usertype) values (16, 'jbowmenf', 'gNph5ydnm3', 'mentor');
-insert into Users (id, login, password, usertype) values (17, 'blintotg', 'iD49MxOUx8a', 'mentor');
-insert into Users (id, login, password, usertype) values (18, 'cdibbeh', 'i18J9YIgYYM', 'codecooler');
-insert into Users (id, login, password, usertype) values (19, 'tryami', 'lkfsKpZoE', 'codecooler');
-insert into Users (id, login, password, usertype) values (20, 'jbucklej', 'CNUAhKX8J', 'codecooler');
-insert into Users (id, login, password, usertype) values (21, 'fhaddockk', 'CCSrbBRMGDw3', 'codecooler');
-insert into Users (id, login, password, usertype) values (22, 'kferonl', 'U6VKnw79i', 'codecooler');
-insert into Users (id, login, password, usertype) values (23, 'msouthworthm', '8cIpXHNy', 'codecooler');
-insert into Users (id, login, password, usertype) values (24, 'tmelledyn', 'oTH50B9I0', 'codecooler');
-insert into Users (id, login, password, usertype) values (25, 'bneggrinio', 'xVAA9u', 'codecooler');
-insert into Users (id, login, password, usertype) values (26, 'kquirkp', 'veku5xLIX', 'codecooler');
-insert into Users (id, login, password, usertype) values (27, 'lcollecottq', '8tQYqMw4z', 'codecooler');
-insert into Users (id, login, password, usertype) values (28, 'hhampr', 'GIfW8bTkS7t', 'codecooler');
-insert into Users (id, login, password, usertype) values (29, 'bwescotts', 'OeEwCtYkM', 'codecooler');
-insert into Users (id, login, password, usertype) values (30, 'tringet', 'XcStl4jt3U', 'codecooler');
-insert into Users (id, login, password, usertype) values (31, 'fgeffcocku', 'JseM2vmPF2', 'codecooler');
-insert into Users (id, login, password, usertype) values (32, 'gmirrallsv', '51vZiDO', 'codecooler');
-insert into Users (id, login, password, usertype) values (33, 'asoftleyw', 'd6sl4sS2q', 'codecooler');
-insert into Users (id, login, password, usertype) values (34, 'elacyx', 'lKgmOOxgapo', 'codecooler');
-insert into Users (id, login, password, usertype) values (35, 'gstoakleyy', 'kyr8kff', 'codecooler');
-insert into Users (id, login, password, usertype) values (36, 'abaccupz', 'CZzwI2wJm3', 'codecooler');
-insert into Users (id, login, password, usertype) values (37, 'cgrewcock10', 'Nz1yWC9YApYL', 'codecooler');
+insert into Users (login, password, usertype) values ('kdavid0', 'FhNbwi4mq', 'admin');
+insert into Users (login, password, usertype) values ('aaykroyd1', '7zuouW89', 'admin');
+insert into Users (login, password, usertype) values ('lclinch2', 'WhShzKui6r3', 'mentor');
+insert into Users (login, password, usertype) values ('cshere3', 'QWY2y6', 'mentor');
+insert into Users (login, password, usertype) values ('kwitchard4', 'PJtYV4H1', 'mentor');
+insert into Users (login, password, usertype) values ('tdifilippo5', 'ekUYcLgl4', 'mentor');
+insert into Users (login, password, usertype) values ('aflipek6', '6NcUD0LwYDGA', 'mentor');
+insert into Users (login, password, usertype) values ('rmacnish7', 'bmxg6PoEqM', 'mentor');
+insert into Users (login, password, usertype) values ('sguppie8', 'GKUk9F', 'mentor');
+insert into Users (login, password, usertype) values ('mslimming9', 'Go1zfN8Du4', 'mentor');
+insert into Users (login, password, usertype) values ('cendacotta', 'HKyfjOxj', 'mentor');
+insert into Users (login, password, usertype) values ('aiskovb', 'xta6tXVNAwD', 'mentor');
+insert into Users (login, password, usertype) values ('sseabornec', 'J0mNqg', 'mentor');
+insert into Users (login, password, usertype) values ('ascourfieldd', '8lb7DnRJPbG', 'mentor');
+insert into Users (login, password, usertype) values ('afairleme', 'dvclZVAnbE5', 'mentor');
+insert into Users (login, password, usertype) values ('jbowmenf', 'gNph5ydnm3', 'mentor');
+insert into Users (login, password, usertype) values ('blintotg', 'iD49MxOUx8a', 'mentor');
+insert into Users (login, password, usertype) values ('cdibbeh', 'i18J9YIgYYM', 'codecooler');
+insert into Users (login, password, usertype) values ('tryami', 'lkfsKpZoE', 'codecooler');
+insert into Users (login, password, usertype) values ('jbucklej', 'CNUAhKX8J', 'codecooler');
+insert into Users (login, password, usertype) values ('fhaddockk', 'CCSrbBRMGDw3', 'codecooler');
+insert into Users (login, password, usertype) values ('kferonl', 'U6VKnw79i', 'codecooler');
+insert into Users (login, password, usertype) values ('msouthworthm', '8cIpXHNy', 'codecooler');
+insert into Users (login, password, usertype) values ('tmelledyn', 'oTH50B9I0', 'codecooler');
+insert into Users (login, password, usertype) values ('bneggrinio', 'xVAA9u', 'codecooler');
+insert into Users (login, password, usertype) values ('kquirkp', 'veku5xLIX', 'codecooler');
+insert into Users (login, password, usertype) values ('lcollecottq', '8tQYqMw4z', 'codecooler');
+insert into Users (login, password, usertype) values ('hhampr', 'GIfW8bTkS7t', 'codecooler');
+insert into Users (login, password, usertype) values ('bwescotts', 'OeEwCtYkM', 'codecooler');
+insert into Users (login, password, usertype) values ('tringet', 'XcStl4jt3U', 'codecooler');
+insert into Users (login, password, usertype) values ('fgeffcocku', 'JseM2vmPF2', 'codecooler');
+insert into Users (login, password, usertype) values ('gmirrallsv', '51vZiDO', 'codecooler');
+insert into Users (login, password, usertype) values ('asoftleyw', 'd6sl4sS2q', 'codecooler');
+insert into Users (login, password, usertype) values ('elacyx', 'lKgmOOxgapo', 'codecooler');
+insert into Users (login, password, usertype) values ('gstoakleyy', 'kyr8kff', 'codecooler');
+insert into Users (login, password, usertype) values ('abaccupz', 'CZzwI2wJm3', 'codecooler');
+insert into Users (login, password, usertype) values ('cgrewcock10', 'Nz1yWC9YApYL', 'codecooler');
 
 
 create table if not exists Users_artifacts (
-	id INT,
+	id serial PRIMARY KEY NOT NULL,
 	user_id INT,
 	artifact_id INT
 );
-insert into Users_artifacts (id, user_id, artifact_id) values (1, 18, 4);
-insert into Users_artifacts (id, user_id, artifact_id) values (2, 19, 10);
-insert into Users_artifacts (id, user_id, artifact_id) values (3, 24, 5);
-insert into Users_artifacts (id, user_id, artifact_id) values (4, 27, 5);
-insert into Users_artifacts (id, user_id, artifact_id) values (5, 28, 3);
-insert into Users_artifacts (id, user_id, artifact_id) values (6, 30, 4);
-insert into Users_artifacts (id, user_id, artifact_id) values (7, 33, 8);
+insert into Users_artifacts (user_id, artifact_id) values (18, 4);
+insert into Users_artifacts (user_id, artifact_id) values (19, 10);
+insert into Users_artifacts (user_id, artifact_id) values (24, 5);
+insert into Users_artifacts (user_id, artifact_id) values (27, 5);
+insert into Users_artifacts (user_id, artifact_id) values (28, 3);
+insert into Users_artifacts (user_id, artifact_id) values (30, 4);
+insert into Users_artifacts (user_id, artifact_id) values (33, 8);
+insert into Users_artifacts (user_id, artifact_id) values (33, 4);
 
 
-create table if not exists Users_quests (
-	id INT,
+create table if not exists  (
+	id serial PRIMARY KEY NOT NULL,
 	user_id INT,
 	quest_id INT
 );
-insert into Users_quests (id, user_id, quest_id) values (1, 18, 7);
-insert into Users_quests (id, user_id, quest_id) values (2, 25, 8);
-insert into Users_quests (id, user_id, quest_id) values (3, 36, 3);
-insert into Users_quests (id, user_id, quest_id) values (4, 22, 10);
-insert into Users_quests (id, user_id, quest_id) values (5, 34, 2);
-insert into Users_quests (id, user_id, quest_id) values (6, 37, 9);
-insert into Users_quests (id, user_id, quest_id) values (7, 30, 6);
+insert into Users_quests (user_id, quest_id) values (18, 7);
+insert into Users_quests (user_id, quest_id) values (25, 8);
+insert into Users_quests (user_id, quest_id) values (36, 3);
+insert into Users_quests (user_id, quest_id) values (22, 10);
+insert into Users_quests (user_id, quest_id) values (34, 2);
+insert into Users_quests (user_id, quest_id) values (37, 9);
+insert into Users_quests (user_id, quest_id) values (30, 6);
