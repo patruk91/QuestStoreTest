@@ -24,6 +24,14 @@ public class Artifact {
         this.avaliability = avaliability;
     }
 
+    public Artifact(int id, String name, String category, int price, String discription){
+        this.id = id;
+        this.name = name;
+        this.discription = discription;
+        this.category = category;
+        this.price = price;
+    }
+
     public int getId() {
         return id;
     }
