@@ -65,10 +65,6 @@ public class CodecoolerDAO implements ICodecoolerDAO {
         stm.setInt(1, restCoins);
         stm.setInt(2, userID);
         stm.executeUpdate();
-
-
-
-
     }
 
     //todo
@@ -110,6 +106,7 @@ public class CodecoolerDAO implements ICodecoolerDAO {
         connection.close();
         return coolcoins;
     }
+
     private int getArtifactCost(int artifactID) throws SQLException{
         DBCreator dbCreator = new DBCreator();
         Connection connection = dbCreator.connectToDatabase();
