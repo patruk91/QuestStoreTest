@@ -1,7 +1,6 @@
 package dao;
 
-import model.users.Codecooler;
-import model.users.Mentor;
+
 import model.users.User;
 
 import java.sql.SQLException;
@@ -11,14 +10,16 @@ public class MainDBCreator {
     public static void main(String[] args) {
         try {
 
-            AdminDAO adminDAO = new AdminDAO();
+         DBCreator db = new DBCreator();
+         db.connectToDatabase();
+         db.executeStatement();
 
-            UserDAO userDAO = new UserDAO();
 
-            User user = userDAO.seeProfile(3);
+         UserDAO userDAO = new UserDAO();
 
-            user.getLogin();
+         User user = userDAO.seeProfile(3);
 
+         user.getLogin();
 
 
         }catch (SQLException e){
