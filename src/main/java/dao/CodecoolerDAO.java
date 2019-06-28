@@ -70,7 +70,7 @@ public class CodecoolerDAO implements ICodecoolerDAO {
         }
         return boughtArtifacts;
     }
-
+    //todo
     public void buyArtifactWithTeammates() {
 
 
