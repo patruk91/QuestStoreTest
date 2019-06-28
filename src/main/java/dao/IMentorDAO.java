@@ -15,7 +15,7 @@ public interface IMentorDAO {
     void createNewQuest(Quest quest);
     void addQuestToAvailable();
     void updateQuestCategory(Quest quest);
-    Artifact createArtifact();
+    void createArtifact(Artifact artifact);
     void updateQuest(String questName, int newValue) throws SQLException;
     void updateArtifact(String artifactName, int newPrice)throws SQLException;
     void addArtifactCategory();
