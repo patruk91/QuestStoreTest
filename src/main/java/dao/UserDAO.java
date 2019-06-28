@@ -85,6 +85,8 @@ public class UserDAO implements IUserDAO{
     }
 
     private Mentor getFullMentor(int id) throws SQLException{
+        // this method do the same as methods in mentor class?
+        // getMentorById and getMentorByFullName?
         DBCreator creator = new DBCreator();
         Connection connection = creator.connectToDatabase();
         System.out.println("connected");

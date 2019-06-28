@@ -14,7 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MentorDAO implements IMentorDAO {
-    //this class contains methods to process mentor: show, create, update, assign to room
+    //this class contains methods to process mentor: find by name o id,
+    // create, update, assign to room
 
     Connection connection;
     DBCreator dbCreator;
