@@ -30,7 +30,7 @@ public class CodecoolerDAO implements ICodecoolerDAO {
     public void buyArtifact(int userID, int artifactID)throws SQLException {
         boolean checkIFcanBeBought = checkIfTransactionPossible(userID, artifactID);
 
-        while (checkIFcanBeBought){
+        if (checkIFcanBeBought){
             updateMoneyAmount(userID,artifactID);
             addArtifactToItems(userID, artifactID);
         }
@@ -72,6 +72,7 @@ public class CodecoolerDAO implements ICodecoolerDAO {
     }
 
     public void buyArtifactWithTeammates() {
+
 
     }
 
@@ -139,7 +140,7 @@ public class CodecoolerDAO implements ICodecoolerDAO {
         if (result.next()){
             coolcoins = result.getInt("coolcoins");
         }
-        System.out.println(coolcoins);
+        System.out.println("coolcoins avalible" +coolcoins);
         connection.close();
         return coolcoins;
     }
@@ -155,8 +156,11 @@ public class CodecoolerDAO implements ICodecoolerDAO {
         if (result.next()){
             artifactCost = result.getInt("artifact_price");
         }
-        System.out.println(artifactCost);
+        System.out.println("artifact cost"+artifactCost);
         connection.close();
         return artifactCost;
     }
+
+
+
 }

@@ -11,7 +11,8 @@ import java.util.List;
 public interface IAdminDAO{
     void addMentor(User user, Mentor mentor);
     void assignMentorToRoom();
-    void updateMentor();
+    void updateMentorByID(Mentor mentor) throws SQLException;
+    void updateMentorByFullName(Mentor mentor) throws SQLException;
     Mentor getMentor(int id) throws SQLException;
     Mentor getMentor(String firstName, String lastName) throws SQLException;
     List<Codecooler> getCodecoolers(int roomId) throws SQLException;

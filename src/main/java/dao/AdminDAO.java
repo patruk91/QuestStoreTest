@@ -113,7 +113,40 @@ public class AdminDAO implements IAdminDAO {
 
     }
 
-    public void updateMentor() {
+    public void updateMentorByID(Mentor mentor) throws SQLException{
+        String query = "UPDATE mentorsPersonals SET first_name = ?, last_name = ?, phone_number = ?, email = ?, adress = ? WHERE id = ?";
+        PreparedStatement statement = null;
+
+            connection = dbCreator.connectToDatabase();
+            statement = connection.prepareStatement(query);
+
+            statement.setString(1, mentor.getFirstName());
+            statement.setString(2, mentor.getLastName());
+            statement.setString(3, mentor.getPhoneNum());
+            statement.setString(4, mentor.getEmail());
+            statement.setString(5, mentor.getAdress());
+            statement.setInt(6, mentor.getId());
+
+            statement.executeUpdate();
+            connection.close();
+
+    }
+
+    public void updateMentorByFullName(Mentor mentor) throws SQLException{
+        String query = "UPDATE mentorsPersonals SET phone_number = ?, email = ?, adress = ? WHERE first_name = ? AND last_name = ?";
+        PreparedStatement statement = null;
+
+        connection = dbCreator.connectToDatabase();
+        statement = connection.prepareStatement(query);
+        
+        statement.setString(1, mentor.getPhoneNum());
+        statement.setString(2, mentor.getEmail());
+        statement.setString(3, mentor.getAdress());
+        statement.setString(4, mentor.getFirstName());
+        statement.setString(5, mentor.getLastName());
+
+        statement.executeUpdate();
+        connection.close();
 
     }
 
