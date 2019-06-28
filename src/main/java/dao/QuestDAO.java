@@ -7,8 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuestDAO {
+    //this class contains methods to process quests: show, create, update
+
     Connection connection;
     DBCreator dbCreator;
+
+    public QuestDAO() {
+        dbCreator = new DBCreator();
+    }
 
     public List<Quest> seeQuestsList() throws SQLException {
         List<Quest> allQuests = new ArrayList();

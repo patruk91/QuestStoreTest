@@ -11,15 +11,13 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public interface IMentorDAO {
+    //this interface contains methods to process mentor: show, create, update, assign to room
 
     void addMentor(User user, Mentor mentor) throws DBException;
     void updateMentorByID(Mentor mentor) throws DBException;
     void updateMentorByFullName(Mentor mentor) throws DBException;
-    Mentor getMentor(int id) throws SQLException, DBException;
-    Mentor getMentor(String firstName, String lastName) throws DBException;
+    Mentor getMentorById(int id) throws SQLException, DBException;
+    Mentor getMentorByFullName(String firstName, String lastName) throws DBException;
     void assignMentorToRoom();
-
-    int seeStudentWallet(int id) throws SQLException;
-    Map<Integer, Integer> seeStudentsWallets() throws SQLException;
 
 }

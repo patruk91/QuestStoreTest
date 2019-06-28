@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface IQuestDAO {
+    //this interface contains methods to process quests: show, create, update
+
     List<Quest> seeQuestsList() throws SQLException;
     void createNewQuest(Quest quest);
     void addQuestToAvailable();

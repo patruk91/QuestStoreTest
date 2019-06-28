@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MentorDAO implements IMentorDAO {
+    //this class contains methods to process mentor: show, create, update, assign to room
+
     Connection connection;
     DBCreator dbCreator;
 
@@ -22,9 +24,7 @@ public class MentorDAO implements IMentorDAO {
 
     }
 
-
     public void addMentor(User user, Mentor mentor) throws DBException {
-
         createUser(user);
         int userID = getUserIdWithLogin(user);
         mentor.setId(userID);
@@ -38,7 +38,6 @@ public class MentorDAO implements IMentorDAO {
 
             connection = dbCreator.connectToDatabase();
             statement = connection.prepareStatement(query);
-
             statement.setString(1, mentor.getFirstName());
             statement.setString(2, mentor.getLastName());
             statement.setString(3, mentor.getPhoneNum());
@@ -58,6 +57,7 @@ public class MentorDAO implements IMentorDAO {
 
     }
 
+
     public void updateMentorByFullName(Mentor mentor) throws DBException {
         try {
             String query = "UPDATE mentorsPersonals SET phone_number = ?, email = ?, adress = ? WHERE first_name = ? AND last_name = ?";
@@ -65,7 +65,6 @@ public class MentorDAO implements IMentorDAO {
 
             connection = dbCreator.connectToDatabase();
             statement = connection.prepareStatement(query);
-
             statement.setString(1, mentor.getPhoneNum());
             statement.setString(2, mentor.getEmail());
             statement.setString(3, mentor.getAdress());
@@ -83,7 +82,8 @@ public class MentorDAO implements IMentorDAO {
 
     }
 
-    public Mentor getMentor(int id) throws DBException {
+
+    public Mentor getMentorById(int id) throws DBException {
         try {
             Connection connection = dbCreator.connectToDatabase();
             PreparedStatement stm = connection.prepareStatement("select * from mentorspersonals left join classes on " +
@@ -92,7 +92,6 @@ public class MentorDAO implements IMentorDAO {
             stm.setInt(1, id);
             ResultSet result = stm.executeQuery();
             connection.close();
-
             Mentor mentor = null;
 
             if (result.next()) {
@@ -106,8 +105,6 @@ public class MentorDAO implements IMentorDAO {
             }
 
             return mentor;
-
-
         } catch (SQLException e) {
             throw new DBException("SQLException occured in getMentor(int id)");
 
@@ -116,7 +113,8 @@ public class MentorDAO implements IMentorDAO {
         }
     }
 
-    public Mentor getMentor(String firstName, String lastName) throws DBException {
+
+    public Mentor getMentorByFullName(String firstName, String lastName) throws DBException {
         try {
             Connection connection = dbCreator.connectToDatabase();
             PreparedStatement stm = connection.prepareStatement("SELECT * FROM mentorspersonals WHERE first_name = ? AND last_name = ?");
@@ -125,18 +123,13 @@ public class MentorDAO implements IMentorDAO {
             stm.setString(2, lastName);
             ResultSet result = stm.executeQuery();
 
-
             int userID = 0;
             if (result.next()) {
                 userID = result.getInt("user_id");
             }
-
-            stm = connection.prepareStatement("select * from mentorspersonals left join classes on " +
-                    "mentorspersonals.user_id = classes.user_id where mentorspersonals.user_id = ?;");
+            stm = connection.prepareStatement("select * from mentorspersonals left join classes on " + "mentorspersonals.user_id = classes.user_id where mentorspersonals.user_id = ?;");
             stm.setInt(1, userID);
-
             result = stm.executeQuery();
-
 
             while (result.next()) {
                 int mentorID = result.getInt("user_id");
@@ -147,8 +140,6 @@ public class MentorDAO implements IMentorDAO {
                 Mentor mentor = new Mentor(mentorID, firstName, lastName, phoneNum, email, address, classID);
                 return mentor;
             }
-
-
             connection.close();
 
             return null;
@@ -165,7 +156,6 @@ public class MentorDAO implements IMentorDAO {
 
     }
 
-
     private void createUser(User user) throws DBException {
         String query = "INSERT INTO users(login, password, usertype) VALUES (?,?,?)";
         PreparedStatement statement = null;
@@ -173,11 +163,9 @@ public class MentorDAO implements IMentorDAO {
         try {
             connection = dbCreator.connectToDatabase();
             statement = connection.prepareStatement(query);
-
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getUserType());
-
             statement.executeUpdate();
             dbCreator.connectToDatabase().close();
 
@@ -193,9 +181,7 @@ public class MentorDAO implements IMentorDAO {
         PreparedStatement statement = null;
 
         try {
-
             statement = connection.prepareStatement(query);
-
             statement.setInt(1, mentor.getId());
             statement.setString(2, mentor.getFirstName());
             statement.setString(3, mentor.getLastName());
@@ -218,21 +204,12 @@ public class MentorDAO implements IMentorDAO {
         PreparedStatement statement = null;
         String query = "SELECT * FROM users WHERE login = ?;";
         try {
-
             connection = dbCreator.connectToDatabase();
-
-
             statement = connection.prepareStatement(query);
-
             statement.setString(1, user.getLogin());
-
             results = statement.executeQuery();
-
             results.next();
-
             return results.getInt("id");
-
-
 
         } catch (SQLException e) {
             throw new DBException("SQLException occured in getUserIdWithLogin(User user)");
@@ -241,40 +218,6 @@ public class MentorDAO implements IMentorDAO {
             throw new DBException("Unidentified exception occured in getUserIdWithLogin(User user)");
         }
 
-
     }
 
-    public int seeStudentWallet(int id) throws SQLException {
-        DBCreator dbCreator = new DBCreator();
-        Connection connection = dbCreator.connectToDatabase();
-        PreparedStatement stm = connection.prepareStatement("select coolcoins from studentpersonals where user_id = ? ");
-        stm.setInt(1, id);
-        ResultSet result = stm.executeQuery();
-
-        while(result.next()){
-            int codecoolerCoins = result.getInt("coolcoins");
-            return codecoolerCoins;
-        }
-        return 0;
-    }
-
-    public Map<Integer, Integer> seeStudentsWallets() throws SQLException {
-        DBCreator dbCreator = new DBCreator();
-        Connection connection = dbCreator.connectToDatabase();
-        PreparedStatement stm = connection.prepareStatement("select user_id, experience_points, coolcoins from studentpersonals ");
-        ResultSet result = stm.executeQuery();
-        Map<Integer, Integer> resultmap = new HashMap<Integer, Integer>();
-
-        while(result.next()){
-            int codecoolerID = result.getInt("user_id");
-            int codecoolerExperiencePoints = result.getInt("experience_points");
-            int codecoolerCoins = result.getInt("coolcoins");
-            int balance = codecoolerExperiencePoints - codecoolerCoins;
-            resultmap.put(codecoolerID, balance);
-            return resultmap;
-        }
-        return null;
-        //TODO change null for sth else
-        //not null, optional, error handling, special case
-    }
 }

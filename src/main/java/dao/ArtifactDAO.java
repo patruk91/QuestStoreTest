@@ -1,18 +1,22 @@
 package dao;
 
 import model.items.Artifact;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ArtifactDAO {
+    //this class contains methods to process artifacts(show, create, update)
+
     Connection connection;
     DBCreator dbCreator;
 
-    public List<Artifact> seeArtifactsList() throws SQLException{
-        List<Artifact> allArtifacts = new ArrayList();
+    ArtifactDAO(){
+        dbCreator = new DBCreator();
+    }
 
+    public List<Artifact> showAllArtifacts() throws SQLException{
+        List<Artifact> allArtifacts = new ArrayList();
         Connection con = dbCreator.connectToDatabase();
         Statement stmt = null;
         ResultSet resultSet = null;
@@ -48,6 +52,7 @@ public class ArtifactDAO {
 
     }
 
+
     public void createArtifact(Artifact artifact) {
         String query = "INSERT INTO Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability)" +
                 " VALUES (?,?,?,?,?)";
@@ -81,11 +86,43 @@ public class ArtifactDAO {
         }catch (SQLException e){
             System.out.println(e);
         }
-
     }
 
     //todo
     public void markBoughtArtifacts() {
 
+    }
+
+    public List<Artifact> showBoughtArtifacts(int userId) throws SQLException{
+        DBCreator dbCreator = new DBCreator();
+        Connection con = dbCreator.connectToDatabase();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Artifact> boughtArtifacts = new ArrayList();
+
+        try {
+            stmt = con.prepareStatement("SELECT art.id, artifact_name, artifact_category, artifact_description, artifact_price\n" +
+                    "FROM users_artifacts usersArt INNER JOIN artifacts art\n" +
+                    "ON usersArt.artifact_id = art.id\n" +
+                    "WHERE user_id = ?;");
+            stmt.setInt(1, userId);
+            rs = stmt.executeQuery();
+
+            while(rs.next()){
+                int id = rs.getInt("id");
+                String name = rs.getString("artifact_name");
+                String discription = rs.getString("artifact_description");
+                String category = rs.getString("artifact_category");
+                int price = rs.getInt("artifact_price");
+                Artifact nextArtifact = new Artifact(id, name, category, price, discription);
+
+                boughtArtifacts.add(nextArtifact);
+            }
+            stmt.close();
+            con.close();
+        } catch ( Exception e ) {
+            System.out.println(e);
+        }
+        return boughtArtifacts;
     }
 }
