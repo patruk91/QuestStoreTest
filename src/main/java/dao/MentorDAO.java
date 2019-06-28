@@ -150,7 +150,7 @@ public class MentorDAO implements IMentorDAO {
             e.printStackTrace();
         }
     }
-
+    //todo
     public void addQuestToAvailable() {
 
     }
@@ -223,15 +223,15 @@ public class MentorDAO implements IMentorDAO {
         }
 
     }
-
+    //todo
     public void addArtifactCategory() {
 
     }
-
+    //todo
     public void markAchivedQuests() {
 
     }
-
+    //todo
     public void markBoughtArtifacts() {
 
     }

@@ -76,7 +76,7 @@ public class AdminDAO implements IAdminDAO {
 
     }
 
-    private int getUserIdWithLogin(User user) throws Exception {
+    private int getUserIdWithLogin(User user) throws NoRecordException {
         ResultSet results = null;
         PreparedStatement statement = null;
         String query = "SELECT * FROM users WHERE login = ?;";
@@ -99,16 +99,16 @@ public class AdminDAO implements IAdminDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new Exception("Did not find user with this login SLQ Exception");
+            throw new NoRecordException("Did not find user with this login SLQ Exception");
 
         } catch (Exception e){
             e.printStackTrace();
-            throw new Exception("Did not find user with this login");
+            throw new NoRecordException("Did not find user with this login");
         }
 
 
     }
-
+    //todo
     public void assignMentorToRoom() {
 
     }
@@ -239,11 +239,11 @@ public class AdminDAO implements IAdminDAO {
         return null;
 
     }
-
+    //todo
     public void addLevel() {
 
     }
-
+    //todo
     public void createNewClass() {
 
     }
