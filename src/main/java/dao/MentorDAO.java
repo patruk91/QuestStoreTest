@@ -27,7 +27,7 @@ public class MentorDAO implements IMentorDAO {
             int userID = getUserIdWithLogin(user);
             codecooler.setId(userID);
             createStudent(codecooler);
-        } catch(NoRecordException e) {
+        } catch(DBException e) {
             e.printStackTrace();
             System.out.println("Failed to fetch user with this login");
         }
@@ -92,7 +92,7 @@ public class MentorDAO implements IMentorDAO {
 
     }
 
-    private int getUserIdWithLogin(User user) throws NoRecordException {
+    private int getUserIdWithLogin(User user) throws DBException {
         ResultSet results = null;
         PreparedStatement statement = null;
         String query = "SELECT * FROM users WHERE login = ?;";
@@ -119,11 +119,11 @@ public class MentorDAO implements IMentorDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new NoRecordException("Did not find user with this login SLQ Exception");
+            throw new DBException("Did not find user with this login SLQ Exception");
 
         } catch (Exception e){
             e.printStackTrace();
-            throw new NoRecordException("Did not find user with this login");
+            throw new DBException("Did not find user with this login");
         }
 
 

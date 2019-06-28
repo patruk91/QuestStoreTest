@@ -9,13 +9,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface IAdminDAO{
-    void addMentor(User user, Mentor mentor);
+    void addMentor(User user, Mentor mentor) throws DBException;
     void assignMentorToRoom();
-    void updateMentorByID(Mentor mentor) throws SQLException;
-    void updateMentorByFullName(Mentor mentor) throws SQLException;
-    Mentor getMentor(int id) throws SQLException;
-    Mentor getMentor(String firstName, String lastName) throws SQLException;
-    List<Codecooler> getCodecoolers(int roomId) throws SQLException;
+    void updateMentorByID(Mentor mentor) throws DBException;
+    void updateMentorByFullName(Mentor mentor) throws DBException;
+    Mentor getMentor(int id) throws SQLException, DBException;
+    Mentor getMentor(String firstName, String lastName) throws DBException;
+    List<Codecooler> getCodecoolers(int roomId) throws DBException;
     void addLevel();
     void createNewClass();
 }
