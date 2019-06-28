@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO implements IUserDAO{
+
     DBCreator dbCreator = new DBCreator();
 
     public List<Artifact> seeArtifactsList() throws SQLException{
