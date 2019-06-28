@@ -175,27 +175,7 @@ public class MentorDAO implements IMentorDAO {
 
     }
 
-    public void createArtifact(Artifact artifact) {
-        String query = "INSERT INTO Artifacts (artifact_name, artifact_category, artifact_description, artifact_price, artifact_availability)" +
-                " VALUES (?,?,?,?,?)";
-        PreparedStatement statement = null;
-        try {
-            connection = dbCreator.connectToDatabase();
-            statement = connection.prepareStatement(query);
 
-            statement.setString(1, artifact.getName());
-            statement.setString(2, artifact.getCategory());
-            statement.setString(3, artifact.getDiscription());
-            statement.setInt(4, artifact.getPrice());
-            statement.setBoolean(5, artifact.isAvaliability());
-
-            statement.executeUpdate();
-            connection.close();
-
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
 
     public void updateQuest(String questName, int newValue) {
         DBCreator dbCreator = new DBCreator();
@@ -210,31 +190,12 @@ public class MentorDAO implements IMentorDAO {
         }
     }
 
-    public void updateArtifact(String artifactName, int newPrice) {
-        DBCreator dbCreator = new DBCreator();
-        try {
-            Connection connection = dbCreator.connectToDatabase();
-            PreparedStatement stm = connection.prepareStatement("update  Artifacts set artifact_price = ? where artifact_name like ?");
-            stm.setInt(1, newPrice);
-            stm.setString(2, artifactName);
-            stm.executeUpdate();
-        }catch (SQLException e){
-            System.out.println(e);
-        }
 
-    }
-    //todo
-    public void addArtifactCategory() {
-
-    }
     //todo
     public void markAchivedQuests() {
 
     }
-    //todo
-    public void markBoughtArtifacts() {
 
-    }
 
     public int seeStudentWallet(int id) throws SQLException {
         DBCreator dbCreator = new DBCreator();
@@ -266,5 +227,7 @@ public class MentorDAO implements IMentorDAO {
             return resultmap;
         }
         return null;
+        //TODO change null for sth else
+        //not null, optional, error handling, special case
     }
 }

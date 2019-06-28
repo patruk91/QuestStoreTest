@@ -15,12 +15,11 @@ public interface IMentorDAO {
     void createNewQuest(Quest quest);
     void addQuestToAvailable();
     void updateQuestCategory(Quest quest);
-    void createArtifact(Artifact artifact);
+
     void updateQuest(String questName, int newValue) throws SQLException;
-    void updateArtifact(String artifactName, int newPrice)throws SQLException;
-    void addArtifactCategory();
+
     void markAchivedQuests();
-    void markBoughtArtifacts();
+
     int seeStudentWallet(int id) throws SQLException;
     Map<Integer, Integer> seeStudentsWallets() throws SQLException;
 
