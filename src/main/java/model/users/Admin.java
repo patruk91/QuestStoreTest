@@ -21,6 +21,17 @@ public class Admin extends User {
         this.listOfLevels = listOfLevels;
     }
 
+    public  Admin(int user_id, String  login,String password,String firstName,String lastName,String phoneNumber,String email,String address){
+        setId(user_id);
+        setLogin(login);
+        setPassword(password);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setPhoneNum(phoneNumber);
+        setEmail(email);
+        setAdress(address);
+    }
+
     public List<Mentor> getMentorList() {
         return mentorList;
     }

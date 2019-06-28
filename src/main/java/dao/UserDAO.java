@@ -2,6 +2,7 @@ package dao;
 
 import model.items.Artifact;
 import model.items.Quest;
+import model.users.Admin;
 import model.users.Codecooler;
 import model.users.Mentor;
 import model.users.User;
@@ -94,7 +95,12 @@ public class UserDAO implements IUserDAO{
             System.out.println("im mentor");
             Mentor mentor = getFullMentor(id);
             return mentor;
+        }else if (userType.equals("admin")){
+            System.out.println("i am admin");
+            Admin admin = getFullADmin(id);
+            return admin;
         }
+
         return null;
     }
 
@@ -162,6 +168,39 @@ public class UserDAO implements IUserDAO{
 
             mentor = new Mentor(user_id, login, password, firstName, lastName, phoneNumber, email, address);
             return mentor ;
+
+
+        }
+
+        return null;
+    }
+
+    private Admin getFullADmin(int id) throws SQLException{
+        DBCreator creator = new DBCreator();
+        Connection connection = creator.connectToDatabase();
+        System.out.println("connected");
+        PreparedStatement stm = connection.prepareStatement("select * from users left  join  mentorspersonals on users.id=mentorspersonals.user_id  where id= ? ");
+        stm.setInt(1 ,id);
+
+        ResultSet result = stm.executeQuery();
+        System.out.println("query executed");
+        Admin admin;
+        while (result.next()){
+            int user_id = result.getInt("id");
+
+            String login = result.getString(("login"));
+            System.out.println(login);
+            String password = result.getString("password");
+            String firstName = result.getString("first_name");
+            String lastName = result.getString("last_name");
+            String phoneNumber = result.getString("phone_number");
+            String email = result.getString("email");
+            String address = result.getString("address");
+
+
+
+            admin = new Admin(user_id, login, password, firstName, lastName, phoneNumber, email, address);
+            return admin ;
 
 
         }
