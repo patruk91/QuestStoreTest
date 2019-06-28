@@ -11,9 +11,6 @@ import java.util.List;
 
 public interface IUserDAO {
 
-
-    List<Artifact> seeArtifactsList() throws  SQLException;
-    List<Quest> seeQuestsList() throws SQLException;
     User seeProfile(int id) throws SQLException;
     void updateMyProfile();
 

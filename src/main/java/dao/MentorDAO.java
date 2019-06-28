@@ -130,8 +130,6 @@ public class MentorDAO implements IMentorDAO {
     }
 
 
-
-
     public int seeStudentWallet(int id) throws SQLException {
         DBCreator dbCreator = new DBCreator();
         Connection connection = dbCreator.connectToDatabase();
