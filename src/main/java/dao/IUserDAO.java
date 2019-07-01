@@ -1,15 +1,11 @@
 package dao;
 
-
-import model.items.Artifact;
-import model.items.Quest;
 import model.users.User;
-
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public interface IUserDAO {
+    //this interface contains methods which allow to see user's profile
 
     User seeProfile(int id) throws SQLException;
     void updateMyProfile();

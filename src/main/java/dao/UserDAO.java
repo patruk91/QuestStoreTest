@@ -1,20 +1,21 @@
 package dao;
 
-import model.items.Artifact;
-import model.items.Quest;
 import model.users.Admin;
 import model.users.Codecooler;
 import model.users.Mentor;
 import model.users.User;
-
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class UserDAO implements IUserDAO{
+    //this class contains methods which allow to see user's profile
 
-    DBCreator dbCreator = new DBCreator();
+    //TODO Get DBCreator object to private filed of WallDao class instead of creating it in every method
+    DBCreator dbCreator;
 
+    public UserDAO(){
+        dbCreator = new DBCreator();
+    }
 
 
     //todo mentor and admin profile
@@ -79,13 +80,13 @@ public class UserDAO implements IUserDAO{
 
             codecooler = new Codecooler(user_id, login, password, firstName, lastName,phoneNumber, email, address, classID, experiencePoints, coolcoins);
             return codecooler;
-
-
         }
         return null;
     }
 
     private Mentor getFullMentor(int id) throws SQLException{
+        // this method do the same as methods in mentor class?
+        // getMentorById and getMentorByFullName?
         DBCreator creator = new DBCreator();
         Connection connection = creator.connectToDatabase();
         System.out.println("connected");
@@ -107,14 +108,9 @@ public class UserDAO implements IUserDAO{
             String email = result.getString("email");
             String address = result.getString("address");
 
-
-
             mentor = new Mentor(user_id, login, password, firstName, lastName, phoneNumber, email, address);
             return mentor ;
-
-
         }
-
         return null;
     }
 
@@ -140,12 +136,8 @@ public class UserDAO implements IUserDAO{
             String email = result.getString("email");
             String address = result.getString("address");
 
-
-
             admin = new Admin(user_id, login, password, firstName, lastName, phoneNumber, email, address);
             return admin ;
-
-
         }
 
         return null;
