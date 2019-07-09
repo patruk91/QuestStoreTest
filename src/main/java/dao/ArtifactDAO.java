@@ -35,6 +35,7 @@ public class ArtifactDAO {
                 Artifact newArtifact = new Artifact(id, name, description, category, price, availability);
                 allArtifacts.add(newArtifact);
             }
+
             resultSet.close();
             stmt.close();
             con.close();
