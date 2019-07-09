@@ -103,9 +103,10 @@ public class MentorDAO implements IMentorDAO {
                 String address = result.getString("address");
                 int classID = result.getInt("class_id");
                 mentor = new Mentor(id, firstName, lastName, phoneNum, email, address, classID);
+                return mentor;
             }
 
-            return mentor;
+            throw new DBException("No mentor with id: " + id);
         } catch (SQLException e) {
             throw new DBException("SQLException occured in getMentor(int id)");
 
@@ -143,7 +144,7 @@ public class MentorDAO implements IMentorDAO {
             }
             connection.close();
 
-            return null;
+            throw new DBException("No mentor: " + firstName + " " + lastName);
         } catch (SQLException e) {
             throw new DBException("SQLException occured in getMentor(String firstName, String lastName)");
 

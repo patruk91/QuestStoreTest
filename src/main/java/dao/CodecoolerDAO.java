@@ -24,20 +24,17 @@ public class CodecoolerDAO implements ICodecoolerDAO {
     }
 
 
-    public void createCodecooler(User user, Codecooler codecooler) {
+    public void createCodecooler(User user, Codecooler codecooler) throws  DBException {
         createUser(user);
-        try {
+
             int userID = getUserIdWithLogin(user);
             codecooler.setId(userID);
             createStudent(codecooler);
-        } catch(DBException e) {
-            e.printStackTrace();
-            System.out.println("Failed to fetch user with this login");
-        }
+
     }
 
 
-    public List<Codecooler> getCodecoolersFromRoom(int roomId) throws DBException{
+    public List<Codecooler> getCodecoolersListFromRoom(int roomId) throws DBException{
 
         try {
             DBCreator dbCreator = new DBCreator();
@@ -58,7 +55,8 @@ public class CodecoolerDAO implements ICodecoolerDAO {
                 resultList.add(codecooler);
                 return resultList;
             }
-            return null;
+
+            throw new DBException("No students in room with id: " + roomId);
 
         } catch (SQLException e) {
             throw new DBException("SQLException occured in getCodecoolers(int roomId))");
@@ -69,22 +67,30 @@ public class CodecoolerDAO implements ICodecoolerDAO {
     }
 
 
-    public int showLevelOfExperience(int id) throws SQLException {
-        DBCreator dbCreator = new DBCreator();
-        Connection connection = dbCreator.connectToDatabase();
-        PreparedStatement stm = connection.prepareStatement("select experience_points from studentpersonals where user_id = ? ");
-        stm.setInt(1, id);
-        ResultSet result = stm.executeQuery();
+    public int getExperiencePoints(int id) throws DBException {
+        try {
+            DBCreator dbCreator = new DBCreator();
+            Connection connection = dbCreator.connectToDatabase();
+            PreparedStatement stm = connection.prepareStatement("select experience_points from studentpersonals where user_id = ? ");
+            stm.setInt(1, id);
+            ResultSet result = stm.executeQuery();
 
-        while(result.next()){
-            int experiencePoints = result.getInt("experience_points");
-            return experiencePoints;
+            while (result.next()) {
+                int experiencePoints = result.getInt("experience_points");
+                return experiencePoints;
+            }
+            throw new DBException("No entry with id: " + id);
+
+        } catch (SQLException e) {
+            throw new DBException("SQLException occured in getExperiencePoints()");
+
+        } catch (Exception e){
+            throw new DBException("Unidentified exception occured in getExperiencePoints()");
         }
-        return 0;
     }
 
 
-    private void createUser(User user){
+    private void createUser(User user) throws DBException {
         String query = "INSERT INTO users(login, password, usertype) VALUES (?,?,?)";
         PreparedStatement statement = null;
 
@@ -97,13 +103,16 @@ public class CodecoolerDAO implements ICodecoolerDAO {
             statement.executeUpdate();
             connection.close();
 
-        } catch (SQLException e){
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new DBException("SQLException occured in createUser()");
+
+        } catch (Exception e){
+            throw new DBException("Unidentified exception occured in createUser()");
         }
 
     }
 
-    private void createStudent(Codecooler codecooler){
+    private void createStudent(Codecooler codecooler) throws DBException {
         String query = "INSERT INTO studentpersonals(address, class_id, coolcoins, email, experience_points," +
                 " first_name, last_name, phone_number, user_id) VALUES (?,?,?,?,?,?,?,?,?)";
         PreparedStatement statement = null;
@@ -125,8 +134,11 @@ public class CodecoolerDAO implements ICodecoolerDAO {
 
             connection.close();
 
-        } catch (SQLException e){
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new DBException("SQLException occured in createStudent()");
+
+        } catch (Exception e){
+            throw new DBException("Unidentified exception occured in createStudent()");
         }
 
     }
@@ -148,11 +160,9 @@ public class CodecoolerDAO implements ICodecoolerDAO {
 
 
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DBException("Did not find user with this login SLQ Exception");
 
         } catch (Exception e){
-            e.printStackTrace();
             throw new DBException("Did not find user with this login");
         }
 
