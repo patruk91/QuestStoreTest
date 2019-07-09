@@ -109,7 +109,7 @@ public class WalletDAO {
         stm.setInt(2, artifactID);
         stm.executeUpdate();
     }
-
+showAllArtifacts
     private boolean checkIfTransactionPossible(int userID, int artifactID) throws SQLException {
         /*refactor:
         old code
