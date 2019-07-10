@@ -5,14 +5,14 @@ import model.items.Quest;
 
 import java.util.List;
 
-public class Codecooler extends User {
+public class Student extends User {
     private int ammountOfCoins;
     private int roomID;
     private List<Quest> questList;
     private int lvlOfExp;
 
 
-    public Codecooler(int id, String login, String password, String firstName, String lastName, String phoneNum, String email, String adress,String userType, int ammountOfCoins, int roomID, List<Quest> questList, int lvlOfExp) {
+    public Student(int id, String login, String password, String firstName, String lastName, String phoneNum, String email, String adress, String userType, int ammountOfCoins, int roomID, List<Quest> questList, int lvlOfExp) {
         super(id, login, password, firstName, lastName, phoneNum, email, adress, userType);
         this.ammountOfCoins = ammountOfCoins;
         this.roomID = roomID;
@@ -20,7 +20,7 @@ public class Codecooler extends User {
         this.lvlOfExp = lvlOfExp;
     }
 
-    public Codecooler(int id, int ammountOfCoins, int roomID, List<Quest> questList, int lvlOfExp) {
+    public Student(int id, int ammountOfCoins, int roomID, List<Quest> questList, int lvlOfExp) {
         setId(id);
         this.ammountOfCoins = ammountOfCoins;
         this.roomID = roomID;
@@ -28,14 +28,14 @@ public class Codecooler extends User {
         this.lvlOfExp = lvlOfExp;
     }
 
-    public Codecooler(int id, String login, String password, String userType) {
+    public Student(int id, String login, String password, String userType) {
         setId(id);
         setLogin(login);
         setPassword(password);
         setUserType(userType);
     }
 
-    public Codecooler(int id,  String firstName, String lastName, String phoneNum, String email, String adress,  int roomID) {
+    public Student(int id, String firstName, String lastName, String phoneNum, String email, String adress, int roomID) {
         setId(id);
         setFirstName(firstName);
         setLastName(lastName);
@@ -45,7 +45,7 @@ public class Codecooler extends User {
         this.roomID = roomID;
     }
 
-    public Codecooler(int id,String login,String password,String firstName,String lastName,String phoneNumber,String email,String address,int classID,int experiencePoints,int coolcoins){
+    public Student(int id, String login, String password, String firstName, String lastName, String phoneNumber, String email, String address, int classID, int experiencePoints, int coolcoins){
         setId(id);
         setLogin(login);
         setPassword(password);

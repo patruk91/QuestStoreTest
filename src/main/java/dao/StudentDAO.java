@@ -1,6 +1,6 @@
 package dao;
 
-import model.users.Codecooler;
+import model.users.Student;
 import model.users.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class CodecoolerDAO implements ICodecoolerDAO {
+public class StudentDAO implements IStudentDAO {
     //this class contains methods to create and update codecooler
     // and show his level
 
@@ -19,17 +19,17 @@ public class CodecoolerDAO implements ICodecoolerDAO {
     Connection connection;
     DBCreator dbCreator;
 
-    public CodecoolerDAO() {
+    public StudentDAO() {
         dbCreator = new DBCreator();
     }
 
 
-    public void createCodecooler(User user, Codecooler codecooler) {
+    public void createCodecooler(User user, Student student) {
         createUser(user);
         try {
             int userID = getUserIdWithLogin(user);
-            codecooler.setId(userID);
-            createStudent(codecooler);
+            student.setId(userID);
+            createStudent(student);
         } catch(DBException e) {
             e.printStackTrace();
             System.out.println("Failed to fetch user with this login");
@@ -37,7 +37,7 @@ public class CodecoolerDAO implements ICodecoolerDAO {
     }
 
 
-    public List<Codecooler> getCodecoolersFromRoom(int roomId) throws DBException{
+    public List<Student> getCodecoolersFromRoom(int roomId) throws DBException{
 
         try {
             DBCreator dbCreator = new DBCreator();
@@ -45,7 +45,7 @@ public class CodecoolerDAO implements ICodecoolerDAO {
             PreparedStatement stm = connection.prepareStatement("select * from studentpersonals where room_id = ? ");
             stm.setInt(1, roomId);
             ResultSet result = stm.executeQuery();
-            List<Codecooler> resultList = new LinkedList<Codecooler>();
+            List<Student> resultList = new LinkedList<Student>();
 
             while (result.next()) {
                 int id = result.getInt("id");
@@ -54,8 +54,8 @@ public class CodecoolerDAO implements ICodecoolerDAO {
                 String phoneNum = result.getString("phone_number");
                 String email = result.getString("email");
                 String address = result.getString("address");
-                Codecooler codecooler = new Codecooler(id, firstName, lastName, phoneNum, email, address, roomId);
-                resultList.add(codecooler);
+                Student student = new Student(id, firstName, lastName, phoneNum, email, address, roomId);
+                resultList.add(student);
                 return resultList;
             }
             return null;
@@ -103,7 +103,7 @@ public class CodecoolerDAO implements ICodecoolerDAO {
 
     }
 
-    private void createStudent(Codecooler codecooler){
+    private void createStudent(Student student){
         String query = "INSERT INTO studentpersonals(address, class_id, coolcoins, email, experience_points," +
                 " first_name, last_name, phone_number, user_id) VALUES (?,?,?,?,?,?,?,?,?)";
         PreparedStatement statement = null;
@@ -111,15 +111,15 @@ public class CodecoolerDAO implements ICodecoolerDAO {
         try {
             connection = dbCreator.connectToDatabase();
             statement = connection.prepareStatement(query);
-            statement.setString(1, codecooler.getAdress());
-            statement.setInt(2, codecooler.getRoomID());
-            statement.setInt(3, codecooler.getAmmountOfCoins());
-            statement.setString(4, codecooler.getEmail());
-            statement.setInt(5, codecooler.getLvlOfExp());
-            statement.setString(6, codecooler.getFirstName());
-            statement.setString(7, codecooler.getLastName());
-            statement.setString(8, codecooler.getPhoneNum());
-            statement.setInt(9, codecooler.getId());
+            statement.setString(1, student.getAdress());
+            statement.setInt(2, student.getRoomID());
+            statement.setInt(3, student.getAmmountOfCoins());
+            statement.setString(4, student.getEmail());
+            statement.setInt(5, student.getLvlOfExp());
+            statement.setString(6, student.getFirstName());
+            statement.setString(7, student.getLastName());
+            statement.setString(8, student.getPhoneNum());
+            statement.setInt(9, student.getId());
 
             statement.executeUpdate();
 

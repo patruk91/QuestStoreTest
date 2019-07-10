@@ -1,7 +1,7 @@
 package dao;
 
 import model.users.Admin;
-import model.users.Codecooler;
+import model.users.Student;
 import model.users.Mentor;
 import model.users.User;
 import java.sql.*;
@@ -30,9 +30,9 @@ public class UserDAO implements IUserDAO{
         }
 
         if (userType.equals("codecooler")){
-            System.out.println("i am codecooler");
-            Codecooler codecooler = getFullCodecoolerObject(id);
-            return codecooler;
+            System.out.println("i am student");
+            Student student = getFullCodecoolerObject(id);
+            return student;
         }else if(userType.equals(("mentor"))){
             System.out.println("im mentor");
             Mentor mentor = getFullMentor(id);
@@ -53,7 +53,7 @@ public class UserDAO implements IUserDAO{
     }
 
 
-    private Codecooler getFullCodecoolerObject(int id) throws SQLException{
+    private Student getFullCodecoolerObject(int id) throws SQLException{
         DBCreator creator = new DBCreator();
         Connection connection = creator.connectToDatabase();
         System.out.println("connected");
@@ -62,7 +62,7 @@ public class UserDAO implements IUserDAO{
 
         ResultSet result = stm.executeQuery();
         System.out.println("query executed");
-        Codecooler codecooler;
+        Student student;
         while (result.next()){
             int user_id = result.getInt("id");
 
@@ -78,8 +78,8 @@ public class UserDAO implements IUserDAO{
             int experiencePoints = result.getInt("experience_points");
             int coolcoins = result.getInt("coolcoins");
 
-            codecooler = new Codecooler(user_id, login, password, firstName, lastName,phoneNumber, email, address, classID, experiencePoints, coolcoins);
-            return codecooler;
+            student = new Student(user_id, login, password, firstName, lastName,phoneNumber, email, address, classID, experiencePoints, coolcoins);
+            return student;
         }
         return null;
     }

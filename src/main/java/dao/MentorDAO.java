@@ -1,8 +1,5 @@
 package dao;
 
-import model.items.Artifact;
-import model.items.Quest;
-import model.users.Codecooler;
 import model.users.Mentor;
 import model.users.User;
 
@@ -10,8 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MentorDAO implements IMentorDAO {
     //this class contains methods to process mentor: find by name o id,
