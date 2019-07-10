@@ -26,10 +26,9 @@ public class CodecoolerDAO implements ICodecoolerDAO {
 
     public void createCodecooler(User user, Codecooler codecooler) throws  DBException {
         createUser(user);
-
-            int userID = getUserIdWithLogin(user);
-            codecooler.setId(userID);
-            createStudent(codecooler);
+        int userID = getUserIdWithLogin(user);
+        codecooler.setId(userID);
+        createStudent(codecooler);
 
     }
 

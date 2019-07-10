@@ -128,12 +128,13 @@ public class ArtifactDAO implements IArtifactDAO {
             }
             stmt.close();
             con.close();
+            return boughtArtifacts;
         } catch (SQLException e) {
             throw new DBException("SQLException occurred in getBoughtArtifactsList()");
 
         } catch (Exception e) {
             throw new DBException("Unidentified exception occurred in getBoughtArtifactsList()");
         }
-        return boughtArtifacts;
+
     }
 }
