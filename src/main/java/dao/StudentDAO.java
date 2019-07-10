@@ -2,6 +2,7 @@ package dao;
 
 import model.users.Student;
 import model.users.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +12,7 @@ import java.util.List;
 
 
 public class StudentDAO implements IStudentDAO {
+
     //this class contains methods to create and update codecooler
     // and show his level
 
@@ -30,19 +32,19 @@ public class StudentDAO implements IStudentDAO {
             int userID = getUserIdWithLogin(user);
             student.setId(userID);
             createStudent(student);
-        } catch(DBException e) {
+        } catch (DBException e) {
             e.printStackTrace();
             System.out.println("Failed to fetch user with this login");
         }
     }
 
 
-    public List<Student> getCodecoolersFromRoom(int roomId) throws DBException{
+    public List<Student> getCodecoolersFromRoom(int roomId) throws DBException {
 
         try {
             DBCreator dbCreator = new DBCreator();
             Connection connection = dbCreator.connectToDatabase();
-            PreparedStatement stm = connection.prepareStatement("select * from studentpersonals where room_id = ? ");
+            PreparedStatement stm = connection.prepareStatement("SELECT * FROM studentpersonals WHERE room_id = ? ");
             stm.setInt(1, roomId);
             ResultSet result = stm.executeQuery();
             List<Student> resultList = new LinkedList<Student>();
@@ -63,7 +65,7 @@ public class StudentDAO implements IStudentDAO {
         } catch (SQLException e) {
             throw new DBException("SQLException occured in getCodecoolers(int roomId))");
 
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new DBException("Unidentified exception occured in getCodecoolers(int roomId)");
         }
     }
@@ -72,11 +74,11 @@ public class StudentDAO implements IStudentDAO {
     public int showLevelOfExperience(int id) throws SQLException {
         DBCreator dbCreator = new DBCreator();
         Connection connection = dbCreator.connectToDatabase();
-        PreparedStatement stm = connection.prepareStatement("select experience_points from studentpersonals where user_id = ? ");
+        PreparedStatement stm = connection.prepareStatement("SELECT experience_points FROM studentpersonals WHERE user_id = ? ");
         stm.setInt(1, id);
         ResultSet result = stm.executeQuery();
 
-        while(result.next()){
+        while (result.next()) {
             int experiencePoints = result.getInt("experience_points");
             return experiencePoints;
         }
@@ -84,8 +86,8 @@ public class StudentDAO implements IStudentDAO {
     }
 
 
-    private void createUser(User user){
-        String query = "INSERT INTO users(login, password, usertype) VALUES (?,?,?)";
+    private void createUser(User user) {
+        String query = "INSERT INTO USERS(login, password, usertype) VALUES (?,?,?)";
         PreparedStatement statement = null;
 
         try {
@@ -97,13 +99,13 @@ public class StudentDAO implements IStudentDAO {
             statement.executeUpdate();
             connection.close();
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
     }
 
-    private void createStudent(Student student){
+    private void createStudent(Student student) {
         String query = "INSERT INTO studentpersonals(address, class_id, coolcoins, email, experience_points," +
                 " first_name, last_name, phone_number, user_id) VALUES (?,?,?,?,?,?,?,?,?)";
         PreparedStatement statement = null;
@@ -125,7 +127,7 @@ public class StudentDAO implements IStudentDAO {
 
             connection.close();
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -134,7 +136,7 @@ public class StudentDAO implements IStudentDAO {
     private int getUserIdWithLogin(User user) throws DBException {
         ResultSet results = null;
         PreparedStatement statement = null;
-        String query = "SELECT * FROM users WHERE login = ?;";
+        String query = "SELECT * FROM USERS WHERE login = ?;";
         try {
 
             connection = dbCreator.connectToDatabase();
@@ -151,7 +153,7 @@ public class StudentDAO implements IStudentDAO {
             e.printStackTrace();
             throw new DBException("Did not find user with this login SLQ Exception");
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw new DBException("Did not find user with this login");
         }

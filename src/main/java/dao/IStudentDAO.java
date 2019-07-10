@@ -6,6 +6,7 @@ import model.users.User;
 import java.util.List;
 
 public interface IStudentDAO {
+
     //this interface contains methods to create and update codecooler
     // and show his level
 
