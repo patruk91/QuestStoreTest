@@ -128,17 +128,17 @@ public class ArtifactDAO implements IArtifactDAO{
                 String category = rs.getString("artifact_category");
                 int price = rs.getInt("artifact_price");
                 Artifact nextArtifact = new Artifact(id, name, category, price, discription);
-
                 boughtArtifacts.add(nextArtifact);
             }
             stmt.close();
             con.close();
+            return boughtArtifacts;
         } catch (SQLException e) {
             throw new DBException("SQLException occured in getBoughtArtifactsList()");
 
         } catch (Exception e) {
             throw new DBException("Unidentified exception occured in getBoughtArtifactsList()");
         }
-        return boughtArtifacts;
+
     }
 }
