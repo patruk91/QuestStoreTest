@@ -9,10 +9,10 @@ import java.util.Map;
 
 
 public class WalletDAO implements IWalletDAO {
-    //    this class contains methods to process wallet and puchase artifacts
+    //    this class contains methods to process wallet and purchase artifacts
 
     //TODO Get DBCreator object to private filed of WallDao class instead of creating it in every method
-    DBCreator dbCreator;
+    private DBCreator dbCreator;
 
     WalletDAO() {
         dbCreator = new DBCreator();
@@ -26,15 +26,15 @@ public class WalletDAO implements IWalletDAO {
             stm.setInt(1, id);
             ResultSet result = stm.executeQuery();
 
-            while (result.next()) {
-                int codecoolerCoins = result.getInt("coolcoins");
-                return codecoolerCoins;
+            if (result.next()) {
+                return result.getInt("coolcoins");
             }
-            throw new DBException("Didnt find codecooler with id: " + id);
+            throw new DBException("Didn't find codecooler with id: " + id);
+
         } catch (SQLException e) {
-            throw new DBException("SQLException occured in showWallet()");
+            throw new DBException("SQLException occurred in showWallet()");
         } catch (Exception e) {
-            throw new DBException("Unidentified exception occured in showWallet()");
+            throw new DBException("Unidentified exception occurred in showWallet()");
         }
     }
 
@@ -44,42 +44,29 @@ public class WalletDAO implements IWalletDAO {
             Connection connection = dbCreator.connectToDatabase();
             PreparedStatement stm = connection.prepareStatement("select user_id, experience_points, coolcoins from studentpersonals ");
             ResultSet result = stm.executeQuery();
-            Map<Integer, Integer> resultmap = new HashMap<Integer, Integer>();
+            Map<Integer, Integer> resultMap = new HashMap<Integer, Integer>();
 
-            while (result.next()) {
+            if (result.next()) {
                 int codecoolerID = result.getInt("user_id");
                 int codecoolerExperiencePoints = result.getInt("experience_points");
                 int codecoolerCoins = result.getInt("coolcoins");
                 int balance = codecoolerExperiencePoints - codecoolerCoins;
-                resultmap.put(codecoolerID, balance);
-                return resultmap;
+                resultMap.put(codecoolerID, balance);
+                return resultMap;
             }
             throw new DBException("No students found");
+
         } catch (SQLException e) {
-            throw new DBException("SQLException occured in seeStudentsWallet()");
+            throw new DBException("SQLException occurred in seeStudentsWallet()");
         } catch (Exception e) {
-            throw new DBException("Unidentified exception occured in seeStudentsWallet()");
+            throw new DBException("Unidentified exception occurred in seeStudentsWallet()");
         }
     }
 
-    /*redundant method
-    public int seeStudentWallet(int id) throws SQLException {
-        DBCreator dbCreator = new DBCreator();
-        Connection connection = dbCreator.connectToDatabase();
-        PreparedStatement stm = connection.prepareStatement("select coolcoins from studentpersonals where user_id = ? ");
-        stm.setInt(1, id);
-        ResultSet result = stm.executeQuery();
-
-        while(result.next()){
-            int codecoolerCoins = result.getInt("coolcoins");
-            return codecoolerCoins;
-        }
-        return 0;
-    }*/
 
     public void buyArtifact(int userID, int artifactID) throws DBException {
-        boolean checkIFcanBeBought = checkIfTransactionPossible(userID, artifactID);
-        if (checkIFcanBeBought) {
+        boolean checkIfCanBeBought = checkIfTransactionPossible(userID, artifactID);
+        if (checkIfCanBeBought) {
             updateMoneyAmount(userID, artifactID);
             addArtifactToItems(userID, artifactID);
         }
@@ -109,8 +96,9 @@ public class WalletDAO implements IWalletDAO {
             stm.setInt(1, restCoins);
             stm.setInt(2, userID);
             stm.executeUpdate();
+
         } catch (SQLException e) {
-            throw new DBException("SQLException occured in updateMoneyAmount()");
+            throw new DBException("SQLException occurred in updateMoneyAmount()");
         } catch (Exception e) {
             throw new DBException("Unidentified exception updateMoneyAmount()");
         }
@@ -126,10 +114,11 @@ public class WalletDAO implements IWalletDAO {
             stm.setInt(1, userID);
             stm.setInt(2, artifactID);
             stm.executeUpdate();
+
         } catch (SQLException e) {
-            throw new DBException("SQLException occured in addArtifactToItems()");
+            throw new DBException("SQLException occurred in addArtifactToItems()");
         } catch (Exception e) {
-            throw new DBException("Unidentified exception occured in addArtifactToItems()");
+            throw new DBException("Unidentified exception occurred in addArtifactToItems()");
         }
     }
 
@@ -141,34 +130,14 @@ public class WalletDAO implements IWalletDAO {
         int coolcoins = showWallet(userID);
         int artifactCost = getArtifactCost(artifactID);
         System.out.println(coolcoins >= artifactCost);
-        if (coolcoins >= artifactCost) {
-            return true;
-        }
-        return false;
+        return coolcoins >= artifactCost;
     }
-
-    //TODO repeating method - to remove
-//    private int getCoolCoins(int userID) throws SQLException{
-//        DBCreator dbCreator = new DBCreator();
-//        Connection connection = dbCreator.connectToDatabase();
-//        PreparedStatement stm = connection.prepareStatement("select coolcoins from studentpersonals where user_id = ? ");
-//        stm.setInt(1, userID);
-//        ResultSet result = stm.executeQuery();
-//        int coolcoins = 0;
-//        if (result.next()){
-//            coolcoins = result.getInt("coolcoins");
-//        }
-//        System.out.println("coolcoins avalible" +coolcoins);
-//        connection.close();
-//        return coolcoins;
-//    }
 
     private int getArtifactCost(int artifactID) throws DBException {
         try {
             DBCreator dbCreator = new DBCreator();
             Connection connection = dbCreator.connectToDatabase();
             PreparedStatement stm = connection.prepareStatement("select artifact_price from artifacts where  id = ? ");
-            stm = connection.prepareStatement("select artifact_price from artifacts where  id = ? ");
             stm.setInt(1, artifactID);
             ResultSet result = stm.executeQuery();
             int artifactCost = 0;
@@ -178,10 +147,11 @@ public class WalletDAO implements IWalletDAO {
             System.out.println("artifact cost" + artifactCost);
             connection.close();
             return artifactCost;
+
         } catch (SQLException e) {
-            throw new DBException("SQLException occured in getArtifactCost()");
+            throw new DBException("SQLException occurred in getArtifactCost()");
         } catch (Exception e) {
-            throw new DBException("Unidentified exception occured in getArtifactCost()");
+            throw new DBException("Unidentified exception occurred in getArtifactCost()");
         }
     }
 

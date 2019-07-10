@@ -1,8 +1,5 @@
 package dao;
 
-import model.items.Artifact;
-import model.items.Quest;
-import model.users.Codecooler;
 import model.users.Mentor;
 import model.users.User;
 
@@ -10,15 +7,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MentorDAO implements IMentorDAO {
     //this class contains methods to process mentor: find by name o id,
     // create, update, assign to room
 
-    Connection connection;
-    DBCreator dbCreator;
+    private Connection connection;
+    private DBCreator dbCreator;
 
     public MentorDAO() {
         dbCreator = new DBCreator();
@@ -35,25 +30,24 @@ public class MentorDAO implements IMentorDAO {
     public void updateMentorByID(Mentor mentor) throws DBException {
         try {
             String query = "UPDATE mentorsPersonals SET first_name = ?, last_name = ?, phone_number = ?, email = ?, adress = ? WHERE id = ?";
-            PreparedStatement statement = null;
 
             connection = dbCreator.connectToDatabase();
-            statement = connection.prepareStatement(query);
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, mentor.getFirstName());
             statement.setString(2, mentor.getLastName());
             statement.setString(3, mentor.getPhoneNum());
             statement.setString(4, mentor.getEmail());
-            statement.setString(5, mentor.getAdress());
+            statement.setString(5, mentor.getAddress());
             statement.setInt(6, mentor.getId());
 
             statement.executeUpdate();
             connection.close();
 
         } catch (SQLException e) {
-            throw new DBException("SQLException occured in updateMentorByID(Mentor mentor)");
+            throw new DBException("SQLException occurred in updateMentorByID(Mentor mentor)");
 
         } catch (Exception e){
-            throw new DBException("Unidentified exception occured in updateMentorByID(Mentor mentor)");
+            throw new DBException("Unidentified exception occurred in updateMentorByID(Mentor mentor)");
         }
 
     }
@@ -62,23 +56,23 @@ public class MentorDAO implements IMentorDAO {
     public void updateMentorByFullName(Mentor mentor) throws DBException {
         try {
             String query = "UPDATE mentorsPersonals SET phone_number = ?, email = ?, adress = ? WHERE first_name = ? AND last_name = ?";
-            PreparedStatement statement = null;
 
             connection = dbCreator.connectToDatabase();
-            statement = connection.prepareStatement(query);
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, mentor.getPhoneNum());
             statement.setString(2, mentor.getEmail());
-            statement.setString(3, mentor.getAdress());
+            statement.setString(3, mentor.getAddress());
             statement.setString(4, mentor.getFirstName());
             statement.setString(5, mentor.getLastName());
 
             statement.executeUpdate();
             connection.close();
+
         } catch (SQLException e) {
-            throw new DBException("SQLException occured in updateMentorByFullName(Mentor mentor)");
+            throw new DBException("SQLException occurred in updateMentorByFullName(Mentor mentor)");
 
         } catch (Exception e){
-            throw new DBException("Unidentified exception occured in updateMentorByFullname(Mentor mentor)");
+            throw new DBException("Unidentified exception occurred in updateMentorByFullName(Mentor mentor)");
         }
 
     }
@@ -93,7 +87,7 @@ public class MentorDAO implements IMentorDAO {
             stm.setInt(1, id);
             ResultSet result = stm.executeQuery();
             connection.close();
-            Mentor mentor = null;
+            Mentor mentor;
 
             if (result.next()) {
                 String firstName = result.getString("first_name");
@@ -107,11 +101,12 @@ public class MentorDAO implements IMentorDAO {
             }
 
             throw new DBException("No mentor with id: " + id);
+
         } catch (SQLException e) {
-            throw new DBException("SQLException occured in getMentor(int id)");
+            throw new DBException("SQLException occurred in getMentor(int id)");
 
         } catch (Exception e){
-            throw new DBException("Unidentified exception occured in getMentor(int id)");
+            throw new DBException("Unidentified exception occurred in getMentor(int id)");
         }
     }
 
@@ -133,23 +128,22 @@ public class MentorDAO implements IMentorDAO {
             stm.setInt(1, userID);
             result = stm.executeQuery();
 
-            while (result.next()) {
+            if (result.next()) {
                 int mentorID = result.getInt("user_id");
                 String phoneNum = result.getString("phone_number");
                 String email = result.getString("email");
                 String address = result.getString("address");
                 int classID = result.getInt("class_id");
-                Mentor mentor = new Mentor(mentorID, firstName, lastName, phoneNum, email, address, classID);
-                return mentor;
+                return new Mentor(mentorID, firstName, lastName, phoneNum, email, address, classID);
             }
             connection.close();
 
             throw new DBException("No mentor: " + firstName + " " + lastName);
         } catch (SQLException e) {
-            throw new DBException("SQLException occured in getMentor(String firstName, String lastName)");
+            throw new DBException("SQLException occurred in getMentor(String firstName, String lastName)");
 
         } catch (Exception e){
-            throw new DBException("Unidentified exception occured in getMentor(String firstName, String lastName)");
+            throw new DBException("Unidentified exception occurred in getMentor(String firstName, String lastName)");
         }
     }
 
@@ -160,11 +154,10 @@ public class MentorDAO implements IMentorDAO {
 
     private void createUser(User user) throws DBException {
         String query = "INSERT INTO users(login, password, usertype) VALUES (?,?,?)";
-        PreparedStatement statement = null;
 
         try {
             connection = dbCreator.connectToDatabase();
-            statement = connection.prepareStatement(query);
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getUserType());
@@ -172,52 +165,49 @@ public class MentorDAO implements IMentorDAO {
             dbCreator.connectToDatabase().close();
 
         } catch (SQLException e){
-            throw new DBException("SQLException occured in createUser(User user)");
+            throw new DBException("SQLException occurred in createUser(User user)");
         } catch (Exception e){
-            throw new DBException("Unidentified exception occured in createUser(User user)");
+            throw new DBException("Unidentified exception occurred in createUser(User user)");
         }
     }
 
     private void createMentor(Mentor mentor) throws DBException {
         String query = "INSERT INTO mentorpersonals(user_id, first_name, last_name, phone_number, email, adress) VALUES(?,?,?,?,?,?);";
-        PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement(query);
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, mentor.getId());
             statement.setString(2, mentor.getFirstName());
             statement.setString(3, mentor.getLastName());
             statement.setString(4, mentor.getPhoneNum());
             statement.setString(5, mentor.getEmail());
-            statement.setString(6, mentor.getAdress());
+            statement.setString(6, mentor.getAddress());
             statement.executeUpdate();
 
             dbCreator.connectToDatabase().close();
 
         }  catch (SQLException e){
-            throw new DBException("SQLException occured in createMentor(Mentor mentor)");
+            throw new DBException("SQLException occurred in createMentor(Mentor mentor)");
         } catch (Exception e){
-            throw new DBException("Unidentified exception occured in createMentor(Mentor mentor)");
+            throw new DBException("Unidentified exception occurred in createMentor(Mentor mentor)");
         }
     }
 
     private int getUserIdWithLogin(User user) throws DBException {
-        ResultSet results = null;
-        PreparedStatement statement = null;
         String query = "SELECT * FROM users WHERE login = ?;";
         try {
             connection = dbCreator.connectToDatabase();
-            statement = connection.prepareStatement(query);
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, user.getLogin());
-            results = statement.executeQuery();
+            ResultSet results = statement.executeQuery();
             results.next();
             return results.getInt("id");
 
         } catch (SQLException e) {
-            throw new DBException("SQLException occured in getUserIdWithLogin(User user)");
+            throw new DBException("SQLException occurred in getUserIdWithLogin(User user)");
 
         } catch (Exception e){
-            throw new DBException("Unidentified exception occured in getUserIdWithLogin(User user)");
+            throw new DBException("Unidentified exception occurred in getUserIdWithLogin(User user)");
         }
 
     }

@@ -6,23 +6,23 @@ import model.items.Quest;
 import java.util.List;
 
 public class Codecooler extends User {
-    private int ammountOfCoins;
+    private int amountOfCoins;
     private int roomID;
     private List<Quest> questList;
     private int lvlOfExp;
 
 
-    public Codecooler(int id, String login, String password, String firstName, String lastName, String phoneNum, String email, String adress,String userType, int ammountOfCoins, int roomID, List<Quest> questList, int lvlOfExp) {
-        super(id, login, password, firstName, lastName, phoneNum, email, adress, userType);
-        this.ammountOfCoins = ammountOfCoins;
+    public Codecooler(int id, String login, String password, String firstName, String lastName, String phoneNum, String email, String address, String userType, int amountOfCoins, int roomID, List<Quest> questList, int lvlOfExp) {
+        super(id, login, password, firstName, lastName, phoneNum, email, address, userType);
+        this.amountOfCoins = amountOfCoins;
         this.roomID = roomID;
         this.questList = questList;
         this.lvlOfExp = lvlOfExp;
     }
 
-    public Codecooler(int id, int ammountOfCoins, int roomID, List<Quest> questList, int lvlOfExp) {
+    public Codecooler(int id, int amountOfCoins, int roomID, List<Quest> questList, int lvlOfExp) {
         setId(id);
-        this.ammountOfCoins = ammountOfCoins;
+        this.amountOfCoins = amountOfCoins;
         this.roomID = roomID;
         this.questList = questList;
         this.lvlOfExp = lvlOfExp;
@@ -35,13 +35,13 @@ public class Codecooler extends User {
         setUserType(userType);
     }
 
-    public Codecooler(int id,  String firstName, String lastName, String phoneNum, String email, String adress,  int roomID) {
+    public Codecooler(int id,  String firstName, String lastName, String phoneNum, String email, String address,  int roomID) {
         setId(id);
         setFirstName(firstName);
         setLastName(lastName);
         setPhoneNum(phoneNum);
         setEmail(email);
-        setAdress(adress);
+        setAddress(address);
         this.roomID = roomID;
     }
 
@@ -54,14 +54,14 @@ public class Codecooler extends User {
         setLastName(lastName);
         setPhoneNum(phoneNumber);
         setEmail(email);
-        setAdress(address);
+        setAddress(address);
         this.roomID = classID;
         this.lvlOfExp = experiencePoints;
-        this.ammountOfCoins = coolcoins;
+        this.amountOfCoins = coolcoins;
     }
 
-    public int getAmmountOfCoins() {
-        return ammountOfCoins;
+    public int getAmountOfCoins() {
+        return amountOfCoins;
     }
 
     public int getRoomID() {

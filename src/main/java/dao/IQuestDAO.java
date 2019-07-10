@@ -13,5 +13,5 @@ public interface IQuestDAO {
     void addQuestToAvailable();
     void updateQuestCategory(Quest quest) throws DBException;
     void updateQuest(String questName, int newValue) throws DBException;
-    void markAchivedQuests();
+    void markAchievedQuests();
 }

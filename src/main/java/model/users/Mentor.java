@@ -5,17 +5,17 @@ package model.users;
 public class Mentor extends User {
     private int roomID;
 
-    public Mentor(int id, String login, String password, String firstName, String lastName, String phoneNum, String email, String adress, String userType, int roomID) {
-        super(id, login, password, firstName, lastName, phoneNum, email, adress, userType);
+    public Mentor(int id, String login, String password, String firstName, String lastName, String phoneNum, String email, String address, String userType, int roomID) {
+        super(id, login, password, firstName, lastName, phoneNum, email, address, userType);
         this.roomID = roomID;
     }
-    public Mentor(int id,  String firstName, String lastName, String phoneNum, String email, String adress,  int roomID) {
+    public Mentor(int id,  String firstName, String lastName, String phoneNum, String email, String address,  int roomID) {
         setId(id);
         setFirstName(firstName);
         setLastName(lastName);
         setPhoneNum(phoneNum);
         setEmail(email);
-        setAdress(adress);
+        setAddress(address);
         this.roomID = roomID;
     }
 
@@ -33,7 +33,7 @@ public class Mentor extends User {
         setLastName(lastName);
         setPhoneNum(phoneNumber);
         setEmail(email);
-        setAdress(address);
+        setAddress(address);
     }
 
     public int getRoomID() {
