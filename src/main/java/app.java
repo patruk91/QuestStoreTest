@@ -1,4 +1,6 @@
+import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import controller.helpers.AdminMentorsListHandler;
 
 import java.net.InetSocketAddress;
 
@@ -9,6 +11,7 @@ public class app {
 
         // set routes
         //server.createContext();
+        server.createContext("admin/showClasses", (HttpHandler) new AdminMentorsListHandler());
 
         server.setExecutor(null); // creates a default executor
 
