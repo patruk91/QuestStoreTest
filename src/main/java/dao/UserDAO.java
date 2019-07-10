@@ -12,7 +12,7 @@ public class UserDAO implements IUserDAO {
     //this class contains methods which allow to see user's profile
 
     //TODO Get DBCreator object to private filed of WallDao class instead of creating it in every method
-    DBCreator dbCreator;
+    private DBCreator dbCreator;
 
     public UserDAO() {
         dbCreator = new DBCreator();
@@ -26,30 +26,27 @@ public class UserDAO implements IUserDAO {
             PreparedStatement stm = connection.prepareStatement("select usertype from users where id=? ");
             stm.setInt(1, id);
             ResultSet result = stm.executeQuery();
-            String userType = new String();
+            String userType = "";
             if (result.next()) {
                 userType = result.getString("usertype");
             }
 
             if (userType.equals("codecooler")) {
                 System.out.println("i am codecooler");
-                Codecooler codecooler = getFullCodecoolerObject(id);
-                return codecooler;
+                return getFullCodecoolerObject(id);
             } else if (userType.equals(("mentor"))) {
                 System.out.println("im mentor");
-                Mentor mentor = getFullMentor(id);
-                return mentor;
+                return getFullMentor(id);
             } else if (userType.equals("admin")) {
                 System.out.println("i am admin");
-                Admin admin = getFullADmin(id);
-                return admin;
+                return getFullAdmin(id);
             }
 
-            throw new DBException("Wrong usertype or user doesnt exist");
+            throw new DBException("Wrong usertype or user doesn't exist");
         } catch (SQLException e) {
-            throw new DBException("SQLException occured in seeProfile()");
+            throw new DBException("SQLException occurred in seeProfile()");
         } catch (Exception e) {
-            throw new DBException("Unidentified exception occured in seeProfile()");
+            throw new DBException("Unidentified exception occurred in seeProfile()");
         }
 
     }
@@ -72,7 +69,7 @@ public class UserDAO implements IUserDAO {
             ResultSet result = stm.executeQuery();
             System.out.println("query executed");
             Codecooler codecooler;
-            while (result.next()) {
+            if (result.next()) {
                 int user_id = result.getInt("id");
 
                 String login = result.getString(("login"));
@@ -92,9 +89,9 @@ public class UserDAO implements IUserDAO {
             }
             throw new DBException("No codecooler with id: " + id);
         } catch (SQLException e) {
-            throw new DBException("SQLException occured in seeProfile()");
+            throw new DBException("SQLException occurred in seeProfile()");
         } catch (Exception e) {
-            throw new DBException("Unidentified exception occured in seeProfile()");
+            throw new DBException("Unidentified exception occurred in seeProfile()");
         }
 
     }
@@ -112,7 +109,7 @@ public class UserDAO implements IUserDAO {
             ResultSet result = stm.executeQuery();
             System.out.println("query executed");
             Mentor mentor;
-            while (result.next()) {
+            if (result.next()) {
                 int user_id = result.getInt("id");
 
                 String login = result.getString(("login"));
@@ -128,14 +125,15 @@ public class UserDAO implements IUserDAO {
                 return mentor;
             }
             throw new DBException("No mentor with id: " + id);
+
         } catch (SQLException e) {
-            throw new DBException("SQLException occured in seeProfile()");
+            throw new DBException("SQLException occurred in seeProfile()");
         } catch (Exception e) {
-            throw new DBException("Unidentified exception occured in seeProfile()");
+            throw new DBException("Unidentified exception occurred in seeProfile()");
         }
     }
 
-    private Admin getFullADmin(int id) throws DBException {
+    private Admin getFullAdmin(int id) throws DBException {
         try {
             DBCreator creator = new DBCreator();
             Connection connection = creator.connectToDatabase();
@@ -146,7 +144,7 @@ public class UserDAO implements IUserDAO {
             ResultSet result = stm.executeQuery();
             System.out.println("query executed");
             Admin admin;
-            while (result.next()) {
+            if (result.next()) {
                 int user_id = result.getInt("id");
 
                 String login = result.getString(("login"));
@@ -164,9 +162,9 @@ public class UserDAO implements IUserDAO {
 
             throw new DBException("No admin with id: " + id);
         } catch (SQLException e) {
-            throw new DBException("SQLException occured in seeProfile()");
+            throw new DBException("SQLException occurred in seeProfile()");
         } catch (Exception e) {
-            throw new DBException("Unidentified exception occured in seeProfile()");
+            throw new DBException("Unidentified exception occurred in seeProfile()");
         }
     }
 }
