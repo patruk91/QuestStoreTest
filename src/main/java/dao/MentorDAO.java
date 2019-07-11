@@ -30,7 +30,7 @@ public class MentorDAO implements IMentorDAO {
     }
 
     public List<Mentor> getAllMentors() throws DBException{
-        List<Mentor> mentorsList = new ArrayList<>();
+        List<Mentor> mentorsList = new ArrayList();
         try {
             Connection connection = dbCreator.connectToDatabase();
             PreparedStatement stm = connection.prepareStatement("select * from mentorspersonals");
