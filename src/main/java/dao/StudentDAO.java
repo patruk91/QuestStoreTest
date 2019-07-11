@@ -2,6 +2,7 @@ package dao;
 
 import model.users.Student;
 import model.users.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,17 +12,22 @@ import java.util.List;
 
 
 public class StudentDAO implements IStudentDAO {
+
     //this class contains methods to create and update student
+
     // and show his level
 
     //TODO Get DBCreator object to private filed of WallDao class instead of creating it in every method
 
+
     private Connection connection;
     private DBCreator dbCreator;
+
 
     public StudentDAO() {
         dbCreator = new DBCreator();
     }
+
 
 
     public void createStudent(User user, Student student) throws  DBException {
@@ -38,7 +44,9 @@ public class StudentDAO implements IStudentDAO {
         try {
             DBCreator dbCreator = new DBCreator();
             Connection connection = dbCreator.connectToDatabase();
-            PreparedStatement stm = connection.prepareStatement("select * from studentpersonals where room_id = ? ");
+
+            PreparedStatement stm = connection.prepareStatement("SELECT * FROM studentpersonals WHERE room_id = ? ");
+
             stm.setInt(1, roomId);
             ResultSet result = stm.executeQuery();
             List<Student> resultList = new LinkedList<Student>();
@@ -52,6 +60,7 @@ public class StudentDAO implements IStudentDAO {
                 String address = result.getString("address");
                 Student student = new Student(id, firstName, lastName, phoneNum, email, address, roomId);
                 resultList.add(student);
+
             }
 
             return resultList;
@@ -62,8 +71,10 @@ public class StudentDAO implements IStudentDAO {
 
         } catch (Exception e){
             throw new DBException("Unidentified exception occurred in getStudent(int roomId)");
+
         }
     }
+
 
 
     public int getExperiencePoints(int id) throws DBException {
@@ -95,6 +106,8 @@ public class StudentDAO implements IStudentDAO {
         try {
             connection = dbCreator.connectToDatabase();
             PreparedStatement statement = connection.prepareStatement(query);
+
+
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getUserType());
@@ -102,6 +115,7 @@ public class StudentDAO implements IStudentDAO {
             connection.close();
 
         } catch (SQLException e) {
+
             throw new DBException("SQLException occurred in createUser()");
 
         } catch (Exception e){
@@ -109,6 +123,7 @@ public class StudentDAO implements IStudentDAO {
         }
 
     }
+
 
     private void createStudent(Student student) throws DBException {
         String query = "INSERT INTO studentpersonals(address, class_id, coolcoins, email, experience_points," +
@@ -148,6 +163,7 @@ public class StudentDAO implements IStudentDAO {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, user.getLogin());
             ResultSet results = statement.executeQuery();
+
             results.next();
             int id = results.getInt("id");
             connection.close();
@@ -155,9 +171,11 @@ public class StudentDAO implements IStudentDAO {
 
 
         } catch (SQLException e) {
+
             throw new DBException("Did not find user with this login SLQ Exception");
 
         } catch (Exception e){
+
             throw new DBException("Did not find user with this login");
         }
 
