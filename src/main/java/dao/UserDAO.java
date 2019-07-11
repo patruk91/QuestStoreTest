@@ -1,7 +1,7 @@
 package dao;
 
 import model.users.Admin;
-import model.users.Codecooler;
+import model.users.Student;
 import model.users.Mentor;
 import model.users.User;
 
@@ -31,9 +31,9 @@ public class UserDAO implements IUserDAO {
                 userType = result.getString("usertype");
             }
 
-            if (userType.equals("codecooler")) {
-                System.out.println("i am codecooler");
-                return getFullCodecoolerObject(id);
+            if (userType.equals("student")) {
+                System.out.println("i am student");
+                return getFullStudentObject(id);
             } else if (userType.equals(("mentor"))) {
                 System.out.println("im mentor");
                 return getFullMentor(id);
@@ -58,7 +58,7 @@ public class UserDAO implements IUserDAO {
     }
 
 
-    private Codecooler getFullCodecoolerObject(int id) throws DBException {
+    private Student getFullStudentObject(int id) throws DBException {
         try {
             DBCreator creator = new DBCreator();
             Connection connection = creator.connectToDatabase();
@@ -68,7 +68,7 @@ public class UserDAO implements IUserDAO {
 
             ResultSet result = stm.executeQuery();
             System.out.println("query executed");
-            Codecooler codecooler;
+            Student student;
             if (result.next()) {
                 int user_id = result.getInt("id");
 
@@ -84,10 +84,10 @@ public class UserDAO implements IUserDAO {
                 int experiencePoints = result.getInt("experience_points");
                 int coolcoins = result.getInt("coolcoins");
 
-                codecooler = new Codecooler(user_id, login, password, firstName, lastName, phoneNumber, email, address, classID, experiencePoints, coolcoins);
-                return codecooler;
+                student = new Student(user_id, login, password, firstName, lastName, phoneNumber, email, address, classID, experiencePoints, coolcoins);
+                return student;
             }
-            throw new DBException("No codecooler with id: " + id);
+            throw new DBException("No student with id: " + id);
         } catch (SQLException e) {
             throw new DBException("SQLException occurred in seeProfile()");
         } catch (Exception e) {
