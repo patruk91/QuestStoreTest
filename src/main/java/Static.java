@@ -49,8 +49,10 @@ public class Static implements HttpHandler {
         // we need to find out the mime type of the file, see: https://en.wikipedia.org/wiki/Media_type
         MimeTypeResolver resolver = new MimeTypeResolver(file);
         String mime = resolver.getMimeType();
+        System.out.println(mime);
 
         httpExchange.getResponseHeaders().set("Content-Type", mime);
+
         httpExchange.sendResponseHeaders(200, 0);
 
         OutputStream os = httpExchange.getResponseBody();

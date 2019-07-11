@@ -32,7 +32,7 @@ public class StudentController implements HttpHandler {
 
     private void profile(HttpExchange httpExchange) throws IOException {
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/student/profile.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/profile.twig");
         JtwigModel model = JtwigModel.newModel();
 
         String firstName = "Jacke";

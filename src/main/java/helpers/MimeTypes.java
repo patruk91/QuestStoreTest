@@ -130,6 +130,7 @@ public class MimeTypes {
                 }
             }
             {
+                put1("css", MIME_TEXT_CSS);
                 put1("xul", MIME_APPLICATION_VND_MOZZILLA_XUL_XML);
                 put1("json", MIME_APPLICATION_JSON);
                 put1("ice", MIME_X_CONFERENCE_X_COOLTALK);

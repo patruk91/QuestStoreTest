@@ -47,7 +47,10 @@
               </tr>
               <tr>
                 <td>1</td>
-                <td class="name">Tomasz Kwasigroch</td>
+                {% for fullName in listName %}
+                <td class="name">{{ fullName }}</td>
+                 {% endfor %}
+
                 <td> <input type="button" value="Delete"> </td>
                 <td><button onclick="location.href='./createUpdateMentor.html'" type="button">Update</button></td>
                 <td><button onclick="location.href='./profile.html'" type="button">Profile</button></td>
