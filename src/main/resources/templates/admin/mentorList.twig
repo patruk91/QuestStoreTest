@@ -8,10 +8,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width">
     <title>Quest Store</title>
-    <link rel="stylesheet" href="../../css/style.css">
-    <link rel="stylesheet" href="../../css/listsStyle.css">
-    <link rel="shortcut icon" type="image/png" href="../../recourses/codecoolThumbnail.png">
-    <link rel="stylesheet" href="../../css/transactions.css">
+    <link rel="stylesheet" type="text/css" href="static/css/style.css" >
+     <link rel="stylesheet" type="text/css" href="static/css/profileStyle.css" >
+    <link rel="shortcut icon" type="image/png" href="static/recourses/codecoolThumbnail.png">
+    <link rel="stylesheet" href="static/css/transactions.css">
 </head>
 
 
@@ -20,7 +20,7 @@
         <div class="content">
             <nav>
                 <ul id="navToolBar">
-                  <li><img src="../../recourses/codecoolLogoprecel.png"></li>
+                  <li><img src="static/recourses/codecoolLogoprecel.png"></li>
                   <li><a href="./mentorList.html">Mentors</a></li>
                   <li><a href="./classes.html">Classes</a></li>
                   <li><a href="./levelsPage.html">Levels</a></li>
@@ -45,18 +45,18 @@
                 <th>PrfButton</th>
                 <th>StdButton</th>
               </tr>
+               {% for fullName in listName %}
               <tr>
-                <td>1</td>
-                {% for fullName in listName %}
-                <td class="name">{{ fullName }}</td>
-                 {% endfor %}
 
+                <td>1</td>
+                <td class="name">{{ fullName }}</td>
                 <td> <input type="button" value="Delete"> </td>
                 <td><button onclick="location.href='./createUpdateMentor.html'" type="button">Update</button></td>
                 <td><button onclick="location.href='./profile.html'" type="button">Profile</button></td>
                 <td><button onclick="location.href='./studentList.html'" type="button">Students</button></td>
 
               </tr>
+               {% endfor %}
 
 
               <div class="addButton"> 

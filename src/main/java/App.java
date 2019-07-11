@@ -1,5 +1,6 @@
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import controller.AdminController;
 import controller.StudentController;
 
 import java.net.InetSocketAddress;
@@ -15,6 +16,7 @@ public class App {
 //        server.createContext("admin/showClasses", (HttpHandler) new AdminMentorsListHandler());
         server.createContext("/static", new Static());
         server.createContext("/student", new StudentController());
+        server.createContext("/admin", new AdminController());
 
         server.setExecutor(null); // creates a default executor
 
