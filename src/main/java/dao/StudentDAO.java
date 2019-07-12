@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,40 +40,38 @@ public class StudentDAO implements IStudentDAO {
 
 
     public List<Student> getStudentListFromRoom(int roomId) throws DBException{
-
         try {
-            DBCreator dbCreator = new DBCreator();
             Connection connection = dbCreator.connectToDatabase();
-
-            PreparedStatement stm = connection.prepareStatement("SELECT * FROM studentpersonals WHERE room_id = ? ");
-
+            PreparedStatement stm = connection.prepareStatement("SELECT * FROM studentpersonals WHERE class_id = ?");
             stm.setInt(1, roomId);
             ResultSet result = stm.executeQuery();
-            List<Student> resultList = new LinkedList<Student>();
+            List<Student> resultList = new ArrayList<>();
 
             while (result.next()) {
-                int id = result.getInt("id");
+                int id = result.getInt("user_id");
                 String firstName = result.getString("first_name");
+                System.out.println("student first name" + firstName);
                 String lastName = result.getString("last_name");
                 String phoneNum = result.getString("phone_number");
                 String email = result.getString("email");
                 String address = result.getString("address");
                 Student student = new Student(id, firstName, lastName, phoneNum, email, address, roomId);
                 resultList.add(student);
-
             }
 
+            stm.close();
+            result.close();
+            connection.close();
             return resultList;
-
-
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             throw new DBException("SQLException occurred in getStudent(int roomId))");
-
-        } catch (Exception e){
+        }
+        catch (Exception e){
             throw new DBException("Unidentified exception occurred in getStudent(int roomId)");
-
         }
     }
+
 
 
 
