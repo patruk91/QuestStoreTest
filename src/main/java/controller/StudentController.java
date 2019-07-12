@@ -4,7 +4,9 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import dao.ArtifactDAO;
 import dao.DBException;
+import dao.QuestDAO;
 import model.items.Artifact;
+import model.items.Quest;
 import model.users.Student;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
@@ -25,6 +27,10 @@ public class StudentController implements HttpHandler {
             String uri = httpExchange.getRequestURI().toString();
             if (uri.equals("/student/artifacts")) {
                 artifacts(httpExchange);
+            } if (uri.equals("/student/quests")){
+                quests(httpExchange);
+            } if (uri.equals("/student/transactions")) {
+                transactions(httpExchange);
             } else {
                 profile(httpExchange);
             }
@@ -36,6 +42,44 @@ public class StudentController implements HttpHandler {
             System.out.println("DBException in StudentController");
         }
 
+    }
+
+    private void transactions(HttpExchange httpExchange) throws DBException, IOException {
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/student/transactions.twig");
+        JtwigModel model = JtwigModel.newModel();
+
+        QuestDAO questDAO = new QuestDAO();
+        List<Quest> questList = questDAO.getQuestsList();
+
+        model.with("questList", questList);
+
+
+        String response = template.render(model);
+
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+
+    private void quests(HttpExchange httpExchange) throws DBException, IOException {
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/student/quests.twig");
+        JtwigModel model = JtwigModel.newModel();
+
+        QuestDAO questDAO = new QuestDAO();
+        List<Quest> questList = questDAO.getQuestsList();
+
+        model.with("questList", questList);
+
+
+        String response = template.render(model);
+
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
     }
 
     private void artifacts(HttpExchange httpExchange) throws DBException, IOException {
