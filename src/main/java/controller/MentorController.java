@@ -4,20 +4,25 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import dao.DBException;
 import dao.MentorDAO;
+import dao.StudentDAO;
 import dao.UserDAO;
 import model.users.Mentor;
+import model.users.Student;
 import model.users.User;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MentorController implements HttpHandler {
 
     private Mentor mentor;
     UserDAO userDAO = new UserDAO();
     MentorDAO mentorDAO = new MentorDAO();
+    StudentDAO studentDao = new StudentDAO();
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -32,7 +37,7 @@ public class MentorController implements HttpHandler {
             }
 
             if (uri.equals("/mentor/students")) {
-                showProfile(httpExchange, id);
+                showMyStudents(httpExchange, id);
             }
 
             if (uri.equals("/mentor")) {
@@ -56,6 +61,24 @@ public class MentorController implements HttpHandler {
     private void delete() {
 
     }
+
+    private void showMyStudents(HttpExchange httpExchange, int id){
+        List<Student> studentsList = new ArrayList<>();
+        try {
+            studentsList = studentDao.getStudentListFromRoom(id);
+        }catch (DBException dbexc) {
+            System.out.println("this is db exception");
+        }
+
+        String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/mentor/studentList.twig");
+        JtwigModel model = JtwigModel.newModel();
+        model.with("listName", studentsList);
+
+        String response = template.render(model);
+        sendResponse(httpExchange, response);
+    }
+    
 
     private void showProfile(HttpExchange httpExchange, int id){
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/mentor/profileMentor.twig");
