@@ -78,7 +78,7 @@ public class MentorController implements HttpHandler {
         String response = template.render(model);
         sendResponse(httpExchange, response);
     }
-    
+
 
     private void showProfile(HttpExchange httpExchange, int id){
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/mentor/profileMentor.twig");
