@@ -130,7 +130,6 @@ public class MimeTypes {
                 }
             }
             {
-                put1("css", MIME_TEXT_CSS);
                 put1("xul", MIME_APPLICATION_VND_MOZZILLA_XUL_XML);
                 put1("json", MIME_APPLICATION_JSON);
                 put1("ice", MIME_X_CONFERENCE_X_COOLTALK);
@@ -146,7 +145,7 @@ public class MimeTypes {
                 put1("tsv", MIME_TEXT_TAB_SEPARATED_VALUES);
                 put1("sgm", MIME_TEXT_SGML);
                 put1("sgml", MIME_TEXT_SGML);
-                put1("static/recourses/css", MIME_TEXT_CSS);
+                put1("css", MIME_TEXT_CSS);
                 put1("ifb", MIME_TEXT_CALENDAR);
                 put1("ics", MIME_TEXT_CALENDAR);
                 put1("wrl", MIME_MODEL_VRLM);
@@ -265,7 +264,7 @@ public class MimeTypes {
                 put1("asc", MIME_TEXT_PLAIN);
                 put1("rtf", MIME_TEXT_RTF);
                 put1("rtx", MIME_TEXT_RICHTEXT);
-                put1("static/recourses/html", MIME_TEXT_HTML);
+                put1("html", MIME_TEXT_HTML);
                 put1("htm", MIME_TEXT_HTML);
                 put1("zip", MIME_APPLICATION_ZIP);
                 put1("rar", MIME_APPLICATION_X_RAR_COMPRESSED);

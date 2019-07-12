@@ -2,12 +2,16 @@ package controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import dao.ArtifactDAO;
+import dao.DBException;
+import model.items.Artifact;
 import model.users.Student;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 public class StudentController implements HttpHandler {
 
@@ -19,14 +23,40 @@ public class StudentController implements HttpHandler {
         int id;
         try {
             String uri = httpExchange.getRequestURI().toString();
-            if (uri.equals("/students/achievements")) {
+            if (uri.equals("/student/artifacts")) {
+                artifacts(httpExchange);
             } else {
                 profile(httpExchange);
             }
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("IOException in StudentController handle()");
+            System.out.println("IOException in StudentController");
+        } catch (DBException e) {
+            e.printStackTrace();
+            System.out.println("DBException in StudentController");
         }
+
+    }
+
+    private void artifacts(HttpExchange httpExchange) throws DBException, IOException {
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/student/artifacts.twig");
+        JtwigModel model = JtwigModel.newModel();
+
+        ArtifactDAO artifactDAO = new ArtifactDAO();
+        List<Artifact> artifactList = artifactDAO.getArtifactsList();
+
+
+        model.with("artifactList", artifactList);
+
+
+        String response = template.render(model);
+
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+
 
     }
 

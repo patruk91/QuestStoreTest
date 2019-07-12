@@ -20,7 +20,7 @@ table#transactions-table{
     border-bottom:1px solid #dddddd;
 }
 
-#transactions-table thead tr{
+#transactions-table tableHead tr{
     background-color: #303D44;
     font-weight: bold;
 }
