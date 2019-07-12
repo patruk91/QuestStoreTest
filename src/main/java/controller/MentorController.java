@@ -27,7 +27,8 @@ public class MentorController implements HttpHandler {
 
     public void handle(HttpExchange httpExchange) throws IOException {
 
-        int id = 4;
+        int mentorId = 4;
+        int classId = 2;
         try {
             String uri = httpExchange.getRequestURI().toString();
             if (uri.equals("/mentor/store")) {
@@ -37,14 +38,14 @@ public class MentorController implements HttpHandler {
             }
 
             if (uri.equals("/mentor/students")) {
-                showMyStudents(httpExchange, id);
+                showMyStudents(httpExchange, classId);
             }
 
             if (uri.equals("/mentor")) {
-                showProfile(httpExchange, id);
+                showProfile(httpExchange, mentorId);
 
             } else {
-                this.showProfile(httpExchange, id);
+                this.showProfile(httpExchange, mentorId);
             }
         } catch (Exception e) {
             e.printStackTrace();
