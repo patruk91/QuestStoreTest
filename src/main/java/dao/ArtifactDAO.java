@@ -12,7 +12,7 @@ public class ArtifactDAO implements IArtifactDAO {
     private Connection connection;
     private DBCreator dbCreator;
 
-    ArtifactDAO() {
+    public ArtifactDAO() {
         dbCreator = new DBCreator();
     }
 
