@@ -42,10 +42,10 @@
                 <th>DelButton</th>
                 <th>UpdButton</th>
               </tr>
-               {% for student in listName %}
+               {% for user in listName %}
               <tr>
                 <td>1</td>
-                <td class="name">{{student.firstName}}</td>
+                <td class="name">{{user.firstName}} {{user.LastName}}</td>
                 <td> <input type="button" value="Delete"> </td>
                 <td> <input type="button" value="Update" onclick="window.location.href = 'createUpdateStudent.html'"> </td>
 

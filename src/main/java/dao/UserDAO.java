@@ -35,7 +35,7 @@ public class UserDAO implements IUserDAO {
                 System.out.println("i am student");
                 return getFullStudentObject(id);
             } else if (userType.equals(("mentor"))) {
-                System.out.println("im mentor");
+                System.out.println("im mentor user dao");
                 return getFullMentor(id);
             } else if (userType.equals("admin")) {
                 System.out.println("i am admin");
@@ -62,7 +62,6 @@ public class UserDAO implements IUserDAO {
         try {
             DBCreator creator = new DBCreator();
             Connection connection = creator.connectToDatabase();
-            System.out.println("connected");
             PreparedStatement stm = connection.prepareStatement("select * from users left  join  studentpersonals on users.id=studentpersonals.user_id  where id= ? ");
             stm.setInt(1, id);
 
@@ -112,7 +111,7 @@ public class UserDAO implements IUserDAO {
                 int user_id = result.getInt("id");
 
                 String login = result.getString(("login"));
-                System.out.println(login);
+                System.out.println("mentor's login" + login);
                 String password = result.getString("password");
                 String firstName = result.getString("first_name");
                 String lastName = result.getString("last_name");

@@ -60,8 +60,8 @@ public class AdminController implements HttpHandler {
         String lastName = user.getLastName();
         String phoneNumber = user.getPhoneNum();
         String email = user.getEmail();
-        System.out.println("first name" + firstName);
-        System.out.println("last name" + lastName);
+        System.out.println("admin first name" + firstName);
+        System.out.println("admin last name" + lastName);
 
 
         // fill the model with values
@@ -100,7 +100,7 @@ public class AdminController implements HttpHandler {
         try {
             mentorsList = mentorDao.getAllMentors();
         }catch (DBException exc) {
-            System.out.println("This is DB Exception");
+            System.out.println("This is DB Exception caught in Admin DAO");
         }
         return mentorsList;
     }

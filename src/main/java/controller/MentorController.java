@@ -20,9 +20,9 @@ import java.util.List;
 public class MentorController implements HttpHandler {
 
     private Mentor mentor;
-    UserDAO userDAO = new UserDAO();
-    MentorDAO mentorDAO = new MentorDAO();
-    StudentDAO studentDao = new StudentDAO();
+    private UserDAO userDAO = new UserDAO();
+    private MentorDAO mentorDAO = new MentorDAO();
+    private StudentDAO studentDao = new StudentDAO();
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -45,7 +45,7 @@ public class MentorController implements HttpHandler {
                 showProfile(httpExchange, mentorId);
 
             } else {
-                this.showProfile(httpExchange, mentorId);
+                //showProfile(httpExchange, mentorId);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,19 +65,34 @@ public class MentorController implements HttpHandler {
 
     private void showMyStudents(HttpExchange httpExchange, int id){
         List<Student> studentsList = new ArrayList<>();
-        try {
-            studentsList = studentDao.getStudentListFromRoom(id);
-        }catch (DBException dbexc) {
-            System.out.println("this is db exception");
-        }
+        studentsList = getStudents(id);
+//        try {
+//            studentsList = studentDao.getStudentListFromRoom(id);
+//        }catch (DBException dbexc) {
+//            System.out.println("this is db exception caught in mentor controller");
+//        }
+        System.out.println("ShowMyStudent executed");
 
         String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/mentor/studentList.twig");
         JtwigModel model = JtwigModel.newModel();
+        System.out.println("list size" + studentsList.size());
         model.with("listName", studentsList);
+        //model.with("listName", )
 
         String response = template.render(model);
         sendResponse(httpExchange, response);
+    }
+
+    private List<Student> getStudents(int roomId){
+        List<Student> students = new ArrayList<>();
+        try{
+            students = studentDao.getStudentListFromRoom(roomId);
+        }
+        catch (DBException dbexc){
+            System.out.println("db exc caught in mentor dao");
+        }
+        return students;
     }
 
 
@@ -91,9 +106,6 @@ public class MentorController implements HttpHandler {
         String lastName = user.getLastName();
         String phoneNumber = user.getPhoneNum();
         String email = user.getEmail();
-        System.out.println("first name" + firstName);
-        System.out.println("last name" + lastName);
-
 
         // fill the model with values
         model.with("firstName", firstName);
