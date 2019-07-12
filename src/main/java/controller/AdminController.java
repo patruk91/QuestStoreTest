@@ -51,7 +51,7 @@ public class AdminController implements HttpHandler {
     }
 
     private void showProfile(HttpExchange httpExchange, int id){
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/student/profile.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/profile.twig");
         JtwigModel model = JtwigModel.newModel();
 
         User user = getUser(id);
@@ -67,7 +67,7 @@ public class AdminController implements HttpHandler {
         // fill the model with values
         model.with("firstName", firstName);
         model.with("lastName", lastName);
-        model.with("phoneNumber", phoneNumber);
+        model.with("phoneNum", phoneNumber);
         model.with("email", email);
         String response = template.render(model);
 
@@ -84,24 +84,12 @@ public class AdminController implements HttpHandler {
             System.out.println("this is db exception");
         }
 
-        // client's address
         String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
-
-        // get a template file
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/mentorList.twig");
-
-        // create a model that will be passed to a template
         JtwigModel model = JtwigModel.newModel();
-
-        // fill the model with values
-
         model.with("listName", mentorsList);
 
-
-        // render a template to a string
         String response = template.render(model);
-
-        // send the results to a the client
         sendResponse(httpExchange, response);
     }
 
