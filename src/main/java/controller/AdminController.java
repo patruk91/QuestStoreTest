@@ -51,7 +51,7 @@ public class AdminController implements HttpHandler {
     }
 
     private void showProfile(HttpExchange httpExchange, int id){
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/student/profile.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/profile.twig");
         JtwigModel model = JtwigModel.newModel();
 
         User user = getUser(id);
@@ -67,7 +67,7 @@ public class AdminController implements HttpHandler {
         // fill the model with values
         model.with("firstName", firstName);
         model.with("lastName", lastName);
-        model.with("phoneNumber", phoneNumber);
+        model.with("phoneNum", phoneNumber);
         model.with("email", email);
         String response = template.render(model);
 
