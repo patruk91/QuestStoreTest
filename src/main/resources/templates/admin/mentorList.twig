@@ -11,8 +11,9 @@
 
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
      <link rel="stylesheet" href="/static/css/listsStyle.css">
-    <link rel="shortcut icon" type="image/png" href="/static/recourses/codecoolThumbnail.png">
 
+    <link rel="shortcut icon" type="image/png" href="/static/recourses/codecoolThumbnail.png">
+    <link rel="stylesheet"type="text/css" href="/static/css/transactions.css">
 </head>
 
 
@@ -48,14 +49,12 @@
               </tr>
                {% for fullName in listName %}
               <tr>
-
                 <td>1</td>
                 <td class="name">{{ fullName }}</td>
                 <td> <input type="button" value="Delete"> </td>
                 <td><button onclick="location.href='./createUpdateMentor.html'" type="button">Update</button></td>
                 <td><button onclick="location.href='./profile.html'" type="button">Profile</button></td>
                 <td><button onclick="location.href='./studentList.html'" type="button">Students</button></td>
-
               </tr>
                {% endfor %}
 

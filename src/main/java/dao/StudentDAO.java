@@ -74,6 +74,7 @@ public class StudentDAO implements IStudentDAO {
 
 
 
+
     public int getExperiencePoints(int id) throws DBException {
         try {
             DBCreator dbCreator = new DBCreator();

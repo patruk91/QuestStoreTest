@@ -20,15 +20,18 @@ import java.util.List;
 public class MentorController implements HttpHandler {
 
     private Mentor mentor;
+
     private UserDAO userDAO = new UserDAO();
     private MentorDAO mentorDAO = new MentorDAO();
     private StudentDAO studentDao = new StudentDAO();
+
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
 
         int mentorId = 4;
         int classId = 2;
+
         try {
             String uri = httpExchange.getRequestURI().toString();
             if (uri.equals("/mentor/store")) {
@@ -45,7 +48,9 @@ public class MentorController implements HttpHandler {
                 showProfile(httpExchange, mentorId);
 
             } else {
-                //showProfile(httpExchange, mentorId);
+                showProfile(httpExchange, id);
+            }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,6 +67,7 @@ public class MentorController implements HttpHandler {
     private void delete() {
 
     }
+
 
     private void showMyStudents(HttpExchange httpExchange, int id){
         List<Student> studentsList = new ArrayList<>();
@@ -94,6 +100,7 @@ public class MentorController implements HttpHandler {
         }
         return students;
     }
+
 
 
     private void showProfile(HttpExchange httpExchange, int id){

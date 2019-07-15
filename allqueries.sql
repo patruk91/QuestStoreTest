@@ -128,6 +128,7 @@ insert into StudentPersonals (user_id, first_name, last_name, phone_number, emai
 insert into StudentPersonals (user_id, first_name, last_name, phone_number, email, address, experience_points, class_id, coolcoins) values (25, 'Chariot', 'Bonniface', '504-548-8290', 'cbonniface7@imdb.com', '9 Ilene Avenue', 10, 1, 10);
 insert into StudentPersonals (user_id, first_name, last_name, phone_number, email, address, experience_points, class_id, coolcoins) values (26, 'Krista', 'Scammell', '763-803-8534', 'kscammell8@cbc.ca', '2982 Sommers Way', 20, 1, 10);
 insert into StudentPersonals (user_id, first_name, last_name, phone_number, email, address, experience_points, class_id, coolcoins) values (27, 'Mort', 'Shurman', '951-706-9791', 'mshurman9@reverbnation.com', '1601 Talisman Pass', 30, 1, 10);
+
 insert into StudentPersonals (user_id, first_name, last_name, phone_number, email, address, experience_points, class_id, coolcoins) values (28, 'Brose', 'Bawden', '994-714-0174', 'bbawdena@time.com', '85 Ilene Pass', 20, 2, 20);
 insert into StudentPersonals (user_id, first_name, last_name, phone_number, email, address, experience_points, class_id, coolcoins) values (29, 'Ewan', 'Compford', '333-109-7908', 'ecompfordb@webs.com', '26 Bayside Court', 280, 2, 60);
 insert into StudentPersonals (user_id, first_name, last_name, phone_number, email, address, experience_points, class_id, coolcoins) values (30, 'Emera', 'Fagence', '867-936-0441', 'efagencec@opera.com', '515 Thompson Park', 100, 2, 90);
