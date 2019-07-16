@@ -48,9 +48,9 @@ public class MentorController implements HttpHandler {
                 showProfile(httpExchange, mentorId);
 
             }
-            if (uri.equals("/mentor/students/add")){
-                renderAddingStudentTemplate(httpExchange);
-                //addNewStudent();
+            if (uri.equals("/mentor/addStudent")){
+                //renderAddingStudentTemplate(httpExchange);
+                addNewStudent(httpExchange);
             }
             else {
                 showProfile(httpExchange, mentorId);
@@ -73,20 +73,27 @@ public class MentorController implements HttpHandler {
 
     }
 
-    private void addNewStudent(){
+    private void addNewStudent(HttpExchange httpExchange){
+        String response = "";
+        String method = httpExchange.getRequestMethod();
+        if (method.equals("GET")){
+            System.out.println("render adding template executed");
 
-    }
+            String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/mentor/createUpdateStudent.twig");
+            JtwigModel model = JtwigModel.newModel();
 
-    private void renderAddingStudentTemplate(HttpExchange httpExchange){
-        System.out.println("render adding template executed");
+            response = template.render(model);
+        }
 
-        String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/mentor/createUpdateStudent.twig");
-        JtwigModel model = JtwigModel.newModel();
-
-        String response = template.render(model);
         sendResponse(httpExchange, response);
     }
+
+//    private String renderAddingStudentTemplate(HttpExchange httpExchange){
+//
+//        return response;
+//
+//    }
 
 
     private void showMyStudents(HttpExchange httpExchange, int id){
@@ -157,7 +164,7 @@ public class MentorController implements HttpHandler {
             os.write(response.getBytes());
             os.close();}
         catch (IOException IOExc) {
-            System.out.println("Exception in admin controller");
+            System.out.println("Exception in mentor controller");
         }
     }
 }
