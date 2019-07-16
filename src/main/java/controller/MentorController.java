@@ -47,7 +47,12 @@ public class MentorController implements HttpHandler {
             if (uri.equals("/mentor")) {
                 showProfile(httpExchange, mentorId);
 
-            } else {
+            }
+            if (uri.equals("/mentor/students/add")){
+                renderAddingStudentTemplate(httpExchange);
+                //addNewStudent();
+            }
+            else {
                 showProfile(httpExchange, mentorId);
             }
 
@@ -68,15 +73,26 @@ public class MentorController implements HttpHandler {
 
     }
 
+    private void addNewStudent(){
+
+    }
+
+    private void renderAddingStudentTemplate(HttpExchange httpExchange){
+        System.out.println("render adding template executed");
+
+        String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/mentor/createUpdateStudent.twig");
+        JtwigModel model = JtwigModel.newModel();
+
+        String response = template.render(model);
+        sendResponse(httpExchange, response);
+    }
+
 
     private void showMyStudents(HttpExchange httpExchange, int id){
         List<Student> studentsList = new ArrayList<>();
         studentsList = getStudents(id);
-//        try {
-//            studentsList = studentDao.getStudentListFromRoom(id);
-//        }catch (DBException dbexc) {
-//            System.out.println("this is db exception caught in mentor controller");
-//        }
+
         System.out.println("ShowMyStudent executed");
 
         String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
@@ -84,7 +100,6 @@ public class MentorController implements HttpHandler {
         JtwigModel model = JtwigModel.newModel();
         System.out.println("list size" + studentsList.size());
         model.with("listName", studentsList);
-        //model.with("listName", )
 
         String response = template.render(model);
         sendResponse(httpExchange, response);
