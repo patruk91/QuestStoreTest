@@ -46,7 +46,7 @@
 
                {% for user in listName %}
               <tr>
-                <td>1</td>
+                <td>{{user.id}}</td>
                 <td class="name">{{user.firstName}} {{user.LastName}}</td>
                 <td> <input type="button" value="Delete"> </td>
                 <td> <input type="button" value="Update" onclick="window.location.href = 'createUpdateStudent.html'"> </td>
