@@ -48,10 +48,10 @@ public class MentorController implements HttpHandler {
                 showProfile(httpExchange, mentorId);
 
             } else {
-                showProfile(httpExchange, id);
+                showProfile(httpExchange, mentorId);
             }
 
-            }
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("IOException in StudentController handle()");
