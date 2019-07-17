@@ -27,12 +27,17 @@ public class MentorController implements HttpHandler {
     private MentorDAO mentorDAO = new MentorDAO();
     private StudentDAO studentDao = new StudentDAO();
 
+    //this should be mentor.getId();
+    int mentorId = 4;
+
+    //this should be mentor.getClassId(); info about mentor's class is in 'classes' table
+    int classId = 2;
+
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
 
-        int mentorId = 4;
-        int classId = 2;
+
 
         try {
             String uri = httpExchange.getRequestURI().toString();
@@ -81,8 +86,6 @@ public class MentorController implements HttpHandler {
         String method = httpExchange.getRequestMethod();
 
         if (method.equals("GET")){
-
-
             String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
             JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/mentor/createUpdateStudent.twig");
             JtwigModel model = JtwigModel.newModel();
@@ -90,33 +93,51 @@ public class MentorController implements HttpHandler {
             response = template.render(model);
             sendResponse(httpExchange, response);
 
-
         }
 
         if (method.equals("POST")){
-            //Map<String, String> inputs = new HashMap<>();
+            Map<String, String> inputs = new HashMap<>();
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
-            System.out.println("buffer reader" + br);
 
             System.out.println("form data: " + formData + "!!!!");
-            //Map inputs = parseFormData(formData);
+            inputs = parseFormData(formData);
 
-            response = "<html><body>" +
-                    "<h1>thank you</h1>" +
-                    "</body></html>";
+            User user = null;
+            Student student = null;
 
+            for (String key : inputs.keySet()){
+              String value = inputs.get(key);
+              String name = inputs.get("name");
+              String surname = inputs.get("surname");
+              String login = inputs.get("login");
+              String password = inputs.get("password");
+              String email = inputs.get("email");
+              String adress = inputs.get("adress");
+              String phone = inputs.get("phone");
+              String level = inputs.get("levels");
+              user = new Student(login, password, "student");
+              //default value of coolcoins and experience points is 0 as we create new student
+              student = new Student(0, login, password, name, surname, phone, email, adress, classId, 0, 0);
+            }
 
-//            br.close();
-//            isr.close();
-//            String url = "/mentor/students";
-//            httpExchange.getResponseHeaders().set("Location", url);
-//            httpExchange.sendResponseHeaders(303, -1);
-            sendResponse(httpExchange, response);
+            try {
+                studentDao.createStudent(user, student);
+            }catch (DBException dbexc){
+                System.out.println("db exception caught in mentor controller");
+            }
 
+//            response = "<html><body>" +
+//                    "<h1>thank you</h1>" +
+//                    "</body></html>";
 
-
+            br.close();
+            isr.close();
+            String url = "/mentor/students";
+            httpExchange.getResponseHeaders().set("Location", url);
+            httpExchange.sendResponseHeaders(303, -1);
+           // sendResponse(httpExchange, response);
 
         }
 
