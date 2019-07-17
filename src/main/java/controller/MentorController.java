@@ -26,7 +26,6 @@ public class MentorController implements HttpHandler {
     private StudentDAO studentDao = new StudentDAO();
 
 
-
     public void handle(HttpExchange httpExchange) throws IOException {
 
         int mentorId = 4;
