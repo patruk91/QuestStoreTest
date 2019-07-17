@@ -22,6 +22,10 @@ public class Student extends User {
         this.lvlOfExp = lvlOfExp;
     }
 
+    public Student(String login, String password, String userType){
+        super(login, password, userType);
+    }
+
 
     public Student(int id, int amountOfCoins, int roomID, List<Quest> questList, int lvlOfExp) {
         setId(id);

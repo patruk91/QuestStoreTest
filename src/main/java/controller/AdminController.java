@@ -46,7 +46,7 @@ public class AdminController implements HttpHandler {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("IOException in StudentController handle()");
+            System.out.println("IOException in AdminController handle()");
         }
     }
 
