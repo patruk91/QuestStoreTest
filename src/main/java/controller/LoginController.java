@@ -32,6 +32,8 @@ public class LoginController implements HttpHandler {
         String uriStr = httpExchange.getRequestURI().toString();
 
         if (method.equals("GET")) {
+
+            System.out.println("get");
             //here we check again is any new coookie and destroy it
             String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
             if (cookieStr != null){
@@ -44,9 +46,16 @@ public class LoginController implements HttpHandler {
             JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/login.twig");
             JtwigModel model = JtwigModel.newModel();
             String response = template.render(model);
+
+
+            httpExchange.sendResponseHeaders(200, response.length());
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
         }
 
         if (method.equals("POST")){
+            System.out.println("post");
 
             //get data from form
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
@@ -56,6 +65,7 @@ public class LoginController implements HttpHandler {
 
             //First element on list is login  second is password
             List<String> inputs = this.parseFormData(formData);
+            System.out.println(inputs);
 
 
             //check is user in database
@@ -93,8 +103,6 @@ public class LoginController implements HttpHandler {
 
 
         }
-
-
 
 
     }
