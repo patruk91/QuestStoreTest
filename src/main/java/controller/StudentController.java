@@ -13,12 +13,13 @@ import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentController implements HttpHandler {
 
-
-    Student student;
+    List<Quest> questList = new ArrayList<>();
+    Student student = new Student(2, "test", "test", "Jacek", "placek", "666", "jacek@placek", "Szczebrzeszyn", "student", 500, 5, questList, 50);
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -64,6 +65,8 @@ public class StudentController implements HttpHandler {
     }
 
     private void quests(HttpExchange httpExchange) throws DBException, IOException {
+
+
         JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/student/quests.twig");
         JtwigModel model = JtwigModel.newModel();
 
@@ -109,11 +112,10 @@ public class StudentController implements HttpHandler {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/student/profile.twig");
         JtwigModel model = JtwigModel.newModel();
 
-        String firstName = "Jacke";
-        String lastName = "Placke";
-        String phoneNumber = "9840392/3";
-        String email = "jacek@placek";
-        // fill the model with values
+        String firstName = student.getFirstName();
+        String lastName = student.getLastName();
+        String phoneNumber = student.getPhoneNum();
+        String email = student.getEmail();
         model.with("firstName", firstName);
         model.with("lastName", lastName);
         model.with("phoneNumber", phoneNumber);
