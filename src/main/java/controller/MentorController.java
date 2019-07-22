@@ -30,6 +30,10 @@ public class MentorController implements HttpHandler {
 
         int mentorId = 4;
         int classId = 2;
+        //tabela aktywne sesje:
+        //id, sessionId, userId, login,
+        // wez sessioId z cookie
+        // z bazy danych z sesjami wez id uzytkownika po sessionID
 
         try {
             String uri = httpExchange.getRequestURI().toString();
