@@ -53,6 +53,10 @@ public class LoginController implements HttpHandler {
             os.close();
         }
 
+        // todo how to get cookie value by its name not number of cookie
+        //todo remove cookie after session ends
+        //todo logout
+
         if (method.equals("POST")){
 
             //get data from form

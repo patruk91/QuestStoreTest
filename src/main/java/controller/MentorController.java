@@ -152,9 +152,7 @@ public class MentorController implements HttpHandler {
         String sessionId = cookie.getValue();
         System.out.println("sessionID: " + sessionId);
 
-        // todo how to get cookie value by its name not number of cookie
-        //todo remove cookie after session ends
-        //todo logout
+
 
         try{
             mentorId = sessionDAO.getUserIdBySession(sessionId);
