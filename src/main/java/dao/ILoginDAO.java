@@ -3,9 +3,10 @@ package dao;
 import model.users.User;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public interface ILoginDAO {
 
 
-    User getUserByLogin(String login, String password);
+    Optional<User> getUserByLogin(String login, String password);
 }

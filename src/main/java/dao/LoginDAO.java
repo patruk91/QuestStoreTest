@@ -15,8 +15,8 @@ public class LoginDAO implements ILoginDAO {
 
     private DBCreator dbCreator = new DBCreator();
 
-    public User getUserByLogin(String login, String password) {
-        User user = new EmptyUser();
+    public Optional<User> getUserByLogin(String login, String password) {
+        Optional<User> user = Optional.empty();
         try {
             Connection con = dbCreator.connectToDatabase();
 
@@ -38,14 +38,14 @@ public class LoginDAO implements ILoginDAO {
                 }
 
             if (userType.equals("mentor")){
-                user = new Mentor(userId, userLogin, userPass, userType);
+                user = Optional.of(new Mentor(userId, userLogin, userPass, userType));
             }
 
             else if (userType.equals("student")){
-                user = new Student(userId, userLogin, userPass, userType);
+                user = Optional.of(new Student(userId, userLogin, userPass, userType));
             }
             else if (userType.equals("admin")){
-                user = new Admin(userId, userLogin, userPass, userType);
+                user = Optional.of(new Admin(userId, userLogin, userPass, userType));
             }
 
             resultSet.close();
