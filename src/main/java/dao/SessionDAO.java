@@ -8,13 +8,13 @@ import java.sql.SQLException;
 public class SessionDAO {
     DBCreator dbCreator = new DBCreator();
 
-    public int getUserIdBySession(int sessionId) throws  DBException {
+    public int getUserIdBySession(String sessionId) throws  DBException {
         int userId=0;
         try {
             Connection connection = dbCreator.connectToDatabase();
             PreparedStatement stm = connection.prepareStatement("select * from sessions where sessionid = ?");
 
-            stm.setInt(1, sessionId);
+            stm.setString(1, sessionId);
 
             ResultSet result = stm.executeQuery();
             connection.close();
@@ -33,13 +33,13 @@ public class SessionDAO {
         }
     }
 
-    public void addSession(int sessionId, int userId) throws DBException {
+    public void addSession(String sessionId, int userId) throws DBException {
 
         try {
             Connection connection = dbCreator.connectToDatabase();
-            PreparedStatement stm = connection.prepareStatement("insert into sessions(sessionid, userid) values (?, ?)");
+            PreparedStatement stm = connection.prepareStatement("insert into sessions (sessionid, userid) values (?, ?)");
 
-            stm.setInt(1, sessionId);
+            stm.setString(1, sessionId);
             stm.setInt(2, userId);
 
             stm.executeUpdate();

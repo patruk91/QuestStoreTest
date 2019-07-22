@@ -1,6 +1,6 @@
 create table if not exists Sessions (
     id serial PRIMARY KEY NOT NULL,
-    sessionID INT,
+    sessionID VARCHAR(50),
     userID INT
 )
 

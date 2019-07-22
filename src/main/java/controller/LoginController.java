@@ -2,6 +2,7 @@ package controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import dao.DBException;
 import dao.LoginDAO;
 import dao.QuestDAO;
 import dao.SessionDAO;
@@ -32,8 +33,6 @@ public class LoginController implements HttpHandler {
         String uriStr = httpExchange.getRequestURI().toString();
 
         if (method.equals("GET")) {
-
-            System.out.println("get");
             //here we check again is any new coookie and destroy it
             String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
             if (cookieStr != null){
@@ -55,7 +54,6 @@ public class LoginController implements HttpHandler {
         }
 
         if (method.equals("POST")){
-            System.out.println("post");
 
             //get data from form
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
@@ -67,19 +65,25 @@ public class LoginController implements HttpHandler {
             List<String> inputs = this.parseFormData(formData);
             System.out.println(inputs);
 
-
             //check is user in database
             if (loginDao.getUserByLogin(inputs.get(0), inputs.get(1)).isPresent()){
                 System.out.println("user exist");
                 String userType = loginDao.getUserByLogin(inputs.get(0), inputs.get(1)).get().getUserType();
+                int userId = loginDao.getUserByLogin(inputs.get(0), inputs.get(1)).get().getId();
                 String url = "";
-
-                 url= "/" + userType;
+                url= "/" + userType;
 
                 //create cookie with session ID
                 UUID uuid = UUID.randomUUID();
                 String randomUUIDString = uuid.toString();
                 HttpCookie cookie = new HttpCookie("sessionId", randomUUIDString);
+
+                //save sessionId to sessions table
+                try{
+                    sessionDao.addSession(randomUUIDString, userId);
+                }catch (DBException exc ){
+                    System.out.println("DB exception caought in loginController");
+                }
 
 
                 //prepare response with redirect to other page

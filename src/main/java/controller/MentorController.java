@@ -2,10 +2,7 @@ package controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import dao.DBException;
-import dao.MentorDAO;
-import dao.StudentDAO;
-import dao.UserDAO;
+import dao.*;
 import model.users.Mentor;
 import model.users.Student;
 import model.users.User;
@@ -13,6 +10,7 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.*;
+import java.net.HttpCookie;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,9 +24,10 @@ public class MentorController implements HttpHandler {
     private UserDAO userDAO = new UserDAO();
     private MentorDAO mentorDAO = new MentorDAO();
     private StudentDAO studentDao = new StudentDAO();
+    private SessionDAO sessionDAO = new SessionDAO();
 
     //this should be mentor.getId();
-    int mentorId = 4;
+
 
     //this should be mentor.getClassId(); info about mentor's class is in 'classes' table
     int classId = 2;
@@ -51,6 +50,7 @@ public class MentorController implements HttpHandler {
             }
 
             if (uri.equals("/mentor")) {
+               int mentorId = getUserId(httpExchange);
                 showProfile(httpExchange, mentorId);
 
             }
@@ -60,6 +60,7 @@ public class MentorController implements HttpHandler {
             }
 
             else {
+                int mentorId = getUserId(httpExchange);
                 showProfile(httpExchange, mentorId);
             }
 
@@ -141,6 +142,27 @@ public class MentorController implements HttpHandler {
         }
 
         //sendResponse(httpExchange, response);
+    }
+
+    private int getUserId(HttpExchange httpExchange){
+        //get userId form sessions table found by session id from cookie
+        int mentorId = 0;
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
+        String sessionId = cookie.getValue();
+        System.out.println("sessionID: " + sessionId);
+
+        // todo how to get cookie value by its name not number of cookie
+        //todo remove cookie after session ends
+        //todo logout
+
+        try{
+            mentorId = sessionDAO.getUserIdBySession(sessionId);
+            System.out.println("mentor id: " + mentorId);
+        }catch (DBException exc){
+            System.out.println("DB exception cought in getUsernBySessionID");
+        }
+        return mentorId;
     }
 
 
