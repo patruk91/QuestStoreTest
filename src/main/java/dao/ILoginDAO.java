@@ -7,5 +7,5 @@ import java.util.ArrayList;
 public interface ILoginDAO {
 
 
-    User getUserByLogin();
+    User getUserByLogin(String login, String password);
 }

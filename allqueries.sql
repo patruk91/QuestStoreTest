@@ -1,3 +1,9 @@
+create table if not exists Sessions (
+    id serial PRIMARY KEY NOT NULL,
+    sessionID INT,
+    userID INT
+)
+
 create table if not exists Classes (
 	id serial PRIMARY KEY NOT NULL,
 	class_id INT,
