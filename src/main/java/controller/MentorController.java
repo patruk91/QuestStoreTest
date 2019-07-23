@@ -2,10 +2,7 @@ package controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import dao.DBException;
-import dao.MentorDAO;
-import dao.StudentDAO;
-import dao.UserDAO;
+import dao.*;
 import model.users.Mentor;
 import model.users.Student;
 import model.users.User;
@@ -13,11 +10,9 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.*;
+import java.net.HttpCookie;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MentorController implements HttpHandler {
 
@@ -26,9 +21,9 @@ public class MentorController implements HttpHandler {
     private UserDAO userDAO = new UserDAO();
     private MentorDAO mentorDAO = new MentorDAO();
     private StudentDAO studentDao = new StudentDAO();
+    private SessionDAO sessionDAO = new SessionDAO();
 
-    //this should be mentor.getId();
-    int mentorId = 4;
+
 
     //this should be mentor.getClassId(); info about mentor's class is in 'classes' table
     int classId = 2;
@@ -51,6 +46,7 @@ public class MentorController implements HttpHandler {
             }
 
             if (uri.equals("/mentor")) {
+               int mentorId = getUserIdBySessionID(httpExchange);
                 showProfile(httpExchange, mentorId);
 
             }
@@ -60,6 +56,7 @@ public class MentorController implements HttpHandler {
             }
 
             else {
+                int mentorId = getUserIdBySessionID(httpExchange);
                 showProfile(httpExchange, mentorId);
             }
 
@@ -141,6 +138,77 @@ public class MentorController implements HttpHandler {
         }
 
         //sendResponse(httpExchange, response);
+    }
+
+    private int getUserIdBySessionID(HttpExchange httpExchange){
+        //get userId form sessions table found by session id from cookie
+        int mentorId = 0;
+
+        // solution for only one cookie, found by index
+//        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+//        HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
+//        String sessionId = cookie.getValue();
+//        System.out.println("sessionID: " + sessionId);
+
+        //second solution, if there is more cookie:
+        Optional<HttpCookie> cookie = this.getCookieWithSessionId(httpExchange);
+        String wrongSessionId = cookie.get().getValue();
+        String sessionId = removeQuotationFromSessionId(wrongSessionId);
+        System.out.println("sessionID: " + sessionId);
+
+
+        try{
+            mentorId = sessionDAO.getUserIdBySession(sessionId);
+            System.out.println("mentor id: " + mentorId);
+        }catch (DBException exc){
+            System.out.println("DB exception cought in getUsernBySessionID");
+        }
+        return mentorId;
+    }
+
+
+    private String removeQuotationFromSessionId(String cookieString){
+        String[] cookieValues = cookieString.split("=");
+        String sessionIdwrong = cookieValues[0].trim();
+        StringBuilder sb = new StringBuilder(sessionIdwrong);
+        sb.deleteCharAt(sessionIdwrong.length()-1);
+        sb.deleteCharAt(0);
+        String sessionId = sb.toString();
+        //System.out.println(sessionId + "session id in removequotation marks");
+        return sessionId;
+
+    }
+
+    //this method return cookie with session id (in case of sending more than one cookie)
+    private Optional<HttpCookie> getCookieWithSessionId(HttpExchange httpExchange){
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        List<HttpCookie> cookies = this.parseCookies(cookieStr);
+        return this.findCookieByName("sessionId", cookies);
+    }
+
+
+    //this method create list witrh all cookies, in case if there is more than one cookie
+    private List<HttpCookie> parseCookies(String cookieString){
+        List<HttpCookie> cookies = new ArrayList<>();
+        if(cookieString == null || cookieString.isEmpty()){ // what happens if cookieString = null?
+            return cookies;
+        }
+        for(String cookie : cookieString.split(";")){
+            int indexOfEq = cookie.indexOf('=');
+            String cookieName = cookie.substring(0, indexOfEq);
+            String cookieValue = cookie.substring(indexOfEq + 1, cookie.length());
+            cookies.add(new HttpCookie(cookieName, cookieValue));
+        }
+        return cookies;
+    }
+
+    //this method return one coockie by its name
+    private Optional<HttpCookie> findCookieByName(String name, List<HttpCookie> cookies){
+        for(HttpCookie cookie : cookies){
+            if(cookie.getName().equals(name))
+                return Optional.ofNullable(cookie);
+        }
+        return Optional.empty();
     }
 
 
