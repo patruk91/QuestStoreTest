@@ -33,11 +33,25 @@ public class LoginController implements HttpHandler {
         String uriStr = httpExchange.getRequestURI().toString();
 
         if (method.equals("GET")) {
-            //here we check again is any new coookie and destroy it
+            //check again is any new coookie and destroy it
             String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
             if (cookieStr != null){
+
+                //remove session id from table
+                String sessionId = removeQuotationFromSessionId(cookieStr);
+
+                System.out.println("coockie str in removing sq: " + cookieStr);
+                try {
+                    loginDao.deleteSession(sessionId);
+                }catch (DBException exc){
+                    System.out.println("DB exception caought in log out sequence, in handle method");
+                }
+
+
+                //delete cookie
                 HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
                 cookie.setMaxAge(0);
+                cookie.setVersion(1);
                 httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
             }
 
@@ -53,9 +67,7 @@ public class LoginController implements HttpHandler {
             os.close();
         }
 
-        // todo how to get cookie value by its name not number of cookie
-        //todo remove cookie after session ends
-        //todo logout
+
 
         if (method.equals("POST")){
 
@@ -81,6 +93,8 @@ public class LoginController implements HttpHandler {
                 UUID uuid = UUID.randomUUID();
                 String randomUUIDString = uuid.toString();
                 HttpCookie cookie = new HttpCookie("sessionId", randomUUIDString);
+                //cookie is version 1
+
 
                 //save sessionId to sessions table
                 try{
@@ -109,9 +123,19 @@ public class LoginController implements HttpHandler {
                 os.close();
             }
 
-
         }
 
+    }
+
+    private String removeQuotationFromSessionId(String cookieString){
+        String[] cookieValues = cookieString.split("=");
+        String sessionIdwrong = cookieValues[1].trim();
+        StringBuilder sb = new StringBuilder(sessionIdwrong);
+        sb.deleteCharAt(sessionIdwrong.length()-1);
+        sb.deleteCharAt(0);
+        String sessionId = sb.toString();
+        //System.out.println(sessionId + "session id in removequotation marks");
+        return sessionId;
 
     }
 

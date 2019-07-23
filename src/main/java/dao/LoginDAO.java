@@ -15,6 +15,31 @@ public class LoginDAO implements ILoginDAO {
 
     private DBCreator dbCreator = new DBCreator();
 
+
+    public void deleteSession(String sessionId) throws DBException{
+
+            Connection connection;
+        System.out.println("delete method run");
+        System.out.println(sessionId);
+        try {
+            String query = "DELETE FROM sessions WHERE sessionid LIKE ?";
+
+            connection = dbCreator.connectToDatabase();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, sessionId);
+
+            statement.executeUpdate();
+            connection.close();
+            System.out.println("delete executed");
+
+        } catch (SQLException e) {
+            throw new DBException("SQLException occurred in updateMentorByID(Mentor mentor)");
+
+        } catch (Exception e){
+            throw new DBException("Unidentified exception occurred in updateMentorByID(Mentor mentor)");
+        }
+    }
+
     public Optional<User> getUserByLogin(String login, String password) {
         Optional<User> user = Optional.empty();
         try {
