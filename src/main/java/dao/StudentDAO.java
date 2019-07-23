@@ -50,7 +50,7 @@ public class StudentDAO implements IStudentDAO {
             while (result.next()) {
                 int id = result.getInt("user_id");
                 String firstName = result.getString("first_name");
-                System.out.println("student first name" + firstName);
+               // System.out.println("student first name" + firstName);
                 String lastName = result.getString("last_name");
                 String phoneNum = result.getString("phone_number");
                 String email = result.getString("email");

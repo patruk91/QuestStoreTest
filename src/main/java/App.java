@@ -1,6 +1,7 @@
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import controller.AdminController;
+import controller.LoginController;
 import controller.MentorController;
 import controller.StudentController;
 
@@ -19,6 +20,7 @@ public class App {
         server.createContext("/student", new StudentController());
         server.createContext("/admin", new AdminController());
         server.createContext("/mentor", new MentorController());
+        server.createContext("/login", new LoginController());
 
         server.setExecutor(null); // creates a default executor
 

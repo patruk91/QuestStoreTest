@@ -2,9 +2,11 @@ package controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import dao.AdminDAO;
 import dao.DBException;
 import dao.MentorDAO;
 import dao.UserDAO;
+import model.items.Level;
 import model.users.Admin;
 import model.users.Mentor;
 import model.users.User;
@@ -13,6 +15,7 @@ import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +35,7 @@ public class AdminController implements HttpHandler {
             }
 
             if (uri.equals("/admin/levels")) {
+                showLevels(httpExchange);
             }
 
             if (uri.equals("/admin/mentors")) {
@@ -46,8 +50,52 @@ public class AdminController implements HttpHandler {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("IOException in StudentController handle()");
+            System.out.println("IOException in AdminController handle()");
         }
+    }
+
+    private void showLevels(HttpExchange httpExchange) throws IOException {
+        String response = "";
+
+
+        AdminDAO adminDAO = new AdminDAO();
+        List<Level> levels = new ArrayList<>();
+        try {
+            levels = adminDAO.getLevelList();
+        } catch (NullPointerException e) {
+            System.out.println(e.toString());
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+
+
+        System.out.println("name" + levels.get(0).getName());
+
+
+        // get a template file
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/html/admin/levelsPage.twig");
+
+        // create a model that will be passed to a template
+        JtwigModel model = JtwigModel.newModel();
+
+        // fill the model with values;
+        model.with("levels", levels);
+
+
+        System.out.println("fillet model with data");
+        // render a template to a string
+        response = template.render(model);
+
+        System.out.println("model render complete ");
+        // send the results to a the client
+
+
+
+        httpExchange.sendResponseHeaders(200, response.length());
+        OutputStream os = httpExchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+
     }
 
     private void showProfile(HttpExchange httpExchange, int id){

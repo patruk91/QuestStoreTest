@@ -42,7 +42,7 @@ public class DBCreator {
 
 
     public void executeStatement() throws SQLException {
-        statement = connection.prepareStatement(readStatement("/home/stefania/Desktop/questostore2/allqueries.sql"));
+        statement = connection.prepareStatement(readStatement("/home/rafal/Documents/questostore/allqueries.sql"));
         statement.execute();
         System.out.println("DB created");
     }

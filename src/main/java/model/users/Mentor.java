@@ -19,6 +19,13 @@ public class Mentor extends User {
         this.roomID = roomID;
     }
 
+    public Mentor(int id, String login, String password, String userType){
+        this.setId(id);
+        this.setLogin(login);
+        this.setPassword(password);
+        this.setUserType(userType);
+    }
+
     public Mentor(int id,  String firstName, String lastName, String phoneNum, String email, String address) {
         setId(id);
         setFirstName(firstName);
