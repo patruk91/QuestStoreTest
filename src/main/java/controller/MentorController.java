@@ -18,7 +18,6 @@ import java.util.*;
 
 public class MentorController implements HttpHandler {
 
-
     private UserDAO userDAO = new UserDAO();
     private MentorDAO mentorDAO = new MentorDAO();
     private StudentDAO studentDao = new StudentDAO();
