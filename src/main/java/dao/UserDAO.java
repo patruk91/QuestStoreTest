@@ -1,11 +1,14 @@
 package dao;
 
+import model.items.Artifact;
+import model.items.Quest;
 import model.users.Admin;
 import model.users.Student;
 import model.users.Mentor;
 import model.users.User;
 
 import java.sql.*;
+import java.util.List;
 
 
 public class UserDAO implements IUserDAO {
@@ -82,8 +85,13 @@ public class UserDAO implements IUserDAO {
                 int classID = result.getInt("class_id");
                 int experiencePoints = result.getInt("experience_points");
                 int coolcoins = result.getInt("coolcoins");
+                QuestDAO questDAO = new QuestDAO();
+                ArtifactDAO artifactDAO = new ArtifactDAO();
+                List<Quest> questList = questDAO.getUsersQuests(user_id);
+                List<Artifact> artifactList = artifactDAO.getUsersArtifacts(user_id);
 
-                student = new Student(user_id, login, password, firstName, lastName, phoneNumber, email, address, classID, experiencePoints, coolcoins);
+                student = new Student(user_id, login, password, firstName, lastName, phoneNumber, email, address, "student", coolcoins, classID, questList, artifactList, experiencePoints);
+
                 return student;
             }
             throw new DBException("No student with id: " + id);

@@ -15,4 +15,5 @@ public interface IQuestDAO {
     void updateQuest(String questName, int newValue) throws DBException;
     void markAchievedQuests();
     Quest getQuest(int id) throws DBException;
+    List<Quest> getUsersQuests(int id) throws DBException;
 }

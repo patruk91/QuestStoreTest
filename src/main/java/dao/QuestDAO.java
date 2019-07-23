@@ -46,9 +46,37 @@ public class QuestDAO implements IQuestDAO {
         }
     }
 
+    public List<Quest> getUsersQuests(int id) throws DBException {
+        try {
+            String query = "select * from  users_quests where user_id = ? ";
+            connection = dbCreator.connectToDatabase();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+
+            ResultSet result = statement.executeQuery();
+            connection.close();
+
+            List<Quest> usersQuests = new ArrayList<>();
+            while (result.next()) {
+                id = result.getInt("quest_id");
+                usersQuests.add(getQuest(id));
+            }
+
+
+            return usersQuests;
+
+        } catch (SQLException e) {
+            throw new DBException("SQLException occurred in getUsersQuests(int id)");
+
+        } catch (Exception e) {
+            throw new DBException("Unidentified exception occurred in getUsersQuests(int id)");
+        }
+
+    }
+
 
     public List<Quest> getQuestsList() throws DBException {
-        List<Quest> allQuests = new ArrayList<Quest>();
+        List<Quest> allQuests = new ArrayList<>();
         try {
             Connection con = dbCreator.connectToDatabase();
             con.setAutoCommit(false);

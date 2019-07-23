@@ -1,5 +1,6 @@
 package model.users;
 
+import model.items.Artifact;
 import model.items.Quest;
 
 
@@ -11,15 +12,17 @@ public class Student extends User {
 
     private int roomID;
     private List<Quest> questList;
+    private List<Artifact> artifactList;
     private int lvlOfExp;
 
-    public Student(int id, String login, String password, String firstName, String lastName, String phoneNum, String email, String address, String userType, int amountOfCoins, int roomID, List<Quest> questList, int lvlOfExp) {
+    public Student(int id, String login, String password, String firstName, String lastName, String phoneNum, String email, String address, String userType, int amountOfCoins, int roomID, List<Quest> questList, List<Artifact> artifactList, int lvlOfExp) {
         super(id, login, password, firstName, lastName, phoneNum, email, address, userType);
         this.amountOfCoins = amountOfCoins;
 
         this.roomID = roomID;
         this.questList = questList;
         this.lvlOfExp = lvlOfExp;
+        this.artifactList = artifactList;
     }
 
     public Student(String login, String password, String userType){
