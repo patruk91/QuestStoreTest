@@ -39,6 +39,13 @@ public abstract class User {
         this.setPassword(password);
     }
 
+    public User(int id, String login, String password, String userType){
+        this.setId(id);
+        this.setLogin(login);
+        this.setPassword(password);
+        this.setUserType(userType);
+    }
+
     public User(int id, String firstName, String lastName, String phoneNum, String address) {
         this.setId(id);
         this.setFirstName(firstName);

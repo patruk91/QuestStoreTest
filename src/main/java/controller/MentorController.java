@@ -2,10 +2,8 @@ package controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import dao.DBException;
-import dao.MentorDAO;
-import dao.StudentDAO;
-import dao.UserDAO;
+import dao.*;
+import helpers.CookieHelper;
 import model.users.Mentor;
 import model.users.Student;
 import model.users.User;
@@ -13,29 +11,24 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.*;
+import java.net.CookieHandler;
+import java.net.HttpCookie;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MentorController implements HttpHandler {
-
-    private Mentor mentor;
 
     private UserDAO userDAO = new UserDAO();
     private MentorDAO mentorDAO = new MentorDAO();
     private StudentDAO studentDao = new StudentDAO();
-
-    //this should be mentor.getId();
-    int mentorId = 4;
+    private SessionDAO sessionDAO = new SessionDAO();
+    private CookieHelper cookieHelper = new CookieHelper();
 
     //this should be mentor.getClassId(); info about mentor's class is in 'classes' table
     int classId = 2;
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
-
 
 
         try {
@@ -51,15 +44,17 @@ public class MentorController implements HttpHandler {
             }
 
             if (uri.equals("/mentor")) {
+                int mentorId = cookieHelper.getUserIdBySessionID(httpExchange);
                 showProfile(httpExchange, mentorId);
 
             }
             if (uri.equals("/mentor/addStudent")){
-                //renderAddingStudentTemplate(httpExchange);
                 addNewStudent(httpExchange);
             }
 
             else {
+
+                int mentorId = cookieHelper.getUserIdBySessionID(httpExchange);
                 showProfile(httpExchange, mentorId);
             }
 
@@ -127,21 +122,18 @@ public class MentorController implements HttpHandler {
                 System.out.println("db exception caught in mentor controller");
             }
 
-//            response = "<html><body>" +
-//                    "<h1>thank you</h1>" +
-//                    "</body></html>";
 
             br.close();
             isr.close();
             String url = "/mentor/students";
             httpExchange.getResponseHeaders().set("Location", url);
             httpExchange.sendResponseHeaders(303, -1);
-           // sendResponse(httpExchange, response);
 
         }
 
-        //sendResponse(httpExchange, response);
+
     }
+
 
 
     private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
@@ -160,15 +152,13 @@ public class MentorController implements HttpHandler {
         List<Student> studentsList = new ArrayList<>();
         studentsList = getStudents(id);
 
-
         String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/mentor/studentList.twig");
         JtwigModel model = JtwigModel.newModel();
-        //System.out.println("list size" + studentsList.size());
         model.with("listName", studentsList);
 
         String response = template.render(model);
-        //sendResponse(httpExchange, response);
+
         httpExchange.sendResponseHeaders(200, response.length());
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
