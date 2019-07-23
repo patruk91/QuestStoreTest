@@ -6,21 +6,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Optional;
 
 public class LoginDAO implements ILoginDAO {
-
-    //private User user;
 
     private DBCreator dbCreator = new DBCreator();
 
 
     public void deleteSession(String sessionId) throws DBException{
-
-            Connection connection;
-        System.out.println("delete method run");
-        System.out.println(sessionId);
+        Connection connection;
+        System.out.println("session id passed to deleteSession method in loginDao: " + sessionId);
         try {
             String query = "DELETE FROM sessions WHERE sessionid LIKE ?";
 
@@ -30,7 +25,6 @@ public class LoginDAO implements ILoginDAO {
 
             statement.executeUpdate();
             connection.close();
-            System.out.println("delete executed");
 
         } catch (SQLException e) {
             throw new DBException("SQLException occurred in updateMentorByID(Mentor mentor)");

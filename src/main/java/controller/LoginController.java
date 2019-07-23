@@ -4,11 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import dao.DBException;
 import dao.LoginDAO;
-import dao.QuestDAO;
 import dao.SessionDAO;
-import model.items.Quest;
-import model.users.EmptyUser;
-import model.users.User;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -21,32 +17,28 @@ import java.util.UUID;
 
 public class LoginController implements HttpHandler {
 
-
-    private User user;
-    LoginDAO loginDao = new LoginDAO();
-    SessionDAO sessionDao = new SessionDAO();
-
+    private LoginDAO loginDao = new LoginDAO();
+    private SessionDAO sessionDao = new SessionDAO();
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
-        String uriStr = httpExchange.getRequestURI().toString();
+        //String uriStr = httpExchange.getRequestURI().toString();
+        //this usriStr can be use to debug
 
         if (method.equals("GET")) {
-            //check again is any new coookie and destroy it
+            //check again is any cookie and destroy it
             String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
             if (cookieStr != null){
 
-                //remove session id from table
                 String sessionId = removeQuotationFromSessionId(cookieStr);
 
-                System.out.println("coockie str in removing sq: " + cookieStr);
+                System.out.println("cookie str in removing sq: " + cookieStr);
                 try {
                     loginDao.deleteSession(sessionId);
                 }catch (DBException exc){
                     System.out.println("DB exception caought in log out sequence, in handle method");
                 }
-
 
                 //delete cookie
                 HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
@@ -92,8 +84,7 @@ public class LoginController implements HttpHandler {
                 //create cookie with session ID
                 UUID uuid = UUID.randomUUID();
                 String randomUUIDString = uuid.toString();
-                HttpCookie cookie = new HttpCookie("sessionId", randomUUIDString);
-                //cookie is version 1
+                HttpCookie cookie = new HttpCookie("sessionId", randomUUIDString);  //cookie is version 1
 
 
                 //save sessionId to sessions table
@@ -112,6 +103,7 @@ public class LoginController implements HttpHandler {
             }
 
             else {
+                //todo make template with info about wrong user
 
                 String response = "<html><body>" +
                         "<h1> Sorry there is no such user " +
@@ -134,7 +126,6 @@ public class LoginController implements HttpHandler {
         sb.deleteCharAt(sessionIdwrong.length()-1);
         sb.deleteCharAt(0);
         String sessionId = sb.toString();
-        //System.out.println(sessionId + "session id in removequotation marks");
         return sessionId;
 
     }
