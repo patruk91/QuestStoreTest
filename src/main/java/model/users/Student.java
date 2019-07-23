@@ -75,6 +75,10 @@ public class Student extends User {
         this.amountOfCoins = coolcoins;
     }
 
+    public Student() {
+
+    }
+
     public int getAmountOfCoins() {
         return amountOfCoins;
 

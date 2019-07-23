@@ -49,6 +49,7 @@ public class UserDAO implements IUserDAO {
         } catch (SQLException e) {
             throw new DBException("SQLException occurred in seeProfile()");
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DBException("Unidentified exception occurred in seeProfile()");
 
         }
@@ -94,10 +95,12 @@ public class UserDAO implements IUserDAO {
 
                 return student;
             }
-            throw new DBException("No student with id: " + id);
+            return null;
+            //throw new DBException("No student with id: " + id);
         } catch (SQLException e) {
             throw new DBException("SQLException occurred in seeProfile()");
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DBException("Unidentified exception occurred in seeProfile()");
         }
     }

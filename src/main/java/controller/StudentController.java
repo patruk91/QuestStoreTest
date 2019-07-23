@@ -2,12 +2,12 @@ package controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import dao.ArtifactDAO;
-import dao.DBException;
-import dao.QuestDAO;
+import dao.*;
 import model.items.Artifact;
 import model.items.Quest;
+import model.users.Admin;
 import model.users.Student;
+import model.users.User;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -18,8 +18,8 @@ import java.util.List;
 
 public class StudentController implements HttpHandler {
 
-    List<Quest> questList = new ArrayList<>();
-    Student student = new Student(2, "test", "test", "Jacek", "placek", "666", "jacek@placek", "Szczebrzeszyn", "student", 500, 5, questList, 50);
+    UserDAO userDAO;
+    //Student student;
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -107,19 +107,24 @@ public class StudentController implements HttpHandler {
 
     }
 
-    private void profile(HttpExchange httpExchange) throws IOException {
-
+    private void profile(HttpExchange httpExchange) throws DBException, IOException {
+        userDAO = new UserDAO();
+        User student = userDAO.seeProfile(18);
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/student/profile.twig");
         JtwigModel model = JtwigModel.newModel();
-
+        int coolcoins = student.getAmountOfCoins();
+        int experience = student.getLvlOfExp();
         String firstName = student.getFirstName();
         String lastName = student.getLastName();
         String phoneNumber = student.getPhoneNum();
         String email = student.getEmail();
+
         model.with("firstName", firstName);
         model.with("lastName", lastName);
         model.with("phoneNumber", phoneNumber);
         model.with("email", email);
+        model.with("coolcoins", coolcoins);
+        model.with("experience_points", experience);
         String response = template.render(model);
         httpExchange.sendResponseHeaders(200, response.length());
         OutputStream os = httpExchange.getResponseBody();

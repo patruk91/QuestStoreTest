@@ -75,14 +75,15 @@ public class ArtifactDAO implements IArtifactDAO {
                 id = result.getInt("id");
                 String name = result.getString("artifact_name");
                 String description = result.getString("artifact_description");
-                String category = result.getString("quest_category");
-                int reward = result.getInt("quest_price");
-                Boolean availability = result.getBoolean("availability");
+                String category = result.getString("artifact_category");
+                int reward = result.getInt("artifact_price");
+                Boolean availability = result.getBoolean("artifact_availability");
                 return new Artifact(id, name, description, category, reward, availability);
             }
 
             throw new DBException("No quest found in DB with id = " + id);
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new DBException("SQLException occurred in getQuest(int id)");
 
         } catch (Exception e) {
@@ -113,6 +114,7 @@ public class ArtifactDAO implements IArtifactDAO {
             throw new DBException("SQLException occurred in getUsersQuests(int id)");
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DBException("Unidentified exception occurred in getUsersQuests(int id)");
         }
 
