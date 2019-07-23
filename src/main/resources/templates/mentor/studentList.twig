@@ -37,12 +37,6 @@
             <h4>Students List</h4>
         
             <table>
-              <tr class="tableHead">
-                <th>ID</th>
-                <th class="name">Full Name</th>
-                <th>DelButton</th>
-                <th>UpdButton</th>
-              </tr>
 
                {% for user in listName %}
               <tr>
@@ -54,16 +48,18 @@
               </tr>
                {% endfor %}
 
-
-              <div class="addButton"> 
-              <input type="button" value="ADD" onclick="window.location.href = 'createUpdateStudent.html'">
-            </div>
-             
-             
             </table>
+
+             <h3>
+                <div id="buttonContainer">
+                    <button id="inputButton" onclick="location.href='/mentor/addStudent'" type="button">Add student</button>
+                </div>
+             </h3>
         </div>
     
+    <h1>
 
+    </h1>
 
 
 

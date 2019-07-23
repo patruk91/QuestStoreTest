@@ -20,7 +20,6 @@ import java.util.List;
 public class MentorController implements HttpHandler {
 
     private Mentor mentor;
-
     private UserDAO userDAO = new UserDAO();
     private MentorDAO mentorDAO = new MentorDAO();
     private StudentDAO studentDao = new StudentDAO();
