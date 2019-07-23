@@ -18,15 +18,12 @@ import java.util.*;
 
 public class MentorController implements HttpHandler {
 
-    private Mentor mentor;
 
     private UserDAO userDAO = new UserDAO();
     private MentorDAO mentorDAO = new MentorDAO();
     private StudentDAO studentDao = new StudentDAO();
     private SessionDAO sessionDAO = new SessionDAO();
     private CookieHelper cookieHelper = new CookieHelper();
-
-
 
     //this should be mentor.getClassId(); info about mentor's class is in 'classes' table
     int classId = 2;
