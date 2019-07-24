@@ -42,9 +42,12 @@
               <tr>
                 <td>{{user.id}}</td>
                 <td class="name">{{user.firstName}} {{user.LastName}}</td>
-                <td> <input type="button" value="Delete"> </td>
-                <td> <input type="button" value="Update" onclick="window.location.href = 'createUpdateStudent.html'"> </td>
-
+                <td> <input type="button" id={{user.id}} value="Delete"> </td>
+                <td>
+                    <a href="/mentor/addStudent/{{user.id}}">
+                        <input type="submit" value="Update">
+                    </a>
+                 </td>
               </tr>
                {% endfor %}
 

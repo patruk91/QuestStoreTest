@@ -13,7 +13,7 @@
     
   }
 
-.usersList input[type="button"]{
+.usersList form input[type="submit"]{
     display: block;
     margin: auto;
 }

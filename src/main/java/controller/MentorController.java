@@ -4,24 +4,19 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import dao.*;
 import helpers.CookieHelper;
-import model.users.Mentor;
 import model.users.Student;
 import model.users.User;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.*;
-import java.net.CookieHandler;
-import java.net.HttpCookie;
 import java.net.URLDecoder;
 import java.util.*;
 
 public class MentorController implements HttpHandler {
 
     private UserDAO userDAO = new UserDAO();
-    private MentorDAO mentorDAO = new MentorDAO();
     private StudentDAO studentDao = new StudentDAO();
-    private SessionDAO sessionDAO = new SessionDAO();
     private CookieHelper cookieHelper = new CookieHelper();
 
     //this should be mentor.getClassId(); info about mentor's class is in 'classes' table
@@ -52,6 +47,10 @@ public class MentorController implements HttpHandler {
                 addNewStudent(httpExchange);
             }
 
+            if (uri.contains("/mentor/addStudent/")){
+                update(httpExchange);
+            }
+
             else {
 
                 int mentorId = cookieHelper.getUserIdBySessionID(httpExchange);
@@ -67,8 +66,87 @@ public class MentorController implements HttpHandler {
 
 
 
-    private void update() {
+    private void update(HttpExchange httpExchange) throws UnsupportedEncodingException, IOException {
+        System.out.println("update executed");
+        String uri = httpExchange.getRequestURI().toString();
+        String method = httpExchange.getRequestMethod();
+        int userId = 0;
 
+        if (method.equals("GET")) {
+            String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/mentor/updateStudent.twig");
+            JtwigModel model = JtwigModel.newModel();
+
+
+            try {
+                userId = this.getIdFromUri(uri);
+                User user = userDAO.seeProfile(userId);
+                model.with("name", user.getFirstName());
+                model.with("surname", user.getLastName());
+                model.with("login", user.getLogin());
+                model.with("password", user.getPassword());
+                model.with("email", user.getEmail());
+                model.with("adress", user.getAddress());
+                model.with("phone", user.getPhoneNum());
+            }catch (DBException exc){
+                System.out.println("DB exception cought in update Student in mentor controller");
+            }
+
+            String response = template.render(model);
+            sendResponse(httpExchange, response);
+        }
+
+        if (method.equals("POST")){
+            Map<String, String> inputs = new HashMap<>();
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+
+            System.out.println("form data: " + formData + "!!!!");
+            inputs = parseFormData(formData);
+
+            Student student = null;
+            userId = this.getIdFromUri(uri);
+
+
+            String name = inputs.get("name");
+            String surname = inputs.get("surname");
+            String login = inputs.get("login");
+            String password = inputs.get("password");
+            String email = inputs.get("email");
+            String adress = inputs.get("adress");
+            String phone = inputs.get("phone");
+
+            //we dont use level, what are levels? is it class?
+            String level = inputs.get("levels");
+
+            student = new Student(userId, login, password, name, surname, phone, email, adress);
+
+
+            try {
+                studentDao.updateStudent(student);
+            }catch (DBException dbexc){
+                System.out.println("db exception caught in mentor controller");
+            }
+
+
+            br.close();
+            isr.close();
+            String url = "/mentor/students";
+            httpExchange.getResponseHeaders().set("Location", url);
+            httpExchange.sendResponseHeaders(303, -1);
+
+        }
+
+    }
+
+
+    private int getIdFromUri(String uri){
+        String [] uriElements = uri.split("/");
+        System.out.println(uriElements[3]);
+        Integer id = Integer.valueOf(uriElements[3]);
+        System.out.println(id);
+        return id;
     }
 
     private void delete() {
@@ -131,9 +209,7 @@ public class MentorController implements HttpHandler {
 
         }
 
-
     }
-
 
 
     private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
