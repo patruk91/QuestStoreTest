@@ -23,7 +23,6 @@
                     <li><a href="/student">Profile</a></li>
                     <li><a href="/student/artifacts">Store</a></li>
                     <li><a href="/student/quests">Quests</a></li>
-                    <li><a href="/student/transactions">Transactions</a></li>
                     <li style="float:right"> <a href="/login">log out</a></li>
                 </ul>
             </nav>
@@ -100,11 +99,11 @@
     <div class="profileContent">
         <h1>Quests completed: </h1>
             <div class="row">
-            {% for quest in questList %}
+            {% for quest in completedQuests %}
                 <div class="col-12 col-md-6 col-lg-4">
                         <div class = "item">
                             <div class="item-name"> {{ quest.name }} </div>
-                            <div class="item-price"> {{ quest.price }} </div>
+                            <div class="item-price"> {{ quest.reward }} </div>
                          </div>
                 </div>
             {% endfor %}
@@ -112,7 +111,7 @@
 
         <h1>Artifacts purchased: </h1>
             <div class="row">
-            {% for artifact in artifactList %}
+            {% for artifact in purchasedArtifacts %}
                 <div class="col-12 col-md-6 col-lg-4">
                         <div class = "item">
                             <div class="item-name"> {{ artifact.name }} </div>

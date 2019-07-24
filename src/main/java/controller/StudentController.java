@@ -6,23 +6,20 @@ import dao.*;
 import helpers.CookieHelper;
 import model.items.Artifact;
 import model.items.Quest;
-import model.users.Admin;
-import model.users.Student;
 import model.users.User;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 public class StudentController implements HttpHandler {
 
     private UserDAO userDAO = new UserDAO();
-    private StudentDAO studentDao = new StudentDAO();
-    private SessionDAO sessionDAO = new SessionDAO();
     private CookieHelper cookieHelper = new CookieHelper();
+    private QuestDAO questDAO = new QuestDAO();
+    private ArtifactDAO artifactDAO = new ArtifactDAO();
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -33,8 +30,6 @@ public class StudentController implements HttpHandler {
                 artifacts(httpExchange);
             } if (uri.equals("/student/quests")){
                 quests(httpExchange);
-            } if (uri.equals("/student/transactions")) {
-                transactions(httpExchange);
             } else {
                 profile(httpExchange);
             }
@@ -46,25 +41,6 @@ public class StudentController implements HttpHandler {
             System.out.println("DBException in StudentController");
         }
 
-    }
-
-    private void transactions(HttpExchange httpExchange) throws DBException, IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/student/transactions.twig");
-        JtwigModel model = JtwigModel.newModel();
-
-        QuestDAO questDAO = new QuestDAO();
-        List<Quest> questList = questDAO.getQuestsList();
-
-        model.with("questList", questList);
-
-
-        String response = template.render(model);
-
-
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
     }
 
     private void quests(HttpExchange httpExchange) throws DBException, IOException {
@@ -122,6 +98,13 @@ public class StudentController implements HttpHandler {
         String phoneNumber = student.getPhoneNum();
         String email = student.getEmail();
 
+
+
+        List<Quest> completedQuests = questDAO.getUsersQuests(userId);
+        List<Artifact> purchasedArtifacts = artifactDAO.getUsersArtifacts(userId);
+
+        model.with("purchasedArtifacts", purchasedArtifacts);
+        model.with("completedQuests", completedQuests);
         model.with("firstName", firstName);
         model.with("lastName", lastName);
         model.with("phoneNumber", phoneNumber);
