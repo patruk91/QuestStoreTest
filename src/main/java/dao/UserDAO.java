@@ -105,7 +105,7 @@ public class UserDAO implements IUserDAO {
         }
     }
 
-    private Mentor getFullMentor(int id) throws DBException {
+    public Mentor getFullMentor(int id) throws DBException {
         try {
             // this method do the same as methods in mentor class?
             // getMentorById and getMentorByFullName?

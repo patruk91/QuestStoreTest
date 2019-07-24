@@ -16,10 +16,7 @@ import org.jtwig.JtwigTemplate;
 import java.io.*;
 import java.net.URLDecoder;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AdminController implements HttpHandler {
     List mentorsList = new ArrayList();
@@ -33,6 +30,8 @@ public class AdminController implements HttpHandler {
         int id = 1;
         try {
             String uri = httpExchange.getRequestURI().toString();
+            String[] parsedUri = parseResponseURi(uri);
+
             if (uri.equals("/admin/classes")) {
             }
 
@@ -50,6 +49,9 @@ public class AdminController implements HttpHandler {
             }
             if(uri.equals("/admin/createMentor")){
                 addNewMentor(httpExchange);
+            }
+            if (parsedUri.length > 2 && parsedUri[2].equals("update")){
+                updateProfile(parsedUri[3], httpExchange);
             }
             else {
                 this.showProfile(httpExchange, id);
@@ -268,6 +270,97 @@ public class AdminController implements HttpHandler {
             map.put(keyValue[0], value);
         }
         return map;
+    }
+
+    private String[] parseResponseURi(String uri){
+
+
+        System.out.println("PARSING DATA");
+        String[] splitedUri = uri.split("/");
+
+        for (String element: splitedUri
+             ) {
+            System.out.println(element);
+        }
+        return splitedUri;
+
+    }
+
+
+    private void updateProfile(String id, HttpExchange httpExchange) throws IOException{
+        System.out.println("PROFILE UPDATE" + id);
+
+        String response = "";
+        String method = httpExchange.getRequestMethod();
+
+
+        if (method.equals("GET")){
+            Mentor mentor = new Mentor("null", "null", "null");
+            try {
+
+                mentor = userDAO.getFullMentor(Integer.parseInt(id));
+
+            }catch (DBException e){
+                e.printStackTrace();
+            }
+            String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/admin/UpdateMentor.twig");
+            JtwigModel model = JtwigModel.newModel();
+
+            model.with("firstName", mentor.getFirstName());
+            model.with("lastName", mentor.getLastName());
+            model.with("login", mentor.getLogin());
+            model.with("password", mentor.getPassword());
+            model.with("phone", mentor.getPhoneNum());
+            model.with("email", mentor.getEmail());
+            model.with("address", mentor.getAddress());
+
+            response = template.render(model);
+            sendResponse(httpExchange, response);
+
+        }
+
+        if (method.equals("POST")){
+            Map<String, String> inputs = new HashMap<>();
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+
+            System.out.println("form data: " + formData + "!!!!");
+            inputs = parseFormData(formData);
+
+            User user = null;
+            Mentor mentor = null;
+
+
+
+            String name = inputs.get("name");
+            String surname = inputs.get("surname");
+            String login = inputs.get("login");
+            String password = inputs.get("password");
+            String email = inputs.get("email");
+            String adress = inputs.get("adress");
+            String phone = inputs.get("phone");
+            String mentorsClass = inputs.get("classes");
+            System.out.println(mentorsClass);
+
+
+            mentor = new Mentor(Integer.valueOf(id), login, password, name, surname, phone, email, adress);
+
+
+            try {
+                mentorDao.updateMentorByID(mentor);
+            }catch (DBException dbexc){
+                dbexc.printStackTrace();
+                System.out.println("db exception caught in admin controller in database add mentor ");
+            }
+
+
+            String url = "/admin/mentors";
+            httpExchange.getResponseHeaders().set("Location", url);
+            httpExchange.sendResponseHeaders(303, -1);
+
+        }
     }
 
 }

@@ -61,7 +61,9 @@ public class MentorDAO implements IMentorDAO {
 
     public void updateMentorByID(Mentor mentor) throws DBException {
         try {
-            String query = "UPDATE mentorsPersonals SET first_name = ?, last_name = ?, phone_number = ?, email = ?, adress = ? WHERE id = ?";
+
+            System.out.println(mentor.getId() + "id in update mentor by id");
+            String query = "UPDATE mentorsPersonals SET first_name = ?, last_name = ?, phone_number = ?, email = ?, address = ? WHERE user_id = ?";
 
             connection = dbCreator.connectToDatabase();
             PreparedStatement statement = connection.prepareStatement(query);
@@ -76,6 +78,7 @@ public class MentorDAO implements IMentorDAO {
             connection.close();
 
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new DBException("SQLException occurred in updateMentorByID(Mentor mentor)");
 
         } catch (Exception e){
