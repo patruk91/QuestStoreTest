@@ -4,24 +4,19 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import dao.*;
 import helpers.CookieHelper;
-import model.users.Mentor;
 import model.users.Student;
 import model.users.User;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.*;
-import java.net.CookieHandler;
-import java.net.HttpCookie;
 import java.net.URLDecoder;
 import java.util.*;
 
 public class MentorController implements HttpHandler {
 
     private UserDAO userDAO = new UserDAO();
-    private MentorDAO mentorDAO = new MentorDAO();
     private StudentDAO studentDao = new StudentDAO();
-    private SessionDAO sessionDAO = new SessionDAO();
     private CookieHelper cookieHelper = new CookieHelper();
 
     //this should be mentor.getClassId(); info about mentor's class is in 'classes' table
