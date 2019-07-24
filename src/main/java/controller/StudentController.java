@@ -3,6 +3,7 @@ package controller;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import dao.*;
+import helpers.CookieHelper;
 import model.items.Artifact;
 import model.items.Quest;
 import model.users.Admin;
@@ -18,8 +19,10 @@ import java.util.List;
 
 public class StudentController implements HttpHandler {
 
-    UserDAO userDAO;
-    //Student student;
+    private UserDAO userDAO = new UserDAO();
+    private StudentDAO studentDao = new StudentDAO();
+    private SessionDAO sessionDAO = new SessionDAO();
+    private CookieHelper cookieHelper = new CookieHelper();
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -108,8 +111,8 @@ public class StudentController implements HttpHandler {
     }
 
     private void profile(HttpExchange httpExchange) throws DBException, IOException {
-        userDAO = new UserDAO();
-        User student = userDAO.seeProfile(18);
+        int userId = cookieHelper.getUserIdBySessionID(httpExchange);
+        User student = userDAO.seeProfile(userId);
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/student/profile.twig");
         JtwigModel model = JtwigModel.newModel();
         int coolcoins = student.getAmountOfCoins();

@@ -91,6 +91,7 @@ public class LoginController implements HttpHandler {
                 try{
                     sessionDao.addSession(randomUUIDString, userId);
                 }catch (DBException exc ){
+                    exc.printStackTrace();
                     System.out.println("DB exception caought in loginController");
                 }
 

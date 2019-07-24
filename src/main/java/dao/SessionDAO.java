@@ -26,6 +26,7 @@ public class SessionDAO {
 
             return userId;
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new DBException("SQLException occured in getMentor(int id)");
 
         } catch (Exception e){
