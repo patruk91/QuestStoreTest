@@ -26,6 +26,12 @@ public class Mentor extends User {
         this.setUserType(userType);
     }
 
+    public Mentor(String login, String password, String userType){
+        setLogin(login);
+        setPassword(password);
+        setUserType(userType);
+    }
+
     public Mentor(int id,  String firstName, String lastName, String phoneNum, String email, String address) {
         setId(id);
         setFirstName(firstName);
