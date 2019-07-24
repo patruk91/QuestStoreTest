@@ -2,7 +2,7 @@ create table if not exists Sessions (
     id serial PRIMARY KEY NOT NULL,
     sessionID VARCHAR(50),
     userID INT
-)
+);
 
 create table if not exists Classes (
 	id serial PRIMARY KEY NOT NULL,
