@@ -124,7 +124,7 @@ create table if not exists StudentPersonals (
 	experience_points INT,
 	coolcoins INT
 );
-insert into StudentPersonals (user_id, first_name, last_name, phone_number, email, address, experience_points, class_id, coolcoins) values (18, 'Jobie', 'Yegorovnin', '651-286-8635', 'jyegorovnin0@cmu.edu', '2156 Havey Center', 0, 1, 0);
+insert into StudentPersonals (user_id, first_name, last_name, phone_number, email, address, experience_points, class_id, coolcoins) values (18, 'Jobie', 'Yegorovnin', '651-286-8635', 'jyegorovnin0@cmu.edu', '2156 Havey Center', 500, 1, 300);
 insert into StudentPersonals (user_id, first_name, last_name, phone_number, email, address, experience_points, class_id, coolcoins) values (19, 'Katleen', 'Top', '418-712-7395', 'ktop1@bloglines.com', '74589 Aberg Pass', 50, 1, 50);
 insert into StudentPersonals (user_id, first_name, last_name, phone_number, email, address, experience_points, class_id, coolcoins) values (20, 'Elliot', 'O''Cahsedy', '834-924-4987', 'eocahsedy2@photobucket.com', '70 Farmco Plaza', 100, 1, 20);
 insert into StudentPersonals (user_id, first_name, last_name, phone_number, email, address, experience_points, class_id, coolcoins) values (21, 'Ariella', 'Woodstock', '434-612-4875', 'awoodstock3@columbia.edu', '5 Continental Junction', 200, 1, 120);
@@ -170,7 +170,7 @@ insert into Users (login, password, usertype) values ('ascourfieldd', '8lb7DnRJP
 insert into Users (login, password, usertype) values ('afairleme', 'dvclZVAnbE5', 'mentor');
 insert into Users (login, password, usertype) values ('jbowmenf', 'gNph5ydnm3', 'mentor');
 insert into Users (login, password, usertype) values ('blintotg', 'iD49MxOUx8a', 'mentor');
-insert into Users (login, password, usertype) values ('cdibbeh', 'i18J9YIgYYM', 'student');
+insert into Users (login, password, usertype) values ('user', 'test', 'student');
 insert into Users (login, password, usertype) values ('tryami', 'lkfsKpZoE', 'student');
 insert into Users (login, password, usertype) values ('jbucklej', 'CNUAhKX8J', 'student');
 insert into Users (login, password, usertype) values ('fhaddockk', 'CCSrbBRMGDw3', 'student');
@@ -198,6 +198,9 @@ create table if not exists Users_artifacts (
 	artifact_id INT
 );
 insert into Users_artifacts (user_id, artifact_id) values (18, 4);
+insert into Users_artifacts (user_id, artifact_id) values (18, 2);
+insert into Users_artifacts (user_id, artifact_id) values (18, 3);
+insert into Users_artifacts (user_id, artifact_id) values (18, 5);
 insert into Users_artifacts (user_id, artifact_id) values (19, 10);
 insert into Users_artifacts (user_id, artifact_id) values (24, 5);
 insert into Users_artifacts (user_id, artifact_id) values (27, 5);
@@ -215,6 +218,7 @@ create table if not exists Users_quests (
 	quest_id INT
 );
 insert into Users_quests (user_id, quest_id) values (18, 7);
+insert into Users_quests (user_id, quest_id) values (18, 6);
 insert into Users_quests (user_id, quest_id) values (25, 8);
 insert into Users_quests (user_id, quest_id) values (36, 3);
 insert into Users_quests (user_id, quest_id) values (22, 10);

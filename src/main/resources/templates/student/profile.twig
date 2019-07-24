@@ -78,7 +78,7 @@
                         </tr>
                         <tr>
                             <td class="profile-setting">personal mentor:</td>
-                            <td class="user-entry"><a href="#">Not yet defined</a></td>
+                            <td class="user-entry"><a href="#">not implemented</a></td>
                         </tr>
                     </table>
             </div>
@@ -89,16 +89,38 @@
         <table class="wallet-content">
             <tr>
                 <td>AMOUNT OF COINS:</td>
-                <td>Any number</td>
+                <td>{{ coolcoins }}</td>
             </tr>
             <tr>
                 <td>TOTAL COINS GATHERED:</td>
-                <td>Bigger number or equal</td>
+                <td>{{ experience_points }}</td>
             </tr>
         </table>
     </div>
     <div class="profileContent">
-        <h1>not yet available</h1>
+        <h1>Quests completed: </h1>
+            <div class="row">
+            {% for quest in questList %}
+                <div class="col-12 col-md-6 col-lg-4">
+                        <div class = "item">
+                            <div class="item-name"> {{ quest.name }} </div>
+                            <div class="item-price"> {{ quest.price }} </div>
+                         </div>
+                </div>
+            {% endfor %}
+            </div>
+
+        <h1>Artifacts purchased: </h1>
+            <div class="row">
+            {% for artifact in artifactList %}
+                <div class="col-12 col-md-6 col-lg-4">
+                        <div class = "item">
+                            <div class="item-name"> {{ artifact.name }} </div>
+                            <div class="item-price"> {{ artifact.price }} </div>
+                         </div>
+                </div>
+            {% endfor %}
+            </div>
     </div>
     <footer></footer>
 </body>

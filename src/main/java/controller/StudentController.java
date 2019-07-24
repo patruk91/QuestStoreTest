@@ -2,23 +2,27 @@ package controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import dao.ArtifactDAO;
-import dao.DBException;
-import dao.QuestDAO;
+import dao.*;
+import helpers.CookieHelper;
 import model.items.Artifact;
 import model.items.Quest;
+import model.users.Admin;
 import model.users.Student;
+import model.users.User;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentController implements HttpHandler {
 
-
-    Student student;
+    private UserDAO userDAO = new UserDAO();
+    private StudentDAO studentDao = new StudentDAO();
+    private SessionDAO sessionDAO = new SessionDAO();
+    private CookieHelper cookieHelper = new CookieHelper();
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -64,6 +68,8 @@ public class StudentController implements HttpHandler {
     }
 
     private void quests(HttpExchange httpExchange) throws DBException, IOException {
+
+
         JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/student/quests.twig");
         JtwigModel model = JtwigModel.newModel();
 
@@ -104,20 +110,24 @@ public class StudentController implements HttpHandler {
 
     }
 
-    private void profile(HttpExchange httpExchange) throws IOException {
-
+    private void profile(HttpExchange httpExchange) throws DBException, IOException {
+        int userId = cookieHelper.getUserIdBySessionID(httpExchange);
+        User student = userDAO.seeProfile(userId);
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/student/profile.twig");
         JtwigModel model = JtwigModel.newModel();
+        int coolcoins = student.getAmountOfCoins();
+        int experience = student.getLvlOfExp();
+        String firstName = student.getFirstName();
+        String lastName = student.getLastName();
+        String phoneNumber = student.getPhoneNum();
+        String email = student.getEmail();
 
-        String firstName = "Jacke";
-        String lastName = "Placke";
-        String phoneNumber = "9840392/3";
-        String email = "jacek@placek";
-        // fill the model with values
         model.with("firstName", firstName);
         model.with("lastName", lastName);
         model.with("phoneNumber", phoneNumber);
         model.with("email", email);
+        model.with("coolcoins", coolcoins);
+        model.with("experience_points", experience);
         String response = template.render(model);
         httpExchange.sendResponseHeaders(200, response.length());
         OutputStream os = httpExchange.getResponseBody();

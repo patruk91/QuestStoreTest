@@ -125,5 +125,13 @@ public abstract class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public int getAmountOfCoins() {
+        return 0;
+    }
+
+    public int getLvlOfExp() {
+        return 0;
+    }
 }
 
