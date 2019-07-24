@@ -13,11 +13,13 @@ import model.users.User;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.net.URLDecoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AdminController implements HttpHandler {
     List mentorsList = new ArrayList();
@@ -45,7 +47,11 @@ public class AdminController implements HttpHandler {
             if (uri.equals("/admin")) {
                 showProfile(httpExchange, id);
 
-            } else {
+            }
+            if(uri.equals("/admin/createMentor")){
+                addNewMentor(httpExchange);
+            }
+            else {
                 this.showProfile(httpExchange, id);
             }
         } catch (Exception e) {
@@ -127,7 +133,7 @@ public class AdminController implements HttpHandler {
     private void showMentors(HttpExchange httpExchange) {
         // create a list with mentors from dao
         try {
-            mentorsList = getMentorsNames(mentorDao.getAllMentors());
+            mentorsList = mentorDao.getAllMentors();
         }catch (DBException dbexc) {
             System.out.println("this is db exception");
         }
@@ -135,7 +141,7 @@ public class AdminController implements HttpHandler {
         String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/mentorList.twig");
         JtwigModel model = JtwigModel.newModel();
-        model.with("listName", mentorsList);
+        model.with("mentors", mentorsList);
 
         String response = template.render(model);
         sendResponse(httpExchange, response);
@@ -190,13 +196,80 @@ public class AdminController implements HttpHandler {
         return user;
     }
 
-    private void update() {
+    private void addNewMentor(HttpExchange httpExchange)throws IOException {
+        String response = "";
+        String method = httpExchange.getRequestMethod();
 
+        if (method.equals("GET")){
+            String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/admin/createUpdateMentor.twig");
+            JtwigModel model = JtwigModel.newModel();
+
+            response = template.render(model);
+            sendResponse(httpExchange, response);
+
+        }
+
+        if (method.equals("POST")){
+            Map<String, String> inputs = new HashMap<>();
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+
+            System.out.println("form data: " + formData + "!!!!");
+            inputs = parseFormData(formData);
+
+            User user = null;
+            Mentor mentor = null;
+
+
+
+            String name = inputs.get("name");
+            String surname = inputs.get("surname");
+            String login = inputs.get("login");
+            String password = inputs.get("password");
+            String email = inputs.get("email");
+            String adress = inputs.get("adress");
+            String phone = inputs.get("phone");
+            String mentorsClass = inputs.get("classes");
+            System.out.println(mentorsClass);
+
+            user = new Mentor(login, password, "mentor");
+            //default value of coolcoins and experience points is 0 as we create new student
+            mentor = new Mentor(0, login, password, name, surname, phone, email, adress);
+
+
+            try {
+                mentorDao.addMentor(user, mentor);
+            }catch (DBException dbexc){
+                dbexc.printStackTrace();
+                System.out.println("db exception caught in admin controller in database add mentor ");
+            }
+
+
+        String url = "/admin/mentors";
+        httpExchange.getResponseHeaders().set("Location", url);
+        httpExchange.sendResponseHeaders(303, -1);
+
+        }
     }
 
     private void delete() {
 
     }
+
+    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
+        Map<String, String> map = new HashMap<>();
+        String[] pairs = formData.split("&");
+        for(String pair : pairs){
+            String[] keyValue = pair.split("=");
+            // We have to decode the value because it's urlencoded. see: https://en.wikipedia.org/wiki/POST_(HTTP)#Use_for_submitting_web_forms
+            String value = new URLDecoder().decode(keyValue[1], "UTF-8");
+            map.put(keyValue[0], value);
+        }
+        return map;
+    }
+
 }
 
 
