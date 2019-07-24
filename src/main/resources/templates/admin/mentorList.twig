@@ -37,10 +37,10 @@
         
             <table>
 
-               {% for fullName in listName %}
+               {% for mentor in mentors %}
               <tr>
-                <td>1</td>
-                <td class="name">{{ fullName }}</td>
+                <td>{{mentor.getId}}</td>
+                <td class="name">{{ mentor.getFirstName }} {{mentor.getLastName}}</td>
                 <td> <input type="button" value="Delete"> </td>
                 <td><button onclick="location.href='./createUpdateMentor.html'" type="button">Update</button></td>
                 <td><button onclick="location.href='./profile.html'" type="button">Profile</button></td>
@@ -51,7 +51,7 @@
             </table>
               <h3>
                 <div id="buttonContainer">
-                    <button id="inputButton" onclick="location.href='./createUpdateMentor.html'" type="button">Add mentor</button>
+                    <button id="inputButton" onclick="location.href='/admin/createMentor'" type="button">Add mentor</button>
                 </div>
               </h3>
         </div>

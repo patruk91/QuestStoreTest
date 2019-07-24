@@ -204,7 +204,7 @@ public class MentorDAO implements IMentorDAO {
     }
 
     private void createMentor(Mentor mentor) throws DBException {
-        String query = "INSERT INTO mentorpersonals(user_id, first_name, last_name, phone_number, email, adress) VALUES(?,?,?,?,?,?);";
+        String query = "INSERT INTO mentorspersonals(user_id, first_name, last_name, phone_number, email, address) VALUES(?,?,?,?,?,?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -219,6 +219,7 @@ public class MentorDAO implements IMentorDAO {
             dbCreator.connectToDatabase().close();
 
         }  catch (SQLException e){
+            e.printStackTrace();
             throw new DBException("SQLException occurred in createMentor(Mentor mentor)");
         } catch (Exception e){
             throw new DBException("Unidentified exception occurred in createMentor(Mentor mentor)");
