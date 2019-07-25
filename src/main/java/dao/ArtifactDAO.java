@@ -159,13 +159,13 @@ public class ArtifactDAO implements IArtifactDAO {
         }
     }
 
-    public void updateArtifact(String artifactName, int newPrice) throws DBException {
+    public void updateArtifact(int artifactId, int newPrice) throws DBException {
         DBCreator dbCreator = new DBCreator();
         try {
             Connection connection = dbCreator.connectToDatabase();
-            PreparedStatement stm = connection.prepareStatement("update  Artifacts set artifact_price = ? where artifact_name like ?");
+            PreparedStatement stm = connection.prepareStatement("update  Artifacts set artifact_price = ? where id = ?");
             stm.setInt(1, newPrice);
-            stm.setString(2, artifactName);
+            stm.setInt(2, artifactId);
             stm.executeUpdate();
         } catch (SQLException e) {
             throw new DBException("SQLException occurred in updateArtifact()");

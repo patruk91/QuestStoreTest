@@ -121,7 +121,7 @@ public class MentorController implements HttpHandler {
         }
     }
 
-    private void updateArtif(HttpExchange httpExchange){
+    private void updateArtif(HttpExchange httpExchange) throws  IOException{
         //System.out.println("update artif executed");
         String uri = httpExchange.getRequestURI().toString();
         String method = httpExchange.getRequestMethod();
@@ -148,7 +148,30 @@ public class MentorController implements HttpHandler {
             sendResponse(httpExchange, response);
         }
 
+        if (method.equals("POST")) {
+            Map<String, String> inputs = new HashMap<>();
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
 
+            System.out.println("form data: " + formData + "!!!!");
+            inputs = parseFormData(formData);
+
+            artifactId = this.getIdFromUri(uri);
+            int newPrice = Integer.valueOf(inputs.get("value"));
+
+            try {
+                artifactDao.updateArtifact(artifactId, newPrice);
+            } catch (DBException dbexc) {
+                System.out.println("db exception caught in mentor controller");
+            }
+
+            br.close();
+            isr.close();
+            String url = "/mentor/store";
+            httpExchange.getResponseHeaders().set("Location", url);
+            httpExchange.sendResponseHeaders(303, -1);
+        }
 
     }
 
