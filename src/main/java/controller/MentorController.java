@@ -47,22 +47,22 @@ public class MentorController implements HttpHandler {
 
             }
 
-            if (uri.equals("/mentor/addStudent")){
+            if (uri.equals("/mentor/addStudent")) {
                 addNewStudent(httpExchange, classId);
 
             }
 
             if (uri.contains("/mentor/addStudent/")) {
                 update(httpExchange);
-            else {
+            }
+            else{
                 showProfile(httpExchange, mentorId);
             }
-
-
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
             System.out.println("IOException in StudentController handle()");
         }
+
     }
 
 
@@ -204,7 +204,7 @@ public class MentorController implements HttpHandler {
 
         }
 
-        private void addNewStudent (HttpExchange httpExchange) throws IOException {
+        private void addNewStudent (HttpExchange httpExchange, int classId) throws IOException {
             String response = "";
             String method = httpExchange.getRequestMethod();
 
