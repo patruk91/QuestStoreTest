@@ -34,25 +34,25 @@ public class MentorController implements HttpHandler {
                 showArtifacts(httpExchange);
             }
 
-            if (uri.equals("/mentor/quests")) {
+            else if (uri.equals("/mentor/quests")) {
                 showQuests(httpExchange);
             }
 
-            if (uri.equals("/mentor/students")) {
+            else if (uri.equals("/mentor/students")) {
                 showMyStudents(httpExchange, classId);
             }
 
-            if (uri.equals("/mentor")) {
+            else if (uri.equals("/mentor")) {
                 showProfile(httpExchange, mentorId);
 
             }
 
-            if (uri.equals("/mentor/addStudent")) {
+            else if (uri.equals("/mentor/addStudent")) {
                 addNewStudent(httpExchange, classId);
 
             }
 
-            if (uri.contains("/mentor/addStudent/")) {
+            else if (uri.contains("/mentor/addStudent/")) {
                 update(httpExchange);
             }
             else{
