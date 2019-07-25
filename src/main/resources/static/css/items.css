@@ -24,6 +24,7 @@ h2 {
     border: 2px solid #E0E4E7;
     border-radius: 5px;
     box-shadow: 2px 3px 6px #080B0C;
+    flex: 0 0 280px;
 }
 
 .item-description {
@@ -39,11 +40,11 @@ h2 {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-around;
-    align-items: center;
     box-shadow: 2px 3px 6px #080B0C;
+    align-items: center;
 }
 
-.buy-button {
-max-width:15%;
-max-height:15%;
+.buy-image {
+max-height: 3vw;
+max-width: 3vw;
 }

@@ -125,6 +125,23 @@ public class StudentDAO implements IStudentDAO {
         }
     }
 
+    public void updateCoins(int id, int coins) throws DBException {
+        String query = "UPDATE studentpersonals SET coolcoins = ? WHERE user_id = ?";
+        try{
+            connection = dbCreator.connectToDatabase();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, coins);
+            statement.setInt(2, id);
+            statement.executeUpdate();
+            connection.close();
+
+        } catch (SQLException e) {
+            throw new DBException("SQLException occurred in updateCoins()");
+
+        } catch (Exception e){
+            throw new DBException("Unidentified exception occurred in updateCoins()");
+        }
+    }
 
     private void createUser(User user) throws DBException {
         String query = "INSERT INTO users(login, password, usertype) VALUES (?,?,?)";
@@ -206,6 +223,8 @@ public class StudentDAO implements IStudentDAO {
         }
 
     }
+
+
 
 
 }

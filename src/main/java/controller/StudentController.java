@@ -6,13 +6,16 @@ import dao.*;
 import helpers.CookieHelper;
 import model.items.Artifact;
 import model.items.Quest;
+import model.users.Student;
 import model.users.User;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StudentController implements HttpHandler {
 
@@ -20,6 +23,7 @@ public class StudentController implements HttpHandler {
     private CookieHelper cookieHelper = new CookieHelper();
     private QuestDAO questDAO = new QuestDAO();
     private ArtifactDAO artifactDAO = new ArtifactDAO();
+    private StudentDAO studentDAO = new StudentDAO();
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -28,16 +32,15 @@ public class StudentController implements HttpHandler {
             String uri = httpExchange.getRequestURI().toString();
             if (uri.equals("/student/artifacts")) {
                 artifacts(httpExchange);
-            } if (uri.equals("/student/quests")){
+            }
+            if (uri.equals("/student/quests")) {
                 quests(httpExchange);
             } else {
                 profile(httpExchange);
             }
         } catch (IOException e) {
-            e.printStackTrace();
             System.out.println("IOException in StudentController");
         } catch (DBException e) {
-            e.printStackTrace();
             System.out.println("DBException in StudentController");
         }
 
@@ -57,34 +60,59 @@ public class StudentController implements HttpHandler {
 
         String response = template.render(model);
 
-
         httpExchange.sendResponseHeaders(200, response.length());
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
+
+
     }
 
     private void artifacts(HttpExchange httpExchange) throws DBException, IOException {
+
+        String method = httpExchange.getRequestMethod();
         JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/student/artifacts.twig");
         JtwigModel model = JtwigModel.newModel();
-
-        ArtifactDAO artifactDAO = new ArtifactDAO();
         List<Artifact> artifactList = artifactDAO.getArtifactsList();
+        int userId = cookieHelper.getUserIdBySessionID(httpExchange);
+        User user = userDAO.seeProfile(userId);
+        int userCoins = user.getAmountOfCoins();
 
-
+        model.with("coins", userCoins);
         model.with("artifactList", artifactList);
-
 
         String response = template.render(model);
 
+        if (method.equals("POST")) { buyArtifact(httpExchange); }
 
         httpExchange.sendResponseHeaders(200, response.length());
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
-
-
     }
+
+    private void buyArtifact(HttpExchange httpExchange) throws IOException, DBException {
+        InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+        BufferedReader br = new BufferedReader(isr);
+        String formData = br.readLine();
+
+        Map inputs = parseFormData(formData);
+        int artifactId = Integer.parseInt(inputs.get("artifact_id").toString());
+
+        Artifact artifact = artifactDAO.getArtifact(artifactId);
+        int artifactPrice = artifact.getPrice();
+
+        int userId = cookieHelper.getUserIdBySessionID(httpExchange);
+        User user = userDAO.seeProfile(userId);
+        int userCoins = user.getAmountOfCoins();
+
+        if (userCoins >= artifactPrice){
+            artifactDAO.addUserArtifact(userId, artifactId);
+            int newCoins = user.getAmountOfCoins() - artifact.getPrice();
+            studentDAO.updateCoins(userId, newCoins);
+        }
+    }
+
 
     private void profile(HttpExchange httpExchange) throws DBException, IOException {
         int userId = cookieHelper.getUserIdBySessionID(httpExchange);
@@ -97,7 +125,6 @@ public class StudentController implements HttpHandler {
         String lastName = student.getLastName();
         String phoneNumber = student.getPhoneNum();
         String email = student.getEmail();
-
 
 
         List<Quest> completedQuests = questDAO.getUsersQuests(userId);
@@ -129,4 +156,15 @@ public class StudentController implements HttpHandler {
     }
 
 
+    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
+        Map<String, String> map = new HashMap<>();
+        String[] pairs = formData.split("&");
+        for (String pair : pairs) {
+            String[] keyValue = pair.split("=");
+            // We have to decode the value because it's urlencoded. see: https://en.wikipedia.org/wiki/POST_(HTTP)#Use_for_submitting_web_forms
+            String value = new URLDecoder().decode(keyValue[1], "UTF-8");
+            map.put(keyValue[0], value);
+        }
+        return map;
+    }
 }
