@@ -63,46 +63,77 @@ public class AdminController implements HttpHandler {
     }
 
     private void showLevels(HttpExchange httpExchange) throws IOException {
-        String response = "";
-
-
+        String method = httpExchange.getRequestMethod();
         AdminDAO adminDAO = new AdminDAO();
-        List<Level> levels = new ArrayList<>();
-        try {
-            levels = adminDAO.getLevelList();
-        } catch (NullPointerException e) {
-            System.out.println(e.toString());
-        } catch (SQLException e) {
-            System.out.println(e.toString());
+        if (method.equals("GET")){
+            String response = "";
+
+
+
+            List<Level> levels = new ArrayList<>();
+            try {
+                levels = adminDAO.getLevelList();
+            } catch (NullPointerException e) {
+                System.out.println(e.toString());
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
+
+
+            System.out.println("name" + levels.get(0).getName());
+
+
+            // get a template file
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/levelsPage.twig");
+
+            // create a model that will be passed to a template
+            JtwigModel model = JtwigModel.newModel();
+
+            // fill the model with values;
+            model.with("levels", levels);
+
+
+            System.out.println("fillet model with data");
+            // render a template to a string
+            response = template.render(model);
+
+            System.out.println("model render complete ");
+            // send the results to a the client
+
+
+
+            httpExchange.sendResponseHeaders(200, response.length());
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+
+
         }
-
-
-        System.out.println("name" + levels.get(0).getName());
-
-
-        // get a template file
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/levelsPage.twig");
-
-        // create a model that will be passed to a template
-        JtwigModel model = JtwigModel.newModel();
-
-        // fill the model with values;
-        model.with("levels", levels);
-
-
-        System.out.println("fillet model with data");
-        // render a template to a string
-        response = template.render(model);
-
-        System.out.println("model render complete ");
-        // send the results to a the client
+        if (method.equals("POST")){
+            Map<String, String> inputs = new HashMap<>();
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
 
 
 
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+
+            System.out.println("form data: " + formData + "!!!!");
+            inputs = parseFormData(formData);
+            String name = inputs.get("name");
+            String rangeString = inputs.get("range");
+
+            try{
+                adminDAO.addLevel(name, Integer.valueOf(rangeString));
+            }catch(DBException db){db.printStackTrace();}
+
+
+
+            String url = "/admin/levels";
+            httpExchange.getResponseHeaders().set("Location", url);
+            httpExchange.sendResponseHeaders(303, -1);
+
+        }
 
     }
 

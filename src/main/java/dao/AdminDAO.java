@@ -24,14 +24,14 @@ public class AdminDAO implements IAdminDAO {
             Connection connection = dbCreator.connectToDatabase();
             PreparedStatement stm = connection.prepareStatement("insert into level_of_exp (name, max_value) values (?, ?)");
 
-//            stm.setString(1, sessionId);
-//            stm.setInt(2, userId);
+            stm.setString(1, name);
+            stm.setInt(2, maxValue);
 
             stm.executeUpdate();
             connection.close();
 
         } catch (SQLException e) {
-            throw new DBException("SQLException occured in getMentor(int id)");
+            e.printStackTrace();
 
         } catch (Exception e){
             throw new DBException("Unidentified exception occured in getMentor(int id)");
