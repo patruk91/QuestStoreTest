@@ -29,6 +29,7 @@ public class MentorController implements HttpHandler {
             int mentorId = cookieHelper.getUserIdBySessionID(httpExchange);
             int classId = mentorDAO.getMentorById(mentorId).getRoomID();
             String uri = httpExchange.getRequestURI().toString();
+            String[] parsedUri = parseResponseURi(uri);
 
             if (uri.equals("/mentor/store")) {
                 showArtifacts(httpExchange);
@@ -55,6 +56,9 @@ public class MentorController implements HttpHandler {
             else if (uri.contains("/mentor/addStudent/")) {
                 update(httpExchange);
             }
+            else if (parsedUri.length > 2 && parsedUri[2].equals("studentView")){
+                showStudent(httpExchange, Integer.valueOf(parsedUri[3]));
+            }
             else{
                 showProfile(httpExchange, mentorId);
             }
@@ -62,6 +66,36 @@ public class MentorController implements HttpHandler {
             e.printStackTrace();
             System.out.println("IOException in StudentController handle()");
         }
+
+    }
+
+    private void showStudent(HttpExchange httpExchange, int UserId) throws IOException {
+        String response = "";
+        System.out.println("i should show student");
+        User user = new Student();
+        String method = httpExchange.getRequestMethod();
+        try {
+            user = userDAO.seeProfile(UserId);
+        }catch(DBException e){
+            e.printStackTrace();
+        }
+
+        if (method.equals("GET")){
+            String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/student/profile.twig");
+            JtwigModel model = JtwigModel.newModel();
+
+            model.with("firstName", user.getFirstName());
+            model.with(("lastName"), user.getLastName());
+            model.with(("phoneNumber"), user.getPhoneNum());
+            model.with(("email"), user.getEmail());
+
+            response = template.render(model);
+            sendResponse(httpExchange, response);
+
+
+        }
+
 
     }
 
@@ -345,5 +379,19 @@ public class MentorController implements HttpHandler {
                 System.out.println("Exception in mentor controller");
             }
         }
+
+    private String[] parseResponseURi(String uri){
+
+
+        System.out.println("PARSING DATA");
+        String[] splitedUri = uri.split("/");
+
+        for (String element: splitedUri
+        ) {
+            System.out.println(element);
+        }
+        return splitedUri;
+
+    }
     }
 
