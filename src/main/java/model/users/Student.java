@@ -39,11 +39,25 @@ public class Student extends User {
         this.lvlOfExp = lvlOfExp;
     }
 
+
+    public Student(int userId, String login, String password, String name, String surname, String phone, String email,String adress){
+        setId(userId);
+        setLogin(login);
+        setPassword(password);
+        setFirstName(name);
+        setLastName(surname);
+        setPhoneNum(phone);
+        setEmail(email);
+        setAddress(adress);
+    };
+
+
     public Student(int id, String login, String password, String userType) {
         setId(id);
         setLogin(login);
         setPassword(password);
         setUserType(userType);
+
     }
 
 

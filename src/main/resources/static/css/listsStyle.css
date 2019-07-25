@@ -13,7 +13,7 @@
     
   }
 
-.usersList input[type="button"]{
+.usersList form input[type="submit"]{
     display: block;
     margin: auto;
 }
@@ -33,7 +33,7 @@
     color: #F4F4F9;
 
     /*background-color: #768993;*/
-    background-color: #303D44; ciemny
+    background-color: #303D44;
     height: 50px;
     width: 30px;
 
@@ -72,8 +72,8 @@ td {
 position: relative}
 
 .profile-right {
-    display: none
-    position: absolute
+    display: none;
+    position: absolute;
     width:100px}
 
 

@@ -22,10 +22,10 @@
                 <ul id="navToolBar">
 
                     <li><img src="/static/recourses/codecoolLogoprecel.png"></li>
-                    <li><a href="./mentorList.html">Mentors</a></li>
-                    <li><a href="./classes.html">Classes</a></li>
-                    <li><a href="./levelsPage.html">Levels</a></li>
-                    <li style="float:right"> <a href="../login.html">log out</a></li>
+                    <li><a href="/admin/mentors">Mentors</a></li>
+                    <li><a href="../../static/html/admin/classes.html">Classes</a></li>
+                    <li><a href="/admin/levels">Levels</a></li>
+                    <li style="float:right"> <a href="../../static/html/login.html">log out</a></li>
                 </ul>
             </nav>
         </div>
@@ -56,16 +56,17 @@
                 </table>
             </h2>
         </div>
-
+        <form method="POST">
         <div class="add-new-level">
-            <form>
-                <label for="name">Enter new level's name </label>
-                <input type="text" name="name" id="level-name" value="new level name">
-                <label for="range">Enter new level's range </label>
-                <input type="text" name="range" id="level-range" value="new level range">
-                <input type="button" onclick="alert('added')" value="Add">
-            </form>
+
+            <label for="name">Enter new level's name </label>
+            <input type="text" name="name" id="level-name" value="new level name">
+            <label for="range">Enter new level's range </label>
+            <input type="text" name="range" id="level-range" value="new level range">
+            <input type="submit" value="submit">
+
         </div>
+        </form>
     </section>
 
 

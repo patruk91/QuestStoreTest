@@ -23,9 +23,9 @@
             <nav>
                 <ul id="navToolBar">
                   <a href="/admin"><li><img src="/static/recourses/codecoolLogoprecel.png"></li></a>
-                  <li><a href="./mentorList.html">Mentors</a></li>
+                  <li><a href="/admin/mentors">Mentors</a></li>
                   <li><a href="./classes.html">Classes</a></li>
-                  <li><a href="./levels">Levels</a></li>
+                  <li><a href="/admin/levels">Levels</a></li>
                   <li style="float:right"> <a href="/login">log out</a></li>
                 </ul>
             </nav>
@@ -42,7 +42,7 @@
                 <td>{{mentor.getId}}</td>
                 <td class="name">{{ mentor.getFirstName }} {{mentor.getLastName}}</td>
                 <td> <input type="button" value="Delete"> </td>
-                <td><button onclick="location.href='./createUpdateMentor.html'" type="button">Update</button></td>
+                <td><button onclick="location.href='/admin/update/{{mentor.getId}}'" type="button">Update</button></td>
                 <td><button onclick="location.href='./profile.html'" type="button">Profile</button></td>
                 <td><button onclick="location.href='./studentList.html'" type="button">Students</button></td>
               </tr>
