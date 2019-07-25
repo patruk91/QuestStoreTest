@@ -156,7 +156,7 @@ public class AdminController implements HttpHandler {
         try {
             mentorsList = mentorDao.getAllMentors();
         }catch (DBException exc) {
-            System.out.println("This is DB Exception caught in Admin DAO");
+            exc.printStackTrace();
         }
         return mentorsList;
     }
