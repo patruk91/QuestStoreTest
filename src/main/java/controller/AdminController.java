@@ -156,7 +156,7 @@ public class AdminController implements HttpHandler {
         try {
             mentorsList = mentorDao.getAllMentors();
         }catch (DBException exc) {
-            System.out.println("This is DB Exception caught in Admin DAO");
+            exc.printStackTrace();
         }
         return mentorsList;
     }
@@ -176,11 +176,12 @@ public class AdminController implements HttpHandler {
 
     private void sendResponse(HttpExchange httpExchange, String response) {
        try{
-        httpExchange.sendResponseHeaders(200, response.length());
+        httpExchange.sendResponseHeaders(200, response.getBytes().length);
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();}
        catch (IOException IOExc) {
+           IOExc.printStackTrace();
            System.out.println("Exception in admin controller");
        }
     }
