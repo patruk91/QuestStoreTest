@@ -18,16 +18,16 @@ public class MentorController implements HttpHandler {
     private UserDAO userDAO = new UserDAO();
     private StudentDAO studentDao = new StudentDAO();
     private CookieHelper cookieHelper = new CookieHelper();
-
-    //this should be mentor.getClassId(); info about mentor's class is in 'classes' table
-    int classId = 2;
+    private MentorDAO mentorDAO = new MentorDAO();
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
 
-
         try {
+            int mentorId = cookieHelper.getUserIdBySessionID(httpExchange);
+            int classId = mentorDAO.getMentorById(mentorId).getRoomID();
             String uri = httpExchange.getRequestURI().toString();
+
             if (uri.equals("/mentor/store")) {
             }
 
@@ -39,12 +39,11 @@ public class MentorController implements HttpHandler {
             }
 
             if (uri.equals("/mentor")) {
-                int mentorId = cookieHelper.getUserIdBySessionID(httpExchange);
                 showProfile(httpExchange, mentorId);
 
             }
             if (uri.equals("/mentor/addStudent")){
-                addNewStudent(httpExchange);
+                addNewStudent(httpExchange, classId);
             }
 
             if (uri.contains("/mentor/addStudent/")){
@@ -52,8 +51,6 @@ public class MentorController implements HttpHandler {
             }
 
             else {
-
-                int mentorId = cookieHelper.getUserIdBySessionID(httpExchange);
                 showProfile(httpExchange, mentorId);
             }
 
@@ -102,7 +99,7 @@ public class MentorController implements HttpHandler {
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
 
-            System.out.println("form data: " + formData + "!!!!");
+            //System.out.println("form data: " + formData + "!!!!");
             inputs = parseFormData(formData);
 
             Student student = null;
@@ -153,7 +150,7 @@ public class MentorController implements HttpHandler {
 
     }
 
-    private void addNewStudent(HttpExchange httpExchange) throws IOException{
+    private void addNewStudent(HttpExchange httpExchange, int classId) throws IOException{
         String response = "";
         String method = httpExchange.getRequestMethod();
 
