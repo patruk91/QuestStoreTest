@@ -46,12 +46,10 @@ public class MentorController implements HttpHandler {
 
             else if (uri.equals("/mentor")) {
                 showProfile(httpExchange, mentorId);
-
             }
 
             else if (uri.equals("/mentor/addStudent")) {
                 addNewStudent(httpExchange, classId);
-
             }
 
             else if (uri.contains("/mentor/addStudent/")) {
@@ -74,7 +72,6 @@ public class MentorController implements HttpHandler {
             }
         }catch(Exception e){
             e.printStackTrace();
-            System.out.println("IOException in StudentController handle()");
         }
 
     }
@@ -116,21 +113,18 @@ public class MentorController implements HttpHandler {
             try {
                 artifactDao.createArtifact(artifact);
             } catch (DBException dbexc) {
-                System.out.println("db exception caught in mentor controller");
+                dbexc.printStackTrace();
             }
-
 
             br.close();
             isr.close();
             String url = "/mentor/store";
             httpExchange.getResponseHeaders().set("Location", url);
             httpExchange.sendResponseHeaders(303, -1);
-
         }
     }
 
     private void updateArtif(HttpExchange httpExchange) throws  IOException{
-        //System.out.println("update artif executed");
         String uri = httpExchange.getRequestURI().toString();
         String method = httpExchange.getRequestMethod();
         int artifactId = 0;
@@ -140,7 +134,6 @@ public class MentorController implements HttpHandler {
             JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/mentor/updateArtifact.twig");
             JtwigModel model = JtwigModel.newModel();
 
-
             try {
                 artifactId = this.getIdFromUri(uri);
                 Artifact artifact = artifactDao.getArtifact(artifactId);
@@ -149,7 +142,7 @@ public class MentorController implements HttpHandler {
                 model.with("description", artifact.getDescription());
 
             } catch (DBException exc) {
-                System.out.println("DB exception cought in update Student in mentor controller");
+                exc.printStackTrace();
             }
 
             String response = template.render(model);
@@ -171,7 +164,7 @@ public class MentorController implements HttpHandler {
             try {
                 artifactDao.updateArtifact(artifactId, newPrice);
             } catch (DBException dbexc) {
-                System.out.println("db exception caught in mentor controller");
+                dbexc.printStackTrace();
             }
 
             br.close();
@@ -180,12 +173,10 @@ public class MentorController implements HttpHandler {
             httpExchange.getResponseHeaders().set("Location", url);
             httpExchange.sendResponseHeaders(303, -1);
         }
-
     }
 
     private void showStudent(HttpExchange httpExchange, int UserId) throws IOException {
         String response = "";
-        System.out.println("i should show student");
         User user = new Student();
         String method = httpExchange.getRequestMethod();
         try {
@@ -206,13 +197,8 @@ public class MentorController implements HttpHandler {
 
             response = template.render(model);
             sendResponse(httpExchange, response);
-
-
         }
-
-
     }
-
 
 
     private void showArtifacts(HttpExchange httpExchange) throws IOException {
@@ -235,7 +221,7 @@ public class MentorController implements HttpHandler {
                 os.write(response.getBytes());
                 os.close();
             } catch (DBException exc) {
-                System.out.println("DB EXC cought in mentorl controller");
+                System.out.println("DB EXC caught in mentorl controller");
                 exc.printStackTrace();
             }
         }
@@ -311,7 +297,6 @@ public class MentorController implements HttpHandler {
                 Student student = null;
                 userId = this.getIdFromUri(uri);
 
-
                 String name = inputs.get("name");
                 String surname = inputs.get("surname");
                 String login = inputs.get("login");
@@ -322,16 +307,14 @@ public class MentorController implements HttpHandler {
 
                 //we dont use level, what are levels? is it class?
                 String level = inputs.get("levels");
-
                 student = new Student(userId, login, password, name, surname, phone, email, adress);
-
 
                 try {
                     studentDao.updateStudent(student);
                 } catch (DBException dbexc) {
+                    dbexc.printStackTrace();
                     System.out.println("db exception caught in mentor controller");
                 }
-
 
                 br.close();
                 isr.close();
@@ -345,9 +328,9 @@ public class MentorController implements HttpHandler {
 
         private int getIdFromUri (String uri){
             String[] uriElements = uri.split("/");
-            System.out.println(uriElements[3]);
+            //System.out.println(uriElements[3]);
             Integer id = Integer.valueOf(uriElements[3]);
-            System.out.println(id);
+            //System.out.println(id);
             return id;
         }
 
@@ -399,18 +382,15 @@ public class MentorController implements HttpHandler {
                 try {
                     studentDao.createStudent(user, student);
                 } catch (DBException dbexc) {
+                    dbexc.printStackTrace();
                     System.out.println("db exception caught in mentor controller");
                 }
-
-
                 br.close();
                 isr.close();
                 String url = "/mentor/students";
                 httpExchange.getResponseHeaders().set("Location", url);
                 httpExchange.sendResponseHeaders(303, -1);
-
             }
-
         }
 
 
@@ -464,7 +444,6 @@ public class MentorController implements HttpHandler {
             String phoneNumber = user.getPhoneNum();
             String email = user.getEmail();
 
-            // fill the model with values
             model.with("firstName", firstName);
             model.with("lastName", lastName);
             model.with("phoneNum", phoneNumber);
@@ -479,8 +458,8 @@ public class MentorController implements HttpHandler {
             try {
                 user = userDAO.seeProfile(id);
             } catch (DBException dbExc) {
+                dbExc.printStackTrace();
                 System.out.println("There was no such user in DB");
-
             }
             return user;
         }
@@ -492,14 +471,13 @@ public class MentorController implements HttpHandler {
                 os.write(response.getBytes());
                 os.close();
             } catch (IOException IOExc) {
+                IOExc.printStackTrace();
                 System.out.println("Exception in mentor controller");
             }
         }
 
     private String[] parseResponseURi(String uri){
-
-
-        System.out.println("PARSING DATA");
+        //System.out.println("PARSING DATA");
         String[] splitedUri = uri.split("/");
 
         for (String element: splitedUri
@@ -509,5 +487,5 @@ public class MentorController implements HttpHandler {
         return splitedUri;
 
     }
-    }
+}
 
