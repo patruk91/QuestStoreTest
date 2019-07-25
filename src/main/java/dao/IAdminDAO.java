@@ -12,8 +12,9 @@ public interface IAdminDAO{
     this are two admin's methods
     both are still NOT implemented in AdminDAO*/
 
-    void addLevel();
+
     void createNewClass();
 
     List<Level> getLevelList() throws SQLException;
+    void addLevel(String name, int maxValue) throws DBException;
 }

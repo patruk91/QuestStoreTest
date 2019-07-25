@@ -20,16 +20,15 @@ public class MentorController implements HttpHandler {
     private UserDAO userDAO = new UserDAO();
     private StudentDAO studentDao = new StudentDAO();
     private CookieHelper cookieHelper = new CookieHelper();
-
-    //this should be mentor.getClassId(); info about mentor's class is in 'classes' table
-    int classId = 2;
+    private MentorDAO mentorDAO = new MentorDAO();
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
-        String uri = httpExchange.getRequestURI().toString();
-        String method = httpExchange.getRequestMethod();
 
         try {
+            int mentorId = cookieHelper.getUserIdBySessionID(httpExchange);
+            int classId = mentorDAO.getMentorById(mentorId).getRoomID();
+            String uri = httpExchange.getRequestURI().toString();
 
             if (uri.equals("/mentor/store")) {
                 showArtifacts(httpExchange);
@@ -44,19 +43,18 @@ public class MentorController implements HttpHandler {
             }
 
             if (uri.equals("/mentor")) {
-                int mentorId = cookieHelper.getUserIdBySessionID(httpExchange);
                 showProfile(httpExchange, mentorId);
 
             }
-            if (uri.equals("/mentor/addStudent")) {
-                addNewStudent(httpExchange);
+
+            if (uri.equals("/mentor/addStudent")){
+                addNewStudent(httpExchange, classId);
+
             }
 
             if (uri.contains("/mentor/addStudent/")) {
                 update(httpExchange);
-            } else {
-
-                int mentorId = cookieHelper.getUserIdBySessionID(httpExchange);
+            else {
                 showProfile(httpExchange, mentorId);
             }
 
@@ -81,7 +79,6 @@ public class MentorController implements HttpHandler {
                 List<Artifact> artifactList = artifactDAO.getArtifactsList();
 
                 model.with("artifactList", artifactList);
-
                 String response = template.render(model);
 
                 httpExchange.sendResponseHeaders(200, response.length());
@@ -190,10 +187,9 @@ public class MentorController implements HttpHandler {
                 String url = "/mentor/students";
                 httpExchange.getResponseHeaders().set("Location", url);
                 httpExchange.sendResponseHeaders(303, -1);
-
             }
-
         }
+
 
 
         private int getIdFromUri (String uri){
