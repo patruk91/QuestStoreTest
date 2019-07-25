@@ -3,10 +3,7 @@ package dao;
 import model.items.Artifact;
 import model.items.Level;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,14 +16,34 @@ public class AdminDAO implements IAdminDAO {
     }
 
 
-    //todo
-    public void addLevel() {
 
+
+    @Override
+    public void addLevel(String name, int maxValue) throws DBException {
+        try {
+            Connection connection = dbCreator.connectToDatabase();
+            PreparedStatement stm = connection.prepareStatement("insert into level_of_exp (name, max_value) values (?, ?)");
+
+            stm.setString(1, name);
+            stm.setInt(2, maxValue);
+
+            stm.executeUpdate();
+            connection.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        } catch (Exception e){
+            throw new DBException("Unidentified exception occured in getMentor(int id)");
+        }
     }
+
     //todo
     public void createNewClass() {
 
     }
+
+
 
 
 
