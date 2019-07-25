@@ -21,6 +21,7 @@ public class MentorController implements HttpHandler {
     private StudentDAO studentDao = new StudentDAO();
     private CookieHelper cookieHelper = new CookieHelper();
     private MentorDAO mentorDAO = new MentorDAO();
+    private ArtifactDAO artifactDao = new ArtifactDAO();
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -56,6 +57,15 @@ public class MentorController implements HttpHandler {
             else if (uri.contains("/mentor/addStudent/")) {
                 update(httpExchange);
             }
+
+            else if (uri.contains("/mentor/editArtifact/")){
+                updateArtif(httpExchange);
+            }
+          
+            else if (uri.equals("/mentor/addArtifact")){
+                addArtifact(httpExchange);
+            }
+
             else if (parsedUri.length > 2 && parsedUri[2].equals("studentView")){
                 showStudent(httpExchange, Integer.valueOf(parsedUri[3]));
             }
@@ -65,6 +75,110 @@ public class MentorController implements HttpHandler {
         }catch(Exception e){
             e.printStackTrace();
             System.out.println("IOException in StudentController handle()");
+        }
+
+    }
+
+
+    private void addArtifact(HttpExchange httpExchange) throws UnsupportedEncodingException, IOException{
+        String response = "";
+        String method = httpExchange.getRequestMethod();
+
+        if (method.equals("GET")) {
+            String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/mentor/createArtifact.twig");
+            JtwigModel model = JtwigModel.newModel();
+
+            response = template.render(model);
+            sendResponse(httpExchange, response);
+
+        }
+
+        else if (method.equals("POST")) {
+            Map<String, String> inputs = new HashMap<>();
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+
+            System.out.println("form data: " + formData + "!!!!");
+            inputs = parseFormData(formData);
+
+            String title = inputs.get("title");
+            System.out.println("title");
+            int value = Integer.valueOf(inputs.get("value"));
+            System.out.println(value);
+            String description = inputs.get("description");
+            System.out.println(description);
+
+            //default category: basic, default availability true,
+            Artifact artifact = new Artifact(0, title, description, "basic", value, true);
+
+            try {
+                artifactDao.createArtifact(artifact);
+            } catch (DBException dbexc) {
+                System.out.println("db exception caught in mentor controller");
+            }
+
+
+            br.close();
+            isr.close();
+            String url = "/mentor/store";
+            httpExchange.getResponseHeaders().set("Location", url);
+            httpExchange.sendResponseHeaders(303, -1);
+
+        }
+    }
+
+    private void updateArtif(HttpExchange httpExchange) throws  IOException{
+        //System.out.println("update artif executed");
+        String uri = httpExchange.getRequestURI().toString();
+        String method = httpExchange.getRequestMethod();
+        int artifactId = 0;
+
+        if (method.equals("GET")) {
+            String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/mentor/updateArtifact.twig");
+            JtwigModel model = JtwigModel.newModel();
+
+
+            try {
+                artifactId = this.getIdFromUri(uri);
+                Artifact artifact = artifactDao.getArtifact(artifactId);
+                model.with("title", artifact.getName());
+                model.with("value", artifact.getPrice());
+                model.with("description", artifact.getDescription());
+
+            } catch (DBException exc) {
+                System.out.println("DB exception cought in update Student in mentor controller");
+            }
+
+            String response = template.render(model);
+            sendResponse(httpExchange, response);
+        }
+
+        if (method.equals("POST")) {
+            Map<String, String> inputs = new HashMap<>();
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+
+            System.out.println("form data: " + formData + "!!!!");
+            inputs = parseFormData(formData);
+
+            artifactId = this.getIdFromUri(uri);
+            int newPrice = Integer.valueOf(inputs.get("value"));
+
+            try {
+                artifactDao.updateArtifact(artifactId, newPrice);
+            } catch (DBException dbexc) {
+                System.out.println("db exception caught in mentor controller");
+            }
+
+            br.close();
+            isr.close();
+            String url = "/mentor/store";
+            httpExchange.getResponseHeaders().set("Location", url);
+            httpExchange.sendResponseHeaders(303, -1);
         }
 
     }
@@ -100,6 +214,7 @@ public class MentorController implements HttpHandler {
     }
 
 
+
     private void showArtifacts(HttpExchange httpExchange) throws IOException {
         String uri = httpExchange.getRequestURI().toString();
         String method = httpExchange.getRequestMethod();
@@ -124,6 +239,8 @@ public class MentorController implements HttpHandler {
                 exc.printStackTrace();
             }
         }
+
+
     }
 
         private void showQuests (HttpExchange httpExchange) throws IOException {
@@ -302,7 +419,6 @@ public class MentorController implements HttpHandler {
             String[] pairs = formData.split("&");
             for (String pair : pairs) {
                 String[] keyValue = pair.split("=");
-                // We have to decode the value because it's urlencoded. see: https://en.wikipedia.org/wiki/POST_(HTTP)#Use_for_submitting_web_forms
                 String value = new URLDecoder().decode(keyValue[1], "UTF-8");
                 map.put(keyValue[0], value);
             }

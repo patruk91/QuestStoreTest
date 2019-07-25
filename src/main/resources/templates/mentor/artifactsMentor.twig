@@ -40,7 +40,7 @@
             <h2>Artifacts</h2>
             <div class="row">
                 <div class="col-12">
-                    <p><button class="createButton" onclick="location.href='./createArtifact.html'" type="button">Create new</button></p>
+                    <p><button class="createButton" onclick="location.href='/mentor/addArtifact'" type="button">Create new</button></p>
                 </div>
                {% for artifact in artifactList %}
                 <div class="col-12 col-md-6 col-lg-4">
@@ -60,7 +60,8 @@
 
                         <div class="item-tools">
                             <p>Remove</p>
-                            <p>Update</p>
+                            <a href='/mentor/editArtifact/{{artifact.id}}'><p>Update</p></a>
+
                         </div>
                     </div>
                 </div>
