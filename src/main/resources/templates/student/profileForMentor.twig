@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width">
+    <title>Quest Store</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css" >
+    <link rel="stylesheet" type="text/css" href="/static/css/profileStyle.css" >
+
+    <link rel="shortcut icon" type="image/png" href="/static/recourses/codecoolThumbnail.png">
+</head>
+
+<body>
+    <header>
+        <div class="content">
+
+        </div>
+    </header>
+
+
+    <div class="profileContent">
+        <h1>profile</h1>
+        <div class="profile">
+            <div class="profile-left">
+                <img src="/static/recourses/zgredek.gif" width="200" height="210">
+                <h2><a href="#">change picture</a></h2>
+                <h2><a href="#">change information</a></h2>
+            </div>
+            <div class="profile-right">
+                <table style="width:100%">
+                    <h2>personal information</h2>
+                    <tr>
+                        <td class="profile-setting"> Name</td>
+                        <td class="user-entry">{{ firstName }}</td>
+                    </tr>
+                    <tr>
+                        <td class="profile-setting"> Last name</td>
+                        <td class="user-entry">{{ lastName }}</td>
+                    </tr>
+                    <tr>
+                        <td class="profile-setting">Birth date:</td>
+                        <td class="user-entry">Not yet defined</td>
+                    </tr>
+                </table>
+                <table style="width:100%">
+                    <h2>contact</h2>
+                    <tr>
+                        <td class="profile-setting"> Phone number</td>
+                        <td class="user-entry">{{ phoneNumber }}</td>
+                    </tr>
+                    <tr>
+                        <td class="profile-setting"> Email</td>
+                        <td class="user-entry"> {{ email }}</td>
+                    </tr>
+                    <tr>
+                        <td class="profile-setting">github:</td>
+                        <td class="user-entry">Not yet defined</td>
+                    </tr>
+                </table>
+                <table style="width:100%">
+                        <h2>codecool</h2>
+                        <tr>
+                            <td class="profile-setting">class:</td>
+                            <td class="user-entry"><a href="#">Not yet defined</a></td>
+                        </tr>
+                        <tr>
+                            <td class="profile-setting">personal mentor:</td>
+                            <td class="user-entry"><a href="#">not implemented</a></td>
+                        </tr>
+                    </table>
+            </div>
+        </div>
+    </div>
+    <div class="profileContent">
+        <h1>wallet</h1>
+        <table class="wallet-content">
+            <tr>
+                <td>AMOUNT OF COINS:</td>
+                <td>{{ coolcoins }}</td>
+            </tr>
+            <tr>
+                <td>TOTAL COINS GATHERED:</td>
+                <td>{{ experience_points }}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="profileContent">
+        <h1>Quests completed: </h1>
+            <div class="row">
+            {% for quest in completedQuests %}
+                <div class="col-12 col-md-6 col-lg-4">
+                        <div class = "item">
+                            <div class="item-name"> {{ quest.name }} </div>
+                            <div class="item-price"> {{ quest.reward }} </div>
+                         </div>
+                </div>
+            {% endfor %}
+            </div>
+
+        <h1>Artifacts purchased: </h1>
+            <div class="row">
+            {% for artifact in purchasedArtifacts %}
+                <div class="col-12 col-md-6 col-lg-4">
+                        <div class = "item">
+                            <div class="item-name"> {{ artifact.name }} </div>
+                            <div class="item-price"> {{ artifact.price }} </div>
+                         </div>
+                </div>
+            {% endfor %}
+            </div>
+    </div>
+    <footer></footer>
+</body>
+</html>

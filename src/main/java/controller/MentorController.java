@@ -82,7 +82,7 @@ public class MentorController implements HttpHandler {
 
         if (method.equals("GET")){
             String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
-            JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/student/profile.twig");
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/student/profileForMentor.twig");
             JtwigModel model = JtwigModel.newModel();
 
             model.with("firstName", user.getFirstName());
