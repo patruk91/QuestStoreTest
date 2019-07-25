@@ -122,34 +122,31 @@ public class MentorController implements HttpHandler {
     }
 
     private void updateArtif(HttpExchange httpExchange){
-        System.out.println("update artif executed");
-//        String uri = httpExchange.getRequestURI().toString();
-//        String method = httpExchange.getRequestMethod();
-//        int userId = 0;
-//
-//        if (method.equals("GET")) {
-//            String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
-//            JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/mentor/updateStudent.twig");
-//            JtwigModel model = JtwigModel.newModel();
-//
-//
-//            try {
-//                userId = this.getIdFromUri(uri);
-//                User user = userDAO.seeProfile(userId);
-//                model.with("name", user.getFirstName());
-//                model.with("surname", user.getLastName());
-//                model.with("login", user.getLogin());
-//                model.with("password", user.getPassword());
-//                model.with("email", user.getEmail());
-//                model.with("adress", user.getAddress());
-//                model.with("phone", user.getPhoneNum());
-//            } catch (DBException exc) {
-//                System.out.println("DB exception cought in update Student in mentor controller");
-//            }
-//
-//            String response = template.render(model);
-//            sendResponse(httpExchange, response);
-//        }
+        //System.out.println("update artif executed");
+        String uri = httpExchange.getRequestURI().toString();
+        String method = httpExchange.getRequestMethod();
+        int artifactId = 0;
+
+        if (method.equals("GET")) {
+            String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/mentor/updateArtifact.twig");
+            JtwigModel model = JtwigModel.newModel();
+
+
+            try {
+                artifactId = this.getIdFromUri(uri);
+                Artifact artifact = artifactDao.getArtifact(artifactId);
+                model.with("title", artifact.getName());
+                model.with("value", artifact.getPrice());
+                model.with("description", artifact.getDescription());
+
+            } catch (DBException exc) {
+                System.out.println("DB exception cought in update Student in mentor controller");
+            }
+
+            String response = template.render(model);
+            sendResponse(httpExchange, response);
+        }
 
 
 
