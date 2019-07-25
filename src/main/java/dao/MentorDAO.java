@@ -33,7 +33,7 @@ public class MentorDAO implements IMentorDAO {
         List<Mentor> mentorsList = new ArrayList();
         try {
             Connection connection = dbCreator.connectToDatabase();
-            PreparedStatement stm = connection.prepareStatement("select * from mentorspersonals");
+            PreparedStatement stm = connection.prepareStatement("select * from mentorspersonals ORDER BY user_id");
 
             ResultSet result = stm.executeQuery();
             connection.close();

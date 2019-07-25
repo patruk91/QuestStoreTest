@@ -70,7 +70,7 @@ public class StudentDAO implements IStudentDAO {
     public List<Student> getStudentListFromRoom(int roomId) throws DBException{
         try {
             Connection connection = dbCreator.connectToDatabase();
-            PreparedStatement stm = connection.prepareStatement("SELECT * FROM studentpersonals WHERE class_id = ?");
+            PreparedStatement stm = connection.prepareStatement("SELECT * FROM studentpersonals WHERE class_id = ? ORDER BY user_id");
             stm.setInt(1, roomId);
             ResultSet result = stm.executeQuery();
             List<Student> resultList = new ArrayList<>();

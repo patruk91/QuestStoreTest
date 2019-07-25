@@ -24,7 +24,7 @@ public class ArtifactDAO implements IArtifactDAO {
 
             con.setAutoCommit(false);
             Statement stmt = con.createStatement();
-            ResultSet resultSet = stmt.executeQuery("SELECT * FROM artifacts;");
+            ResultSet resultSet = stmt.executeQuery("SELECT * FROM artifacts ORDER BY id;");
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("artifact_name");

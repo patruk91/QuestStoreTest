@@ -81,7 +81,7 @@ public class QuestDAO implements IQuestDAO {
             Connection con = dbCreator.connectToDatabase();
             con.setAutoCommit(false);
             Statement stmt = con.createStatement();
-            ResultSet resultSet = stmt.executeQuery("SELECT * FROM quests;");
+            ResultSet resultSet = stmt.executeQuery("SELECT * FROM quests ORDER BY id;");
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String questName = resultSet.getString("quest_name");
