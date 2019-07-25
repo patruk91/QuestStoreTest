@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import dao.*;
 import helpers.CookieHelper;
+import model.items.Quest;
 import model.users.Student;
 import model.users.User;
 import org.jtwig.JtwigModel;
@@ -32,6 +33,7 @@ public class MentorController implements HttpHandler {
             }
 
             if (uri.equals("/mentor/quests")) {
+                showQuests(httpExchange);
             }
 
             if (uri.equals("/mentor/students")) {
@@ -65,6 +67,32 @@ public class MentorController implements HttpHandler {
     }
 
 
+    private void showQuests(HttpExchange httpExchange) throws IOException{
+        String uri = httpExchange.getRequestURI().toString();
+        String method = httpExchange.getRequestMethod();
+
+        if (method.equals("GET")) {
+            try {
+                JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/mentor/questsMentor.twig");
+                JtwigModel model = JtwigModel.newModel();
+
+                QuestDAO questDAO = new QuestDAO();
+                List<Quest> questList = questDAO.getQuestsList();
+
+                model.with("questList", questList);
+                String response = template.render(model);
+
+
+                httpExchange.sendResponseHeaders(200, response.length());
+                OutputStream os = httpExchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+            }catch (DBException exc){
+                System.out.println("DB EXC cought in mentorl controller");
+                exc.printStackTrace();
+            }
+        }
+    }
 
     private void update(HttpExchange httpExchange) throws UnsupportedEncodingException, IOException {
         System.out.println("update executed");
