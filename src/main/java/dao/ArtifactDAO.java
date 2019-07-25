@@ -52,7 +52,23 @@ public class ArtifactDAO implements IArtifactDAO {
 
     }
 
+    public void addUserArtifact(int userID, int artifactID) throws DBException {
+        try {
+            String query = "INSERT INTO users_artifacts (artifact_id, user_id) VALUES (?,?)";
+            connection =  dbCreator.connectToDatabase();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, artifactID);
+            statement.setInt(2, userID);
+            statement.executeUpdate();
+            connection.close();
 
+        } catch (SQLException e) {
+            throw new DBException("SQLException occurred in addUserArtifact");
+
+        } catch (Exception e) {
+            throw new DBException("Unidentified exception occurred in addUserArtifact");
+        }
+    }
     //todo
     public void addArtifactCategory() {
 
