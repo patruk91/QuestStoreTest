@@ -35,22 +35,22 @@ public class AdminController implements HttpHandler {
             if (uri.equals("/admin/classes")) {
             }
 
-            if (uri.equals("/admin/levels")) {
+            else if (uri.equals("/admin/levels")) {
                 showLevels(httpExchange);
             }
 
-            if (uri.equals("/admin/mentors")) {
+            else if (uri.equals("/admin/mentors")) {
                 showMentors(httpExchange);
             }
 
-            if (uri.equals("/admin")) {
+            else if (uri.equals("/admin")) {
                 showProfile(httpExchange, id);
 
             }
-            if(uri.equals("/admin/createMentor")){
+            else if(uri.equals("/admin/createMentor")){
                 addNewMentor(httpExchange);
             }
-            if (parsedUri.length > 2 && parsedUri[2].equals("update")){
+            else if (parsedUri.length > 2 && parsedUri[2].equals("update")){
                 updateProfile(parsedUri[3], httpExchange);
             }
             else {
@@ -81,7 +81,7 @@ public class AdminController implements HttpHandler {
 
 
         // get a template file
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("static/html/admin/levelsPage.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/levelsPage.twig");
 
         // create a model that will be passed to a template
         JtwigModel model = JtwigModel.newModel();
