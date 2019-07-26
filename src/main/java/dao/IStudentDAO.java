@@ -14,5 +14,6 @@ public interface IStudentDAO {
     List<Student> getStudentListFromRoom(int roomId) throws DBException; //what about this exception?
     int getExperiencePoints(int id) throws SQLException, DBException;
     void updateCoins(int id, int coins) throws DBException;
+    List<Student> getAllStudents() throws DBException;
 
 }

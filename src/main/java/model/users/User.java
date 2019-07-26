@@ -133,5 +133,9 @@ public abstract class User {
     public int getLvlOfExp() {
         return 0;
     }
+
+    public int getRoomID() {
+        return 0;
+    }
 }
 
