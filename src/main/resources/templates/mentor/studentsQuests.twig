@@ -58,8 +58,13 @@
                         </div>
 
                         <div class="item-tools">
-                            <p>Remove</p>
-                            <p>Update</p>
+                            <div class="item-tools">
+                                <p>Mark as done</p>
+                                <form method="POST">
+                                <input type="submit" name="questId" value={{quest.id}}>
+                                </form>
+
+                            </div>
                         </div>
                     </div>
                 </div>

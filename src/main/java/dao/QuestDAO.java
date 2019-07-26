@@ -176,6 +176,7 @@ public class QuestDAO implements IQuestDAO {
     //todo
     public void markAchievedQuests() {
 
+
     }
 
 }

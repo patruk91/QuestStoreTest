@@ -175,8 +175,23 @@ public class ArtifactDAO implements IArtifactDAO {
         }
     }
 
-    //todo
-    public void markBoughtArtifacts() {
+
+    public void markBoughtArtifacts(int studentId, int questId) throws DBException {
+        DBCreator dbCreator = new DBCreator();
+        try {
+
+            Connection connection = dbCreator.connectToDatabase();
+            PreparedStatement stm = connection.prepareStatement("INSERT INTO users_quests (user_id, quest_id) VALUES (?, ?)");
+            stm.setInt(1, studentId);
+            stm.setInt(2, questId);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            throw new DBException("SQLException occurred in updateArtifact()");
+
+        } catch (Exception e) {
+            throw new DBException("Unidentified exception occurred in updateArtifact()");
+        }
+
 
     }
 

@@ -22,6 +22,7 @@ public class MentorController implements HttpHandler {
     private CookieHelper cookieHelper = new CookieHelper();
     private MentorDAO mentorDAO = new MentorDAO();
     private ArtifactDAO artifactDao = new ArtifactDAO();
+    private QuestDAO questDAO = new QuestDAO();
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -510,14 +511,29 @@ public class MentorController implements HttpHandler {
             try{QuestDAO questDAO = new QuestDAO();
                 List<Quest> questList = questDAO.getQuestsList();
 
-                model.with("questList", questList); }catch (DBException e){
+                model.with("questList", questList);
+            }catch (DBException e){
                 e.printStackTrace();
             }
 
-
-
             String response = template.render(model);
             sendResponse(httpExchange, response);
+        }
+
+        else if (method.equals("POST")){
+            Map<String, String> inputs = new HashMap<>();
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+
+            System.out.println("form data: " + formData + "!!!!");
+            inputs = parseFormData(formData);
+            int questId = Integer.valueOf(inputs.get("questId"));
+            System.out.println(questId);
+
+            //int studentId = UserId;
+            questDAO.
+
         }
     }
 }
