@@ -24,6 +24,7 @@ public class MentorController implements HttpHandler {
     private ArtifactDAO artifactDao = new ArtifactDAO();
     private QuestDAO questDAO = new QuestDAO();
     private WalletDAO walletDAO = new WalletDAO();
+    private ArtifactDAO artifactDAO = new ArtifactDAO();
 
 
     public void handle(HttpExchange httpExchange) {
@@ -167,16 +168,24 @@ public class MentorController implements HttpHandler {
 
         user = userDAO.seeProfile(UserId);
 
-
         if (method.equals("GET")) {
             String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
             JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/student/profileForMentor.twig");
             JtwigModel model = JtwigModel.newModel();
 
+            List<Quest> completedQuests = questDAO.getUsersQuests(UserId);
+            List<Artifact> purchasedArtifacts = artifactDAO.getUsersArtifacts(UserId);
+
+            model.with("purchasedArtifacts", purchasedArtifacts);
+            model.with("completedQuests", completedQuests);
             model.with("firstName", user.getFirstName());
-            model.with(("lastName"), user.getLastName());
-            model.with(("phoneNumber"), user.getPhoneNum());
-            model.with(("email"), user.getEmail());
+            model.with("lastName", user.getLastName());
+            model.with("address", user.getAddress());
+            model.with("phoneNumber", user.getPhoneNum());
+            model.with("email", user.getEmail());
+            model.with("coolcoins", user.getAmountOfCoins());
+            model.with("experience_points", user.getLvlOfExp());
+            model.with("class", user.getRoomID());
 
             response = template.render(model);
             sendResponse(httpExchange, response);
