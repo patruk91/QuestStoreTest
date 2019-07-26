@@ -531,9 +531,20 @@ public class MentorController implements HttpHandler {
             int questId = Integer.valueOf(inputs.get("questId"));
             System.out.println(questId);
 
-            //int studentId = UserId;
-            questDAO.
+            try{
+                questDAO.markAchievedQuests(questId, UserId);
+                // add money to coolcoins
 
+                //todo add coolcoins to level of exc
+            }catch(DBException exc){
+                exc.printStackTrace();
+            }
+
+            br.close();
+            isr.close();
+            String url = "/mentor/students";
+            httpExchange.getResponseHeaders().set("Location", url);
+            httpExchange.sendResponseHeaders(303, -1);
         }
     }
 }
