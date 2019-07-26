@@ -2,12 +2,8 @@ package controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import dao.AdminDAO;
-import dao.DBException;
-import dao.MentorDAO;
-import dao.UserDAO;
+import dao.*;
 import model.items.Level;
-import model.users.Admin;
 import model.users.Mentor;
 import model.users.User;
 import org.jtwig.JtwigModel;
@@ -19,13 +15,12 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class AdminController implements HttpHandler {
-    List mentorsList = new ArrayList();
-    MentorDAO mentorDao = new MentorDAO();
-    UserDAO userDAO = new UserDAO();
+    private List mentorsList = new ArrayList();
+    private MentorDAO mentorDao = new MentorDAO();
+    private UserDAO userDAO = new UserDAO();
+    private StudentDAO studentDAO = new StudentDAO();
 
-    private Admin admin;
-
-    public void handle(HttpExchange httpExchange) throws IOException {
+    public void handle(HttpExchange httpExchange) {
 
         int id = 1;
         try {
@@ -33,41 +28,34 @@ public class AdminController implements HttpHandler {
             String[] parsedUri = parseResponseURi(uri);
 
             if (uri.equals("/admin/classes")) {
-            }
-
-            else if (uri.equals("/admin/levels")) {
+            } else if (uri.equals("/admin/levels")) {
                 showLevels(httpExchange);
-            }
-
-            else if (uri.equals("/admin/mentors")) {
+            } else if (uri.equals("/admin/mentors")) {
                 showMentors(httpExchange);
-            }
-
-            else if (uri.equals("/admin")) {
+            } else if (uri.equals("/admin")) {
                 showProfile(httpExchange, id);
 
-            }
-            else if(uri.equals("/admin/createMentor")){
+            } else if (uri.equals("/admin/createMentor")) {
                 addNewMentor(httpExchange);
-            }
-            else if (parsedUri.length > 2 && parsedUri[2].equals("update")){
+            } else if (parsedUri.length > 2 && parsedUri[2].equals("update")) {
                 updateProfile(parsedUri[3], httpExchange);
-            }
-            else {
+            } else {
                 this.showProfile(httpExchange, id);
             }
+        } catch (IOException e) {
+            System.out.println("IOException in AdminController");
+        } catch (DBException e) {
+            System.out.println("DBException in AdminController");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("IOException in AdminController handle()");
+            System.out.println("Unidentified exception in AdminController");
         }
     }
 
-    private void showLevels(HttpExchange httpExchange) throws IOException {
+    private void showLevels(HttpExchange httpExchange) throws DBException, IOException {
         String method = httpExchange.getRequestMethod();
         AdminDAO adminDAO = new AdminDAO();
-        if (method.equals("GET")){
-            String response = "";
-
+        if (method.equals("GET")) {
+            String response;
 
 
             List<Level> levels = new ArrayList<>();
@@ -101,7 +89,6 @@ public class AdminController implements HttpHandler {
             // send the results to a the client
 
 
-
             httpExchange.sendResponseHeaders(200, response.length());
             OutputStream os = httpExchange.getResponseBody();
             os.write(response.getBytes());
@@ -109,13 +96,11 @@ public class AdminController implements HttpHandler {
 
 
         }
-        if (method.equals("POST")){
-            Map<String, String> inputs = new HashMap<>();
+        if (method.equals("POST")) {
+            Map<String, String> inputs;
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
-
-
 
 
             System.out.println("form data: " + formData + "!!!!");
@@ -123,10 +108,8 @@ public class AdminController implements HttpHandler {
             String name = inputs.get("name");
             String rangeString = inputs.get("range");
 
-            try{
-                adminDAO.addLevel(name, Integer.valueOf(rangeString));
-            }catch(DBException db){db.printStackTrace();}
 
+            adminDAO.addLevel(name, Integer.valueOf(rangeString));
 
 
             String url = "/admin/levels";
@@ -137,18 +120,21 @@ public class AdminController implements HttpHandler {
 
     }
 
-    private void showProfile(HttpExchange httpExchange, int id){
+    private void showProfile(HttpExchange httpExchange, int id) throws IOException, DBException {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/profile.twig");
         JtwigModel model = JtwigModel.newModel();
 
-        User user = getUser(id);
+        User user = userDAO.seeProfile(id);
 
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
         String phoneNumber = user.getPhoneNum();
         String email = user.getEmail();
+        String address = user.getAddress();
         System.out.println("admin first name" + firstName);
         System.out.println("admin last name" + lastName);
+        int totalStudents = studentDAO.getAllStudents().size();
+        int totalMentors = mentorDao.getAllMentors().size();
 
 
         // fill the model with values
@@ -156,22 +142,21 @@ public class AdminController implements HttpHandler {
         model.with("lastName", lastName);
         model.with("phoneNum", phoneNumber);
         model.with("email", email);
+        model.with("address", address);
+        model.with("totalStudents", totalStudents);
+        model.with("totalMentors", totalMentors);
         String response = template.render(model);
 
         sendResponse(httpExchange, response);
     }
 
 
-
-    private void showMentors(HttpExchange httpExchange) {
+    private void showMentors(HttpExchange httpExchange) throws IOException, DBException {
         // create a list with mentors from dao
-        try {
-            mentorsList = mentorDao.getAllMentors();
-        }catch (DBException dbexc) {
-            System.out.println("this is db exception");
-        }
 
-        String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
+        mentorsList = mentorDao.getAllMentors();
+
+
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/mentorList.twig");
         JtwigModel model = JtwigModel.newModel();
         model.with("mentors", mentorsList);
@@ -181,21 +166,10 @@ public class AdminController implements HttpHandler {
     }
 
 
-
-
-    private List<Mentor> getMentorsList(){
-        try {
-            mentorsList = mentorDao.getAllMentors();
-        }catch (DBException exc) {
-            exc.printStackTrace();
-        }
-        return mentorsList;
-    }
-
-    private List<String> getMentorsNames(List<Mentor> mentorsList){
+    private List<String> getMentorsNames(List<Mentor> mentorsList) {
         List<String> mentorsNames = new ArrayList<>();
-        for (Mentor mentor: mentorsList
-             ) {
+        for (Mentor mentor : mentorsList
+        ) {
             String firstName = mentor.getFirstName();
             String lastName = mentor.getLastName();
             String fullName = firstName + " " + lastName;
@@ -205,37 +179,21 @@ public class AdminController implements HttpHandler {
 
     }
 
-    private void sendResponse(HttpExchange httpExchange, String response) {
-       try{
+    private void sendResponse(HttpExchange httpExchange, String response) throws IOException {
+
         httpExchange.sendResponseHeaders(200, response.getBytes().length);
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
-        os.close();}
-       catch (IOException IOExc) {
-           IOExc.printStackTrace();
-           System.out.println("Exception in admin controller");
-       }
+        os.close();
+
     }
 
 
-    //todo should we throw some new exception here?
-    private User getUser(int id){
-        User user = null;
-        try {
-            user = userDAO.seeProfile(id);
-        }catch (DBException dbExc){
-            System.out.println("There was no such user in DB");
-
-        }
-        return user;
-    }
-
-    private void addNewMentor(HttpExchange httpExchange)throws IOException {
+    private void addNewMentor(HttpExchange httpExchange) throws IOException, DBException {
         String response = "";
         String method = httpExchange.getRequestMethod();
 
-        if (method.equals("GET")){
-            String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
+        if (method.equals("GET")) {
             JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/admin/createUpdateMentor.twig");
             JtwigModel model = JtwigModel.newModel();
 
@@ -244,8 +202,8 @@ public class AdminController implements HttpHandler {
 
         }
 
-        if (method.equals("POST")){
-            Map<String, String> inputs = new HashMap<>();
+        if (method.equals("POST")) {
+            Map<String, String> inputs;
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
@@ -255,7 +213,6 @@ public class AdminController implements HttpHandler {
 
             User user = null;
             Mentor mentor = null;
-
 
 
             String name = inputs.get("name");
@@ -272,30 +229,20 @@ public class AdminController implements HttpHandler {
             //default value of coolcoins and experience points is 0 as we create new student
             mentor = new Mentor(0, login, password, name, surname, phone, email, adress);
 
+            mentorDao.addMentor(user, mentor);
 
-            try {
-                mentorDao.addMentor(user, mentor);
-            }catch (DBException dbexc){
-                dbexc.printStackTrace();
-                System.out.println("db exception caught in admin controller in database add mentor ");
-            }
-
-
-        String url = "/admin/mentors";
-        httpExchange.getResponseHeaders().set("Location", url);
-        httpExchange.sendResponseHeaders(303, -1);
+            String url = "/admin/mentors";
+            httpExchange.getResponseHeaders().set("Location", url);
+            httpExchange.sendResponseHeaders(303, -1);
 
         }
     }
 
-    private void delete() {
-
-    }
 
     private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
         Map<String, String> map = new HashMap<>();
         String[] pairs = formData.split("&");
-        for(String pair : pairs){
+        for (String pair : pairs) {
             String[] keyValue = pair.split("=");
             // We have to decode the value because it's urlencoded. see: https://en.wikipedia.org/wiki/POST_(HTTP)#Use_for_submitting_web_forms
             String value = new URLDecoder().decode(keyValue[1], "UTF-8");
@@ -304,14 +251,14 @@ public class AdminController implements HttpHandler {
         return map;
     }
 
-    private String[] parseResponseURi(String uri){
+    private String[] parseResponseURi(String uri) {
 
 
         System.out.println("PARSING DATA");
         String[] splitedUri = uri.split("/");
 
-        for (String element: splitedUri
-             ) {
+        for (String element : splitedUri
+        ) {
             System.out.println(element);
         }
         return splitedUri;
@@ -319,22 +266,19 @@ public class AdminController implements HttpHandler {
     }
 
 
-    private void updateProfile(String id, HttpExchange httpExchange) throws IOException{
+    private void updateProfile(String id, HttpExchange httpExchange) throws IOException, DBException {
         System.out.println("PROFILE UPDATE" + id);
 
         String response = "";
         String method = httpExchange.getRequestMethod();
 
 
-        if (method.equals("GET")){
+        if (method.equals("GET")) {
             Mentor mentor = new Mentor("null", "null", "null");
-            try {
 
-                mentor = userDAO.getFullMentor(Integer.parseInt(id));
+            mentor = userDAO.getFullMentor(Integer.parseInt(id));
 
-            }catch (DBException e){
-                e.printStackTrace();
-            }
+
             String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
             JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/admin/UpdateMentor.twig");
             JtwigModel model = JtwigModel.newModel();
@@ -352,7 +296,7 @@ public class AdminController implements HttpHandler {
 
         }
 
-        if (method.equals("POST")){
+        if (method.equals("POST")) {
             Map<String, String> inputs = new HashMap<>();
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
@@ -363,7 +307,6 @@ public class AdminController implements HttpHandler {
 
             User user = null;
             Mentor mentor = null;
-
 
 
             String name = inputs.get("name");
@@ -379,14 +322,7 @@ public class AdminController implements HttpHandler {
 
             mentor = new Mentor(Integer.valueOf(id), login, password, name, surname, phone, email, adress);
 
-
-            try {
-                mentorDao.updateMentorByID(mentor);
-            }catch (DBException dbexc){
-                dbexc.printStackTrace();
-                System.out.println("db exception caught in admin controller in database add mentor ");
-            }
-
+            mentorDao.updateMentorByID(mentor);
 
             String url = "/admin/mentors";
             httpExchange.getResponseHeaders().set("Location", url);

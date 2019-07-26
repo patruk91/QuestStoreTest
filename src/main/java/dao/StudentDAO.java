@@ -65,7 +65,36 @@ public class StudentDAO implements IStudentDAO {
         createStudent(student);
 
     }
+    public List<Student> getAllStudents() throws DBException{
+        List<Student> studentList = new ArrayList();
+        try {
+            Connection connection = dbCreator.connectToDatabase();
+            PreparedStatement stm = connection.prepareStatement("select * from studentpersonals ORDER BY user_id");
 
+            ResultSet result = stm.executeQuery();
+            connection.close();
+            Student student = null;
+
+            while (result.next()) {
+                int id = result.getInt("user_id");
+                String firstName = result.getString("first_name");
+                String lastName = result.getString("last_name");
+                String phoneNum = result.getString("phone_number");
+                String email = result.getString("email");
+                String address = result.getString("address");
+                int roomID = result.getInt("class_id");
+                student = new Student(id, firstName, lastName, phoneNum, email, address, roomID);
+               studentList.add(student);
+            }
+
+            return studentList;
+        } catch (SQLException e) {
+            throw new DBException("SQLException occurred in getAllStudents()");
+
+        } catch (Exception e){
+            throw new DBException("Unidentified exception occurred in getAllStudents()");
+        }
+    }
 
     public List<Student> getStudentListFromRoom(int roomId) throws DBException{
         try {

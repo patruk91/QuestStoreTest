@@ -104,3 +104,13 @@ nav {
     justify-content: space-between;
     margin-bottom: 5px;
 }
+
+.item{
+display: flex;
+flex-direction: row;
+padding: 0.2vw;
+}
+
+.item-name{
+padding-right: 1vw;
+}
