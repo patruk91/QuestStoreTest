@@ -11,7 +11,7 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         // create a server on port 8000
-        HttpServer server = HttpServer.create(new InetSocketAddress(8030), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(8040), 0);
 
         // set routes
         //server.createContext();

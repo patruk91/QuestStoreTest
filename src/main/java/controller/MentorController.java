@@ -6,6 +6,7 @@ import dao.*;
 import helpers.CookieHelper;
 import model.items.Artifact;
 import model.items.Quest;
+import model.users.Mentor;
 import model.users.Student;
 import model.users.User;
 import org.jtwig.JtwigModel;
@@ -167,6 +168,7 @@ public class MentorController implements HttpHandler {
         String method = httpExchange.getRequestMethod();
 
         user = userDAO.seeProfile(UserId);
+
 
         if (method.equals("GET")) {
             String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
@@ -399,7 +401,9 @@ public class MentorController implements HttpHandler {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/mentor/profileMentor.twig");
         JtwigModel model = JtwigModel.newModel();
 
-        User user = userDAO.seeProfile(id);
+        //User user = userDAO.seeProfile(id);
+
+        Mentor user = mentorDAO.getMentorById(id);
 
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
