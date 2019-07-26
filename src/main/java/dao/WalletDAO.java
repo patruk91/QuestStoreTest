@@ -14,7 +14,7 @@ public class WalletDAO implements IWalletDAO {
     //TODO Get DBCreator object to private filed of WallDao class instead of creating it in every method
     private DBCreator dbCreator;
 
-    WalletDAO() {
+    public WalletDAO() {
         dbCreator = new DBCreator();
     }
 

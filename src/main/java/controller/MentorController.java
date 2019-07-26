@@ -23,6 +23,7 @@ public class MentorController implements HttpHandler {
     private MentorDAO mentorDAO = new MentorDAO();
     private ArtifactDAO artifactDao = new ArtifactDAO();
     private QuestDAO questDAO = new QuestDAO();
+    private WalletDAO walletDAO = new WalletDAO();
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -533,9 +534,19 @@ public class MentorController implements HttpHandler {
 
             try{
                 questDAO.markAchievedQuests(questId, UserId);
+
                 // add money to coolcoins
+                int coolcoins = walletDAO.showWallet(UserId);
+                int questCost = questDAO.getQuest(questId).getReward();
+                int newCoinValue = coolcoins + questCost;
+
+                studentDao.updateCoins(UserId, newCoinValue);
 
                 //todo add coolcoins to level of exc
+                int newExpPoints = studentDao.getExperiencePoints(UserId) + questDAO.getQuest(questId).getReward();
+                studentDao.updateExpPoint(UserId, newExpPoints);
+
+
             }catch(DBException exc){
                 exc.printStackTrace();
             }
