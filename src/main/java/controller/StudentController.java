@@ -6,7 +6,6 @@ import dao.*;
 import helpers.CookieHelper;
 import model.items.Artifact;
 import model.items.Quest;
-import model.users.Student;
 import model.users.User;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
@@ -27,7 +26,6 @@ public class StudentController implements HttpHandler {
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
-        int id;
         try {
             String uri = httpExchange.getRequestURI().toString();
             if (uri.equals("/student/artifacts")) {
@@ -42,6 +40,8 @@ public class StudentController implements HttpHandler {
             System.out.println("IOException in StudentController");
         } catch (DBException e) {
             System.out.println("DBException in StudentController");
+        } catch (Exception e) {
+            System.out.println("Unidentified Exception in StudentController");
         }
 
     }
@@ -125,7 +125,9 @@ public class StudentController implements HttpHandler {
         String lastName = student.getLastName();
         String phoneNumber = student.getPhoneNum();
         String email = student.getEmail();
+        String address = student.getAddress();
 
+        int room = student.getRoomID();
 
         List<Quest> completedQuests = questDAO.getUsersQuests(userId);
         List<Artifact> purchasedArtifacts = artifactDAO.getUsersArtifacts(userId);
@@ -134,10 +136,12 @@ public class StudentController implements HttpHandler {
         model.with("completedQuests", completedQuests);
         model.with("firstName", firstName);
         model.with("lastName", lastName);
+        model.with("address", address);
         model.with("phoneNumber", phoneNumber);
         model.with("email", email);
         model.with("coolcoins", coolcoins);
         model.with("experience_points", experience);
+        model.with("class", room);
         String response = template.render(model);
         httpExchange.sendResponseHeaders(200, response.length());
         OutputStream os = httpExchange.getResponseBody();
@@ -145,16 +149,6 @@ public class StudentController implements HttpHandler {
         os.close();
 
     }
-
-
-    private void update() {
-
-    }
-
-    private void delete() {
-
-    }
-
 
     private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
         Map<String, String> map = new HashMap<>();

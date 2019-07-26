@@ -85,7 +85,6 @@ public class MentorDAO implements IMentorDAO {
             connection.close();
 
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DBException("SQLException occurred in updateMentorByID(Mentor mentor)");
 
         } catch (Exception e){
@@ -229,7 +228,6 @@ public class MentorDAO implements IMentorDAO {
             dbCreator.connectToDatabase().close();
 
         }  catch (SQLException e){
-            e.printStackTrace();
             throw new DBException("SQLException occurred in createMentor(Mentor mentor)");
         } catch (Exception e){
             throw new DBException("Unidentified exception occurred in createMentor(Mentor mentor)");
