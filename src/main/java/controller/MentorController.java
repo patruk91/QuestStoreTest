@@ -22,6 +22,8 @@ public class MentorController implements HttpHandler {
     private CookieHelper cookieHelper = new CookieHelper();
     private MentorDAO mentorDAO = new MentorDAO();
     private ArtifactDAO artifactDao = new ArtifactDAO();
+    private QuestDAO questDAO = new QuestDAO();
+    private WalletDAO walletDAO = new WalletDAO();
 
 
     public void handle(HttpExchange httpExchange) {
@@ -48,9 +50,16 @@ public class MentorController implements HttpHandler {
                 updateArtif(httpExchange);
             } else if (uri.equals("/mentor/addArtifact")) {
                 addArtifact(httpExchange);
-            } else if (parsedUri.length > 2 && parsedUri[2].equals("studentView")) {
-                showStudent(httpExchange, Integer.valueOf(parsedUri[3]));
-            } else {
+            }
+
+            else if (parsedUri.length > 2 && parsedUri[2].equals("studentView")){
+                showStudent(httpExchange, Integer.parseInt(parsedUri[3]));
+            }
+
+            else if (parsedUri.length > 2 && parsedUri[2].equals("markQuest")){
+                showQuests(httpExchange, Integer.parseInt(parsedUri[3]));
+            }
+            else{
                 showProfile(httpExchange, mentorId);
             }
         } catch (IOException e) {
@@ -422,6 +431,71 @@ public class MentorController implements HttpHandler {
         }
         return splitUri;
 
+    }
+
+    private void showQuests(HttpExchange httpExchange, int UserId) throws IOException {
+
+        User user = new Student();
+        String method = httpExchange.getRequestMethod();
+        try {
+            user = userDAO.seeProfile(UserId);
+        }catch(DBException e){
+            e.printStackTrace();
+        }
+
+        if (method.equals("GET")){
+            String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/mentor/studentsQuests.twig");
+            JtwigModel model = JtwigModel.newModel();
+
+            try{QuestDAO questDAO = new QuestDAO();
+                List<Quest> questList = questDAO.getQuestsList();
+
+                model.with("questList", questList);
+            }catch (DBException e){
+                e.printStackTrace();
+            }
+
+            String response = template.render(model);
+            sendResponse(httpExchange, response);
+        }
+
+        else if (method.equals("POST")){
+            Map<String, String> inputs = new HashMap<>();
+            InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String formData = br.readLine();
+
+            System.out.println("form data: " + formData + "!!!!");
+            inputs = parseFormData(formData);
+            int questId = Integer.valueOf(inputs.get("questId"));
+            System.out.println(questId);
+
+            try{
+                questDAO.markAchievedQuests(questId, UserId);
+
+                // add money to coolcoins
+                int coolcoins = walletDAO.showWallet(UserId);
+                int questCost = questDAO.getQuest(questId).getReward();
+                int newCoinValue = coolcoins + questCost;
+
+                studentDao.updateCoins(UserId, newCoinValue);
+
+                //todo add coolcoins to level of exc
+                int newExpPoints = studentDao.getExperiencePoints(UserId) + questDAO.getQuest(questId).getReward();
+                studentDao.updateExpPoint(UserId, newExpPoints);
+
+
+            }catch(DBException exc){
+                exc.printStackTrace();
+            }
+
+            br.close();
+            isr.close();
+            String url = "/mentor/students";
+            httpExchange.getResponseHeaders().set("Location", url);
+            httpExchange.sendResponseHeaders(303, -1);
+        }
     }
 }
 

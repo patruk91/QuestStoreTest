@@ -14,7 +14,7 @@ public interface IArtifactDAO {
     void updateArtifact(int artifactId, int newPrice)throws DBException;
 
     //I am not shure in which interface this method should by but it's not implemented yet
-    void markBoughtArtifacts();
+    void markBoughtArtifacts(int studentId, int questId)  throws DBException;
     Artifact getArtifact(int id) throws DBException;
     List<Artifact> getUsersArtifacts(int id) throws DBException;
     void addUserArtifact(int userID, int artifactID) throws DBException;

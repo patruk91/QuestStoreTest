@@ -29,6 +29,7 @@ h2, h3 {
 
 
 
+
 nav {
   font-family: 'Raleway', sans-serif;
   padding-top: 2%;
@@ -49,18 +50,19 @@ nav img {
   padding: 0;
   overflow: hidden;
   background-color: #E0E4E7;
-  
+
   }
-    
+
   #navToolBar li {
     float: left;
-    border-right: 1px solid #bbb;
+    display: inline;
+    /*border-right: 1px solid #bbb;*/
   }
-  
+
   #navToolBar li:last-child {
     border-right: none;
   }
-  
+
   #navToolBar li a {
     display: block;
     color: #080B0C;
@@ -70,11 +72,11 @@ nav img {
     font-weight: bolder;
 
   }
-  
+
   #navToolBar li a:hover:not(.active) {
     background-color: #768993;
   }
-  
+
   .active {
     background-color: rgb(158, 76, 175);
   }

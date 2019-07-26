@@ -13,7 +13,7 @@ public interface IQuestDAO {
     void addQuestToAvailable();
     void updateQuestCategory(Quest quest) throws DBException;
     void updateQuest(String questName, int newValue) throws DBException;
-    void markAchievedQuests();
+    void markAchievedQuests(int questId, int userId) throws DBException;
     Quest getQuest(int id) throws DBException;
     List<Quest> getUsersQuests(int id) throws DBException;
 }

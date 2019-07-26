@@ -173,9 +173,21 @@ public class QuestDAO implements IQuestDAO {
     }
 
 
-    //todo
-    public void markAchievedQuests() {
+    public void markAchievedQuests(int questId, int userId) throws DBException{
 
+        DBCreator dbCreator = new DBCreator();
+        try {
+            Connection connection = dbCreator.connectToDatabase();
+            PreparedStatement stm = connection.prepareStatement("insert into users_quests (user_id, quest_id) values (?,?)");
+            stm.setInt(1, userId);
+            stm.setInt(2, questId);
+            stm.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DBException("SQLException occurred in updateQuest()");
+        } catch (Exception e) {
+            throw new DBException("Unidentified exception occurred in updateQuest()");
+        }
     }
 
 }
