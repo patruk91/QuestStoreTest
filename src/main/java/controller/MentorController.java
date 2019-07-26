@@ -493,7 +493,7 @@ public class MentorController implements HttpHandler {
     }
 
     private void showQuests(HttpExchange httpExchange, int UserId) throws IOException {
-        String response = "";
+
         User user = new Student();
         String method = httpExchange.getRequestMethod();
         try {
@@ -507,12 +507,16 @@ public class MentorController implements HttpHandler {
             JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/mentor/studentsQuests.twig");
             JtwigModel model = JtwigModel.newModel();
 
-            model.with("firstName", user.getFirstName());
-            model.with(("lastName"), user.getLastName());
-            model.with(("phoneNumber"), user.getPhoneNum());
-            model.with(("email"), user.getEmail());
+            try{QuestDAO questDAO = new QuestDAO();
+                List<Quest> questList = questDAO.getQuestsList();
 
-            response = template.render(model);
+                model.with("questList", questList); }catch (DBException e){
+                e.printStackTrace();
+            }
+
+
+
+            String response = template.render(model);
             sendResponse(httpExchange, response);
         }
     }
