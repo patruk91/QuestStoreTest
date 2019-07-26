@@ -42,7 +42,11 @@
               <tr>
                 <td>{{user.id}}</td>
                 <td class="name">{{user.firstName}} {{user.LastName}}</td>
-                <td> <input type="button" id={{user.id}} value="Delete"> </td>
+                  <td>
+                      <a href="/mentor/markQuest/{{user.id}}">
+                          <input type="submit" value="Mark Quests">
+                      </a>
+                  </td>
                   <td>
                       <a href="/mentor/studentView/{{user.id}}">
                           <input type="submit" value="See profile">

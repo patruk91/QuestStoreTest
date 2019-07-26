@@ -65,7 +65,11 @@ public class MentorController implements HttpHandler {
             }
 
             else if (parsedUri.length > 2 && parsedUri[2].equals("studentView")){
-                showStudent(httpExchange, Integer.valueOf(parsedUri[3]));
+                showStudent(httpExchange, Integer.parseInt(parsedUri[3]));
+            }
+
+            else if (parsedUri.length > 2 && parsedUri[2].equals("markQuest")){
+                showQuests(httpExchange, Integer.parseInt(parsedUri[3]));
             }
             else{
                 showProfile(httpExchange, mentorId);
@@ -486,6 +490,31 @@ public class MentorController implements HttpHandler {
         }
         return splitedUri;
 
+    }
+
+    private void showQuests(HttpExchange httpExchange, int UserId) throws IOException {
+        String response = "";
+        User user = new Student();
+        String method = httpExchange.getRequestMethod();
+        try {
+            user = userDAO.seeProfile(UserId);
+        }catch(DBException e){
+            e.printStackTrace();
+        }
+
+        if (method.equals("GET")){
+            String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
+            JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/mentor/studentsQuests.twig");
+            JtwigModel model = JtwigModel.newModel();
+
+            model.with("firstName", user.getFirstName());
+            model.with(("lastName"), user.getLastName());
+            model.with(("phoneNumber"), user.getPhoneNum());
+            model.with(("email"), user.getEmail());
+
+            response = template.render(model);
+            sendResponse(httpExchange, response);
+        }
     }
 }
 

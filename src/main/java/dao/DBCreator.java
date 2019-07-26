@@ -15,8 +15,8 @@ public class DBCreator {
 
     public Connection connectToDatabase() throws SQLException {
         String database = "jdbc:postgresql://localhost:5432/questostore";
-        String user = "stefania";
-        String password = "Zupagrzybowa1";
+        String user = "patrynio";
+        String password = "9wyszlozminasmorgul";
        // System.out.println("Opened database successfully");
         return connection = DriverManager.getConnection(database, user, password);
 
