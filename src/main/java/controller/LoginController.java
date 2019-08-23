@@ -143,11 +143,5 @@ public class LoginController implements HttpHandler {
     }
 
 
-    private void update() {
 
-    }
-
-    private void delete() {
-
-    }
 }
