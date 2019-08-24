@@ -48,18 +48,14 @@ public class StudentController implements HttpHandler {
     private void showQuests(HttpExchange httpExchange) throws DBException, IOException {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/student/quests.twig");
         JtwigModel model = JtwigModel.newModel();
-
         QuestDAO questDAO = new QuestDAO();
         List<Quest> questList = questDAO.getQuestsList();
-
         model.with("questList", questList);
         String response = template.render(model);
-
         UtilityService.sendResponse(httpExchange, response);
     }
 
     private void showArtifacts(HttpExchange httpExchange) throws DBException, IOException {
-
         String method = httpExchange.getRequestMethod();
         JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/student/artifacts.twig");
         JtwigModel model = JtwigModel.newModel();
@@ -70,11 +66,8 @@ public class StudentController implements HttpHandler {
 
         model.with("coins", userCoins);
         model.with("artifactList", artifactList);
-
         String response = template.render(model);
-
         if (method.equals("POST")) { buyArtifact(httpExchange); }
-
         UtilityService.sendResponse(httpExchange, response);
     }
 

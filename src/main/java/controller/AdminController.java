@@ -164,15 +164,6 @@ public class AdminController implements HttpHandler {
 
     }
 
-    private void sendResponse(HttpExchange httpExchange, String response) throws IOException {
-
-        httpExchange.sendResponseHeaders(200, response.getBytes().length);
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-
-    }
-
 
     private void addNewMentor(HttpExchange httpExchange) throws IOException, DBException {
         String response = "";
