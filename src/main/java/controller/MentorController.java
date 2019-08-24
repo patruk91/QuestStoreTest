@@ -86,7 +86,7 @@ public class MentorController implements HttpHandler {
             JtwigModel model = JtwigModel.newModel();
 
             response = template.render(model);
-            sendResponse(httpExchange, response);
+            UtilityService.sendResponse(httpExchange, response);
 
         } else if (method.equals("POST")) {
             Map<String, String> inputs = new HashMap<>();
@@ -136,7 +136,7 @@ public class MentorController implements HttpHandler {
 
 
             String response = template.render(model);
-            sendResponse(httpExchange, response);
+            UtilityService.sendResponse(httpExchange, response);
         }
 
         if (method.equals("POST")) {
@@ -191,7 +191,7 @@ public class MentorController implements HttpHandler {
             model.with("class", user.getRoomID());
 
             response = template.render(model);
-            sendResponse(httpExchange, response);
+            UtilityService.sendResponse(httpExchange, response);
         }
     }
 
@@ -210,10 +210,7 @@ public class MentorController implements HttpHandler {
             model.with("artifactList", artifactList);
             String response = template.render(model);
 
-            httpExchange.sendResponseHeaders(200, response.length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
+            UtilityService.sendResponse(httpExchange, response);
 
         }
 
@@ -235,11 +232,7 @@ public class MentorController implements HttpHandler {
             model.with("questList", questList);
             String response = template.render(model);
 
-            httpExchange.sendResponseHeaders(200, response.length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-
+           UtilityService.sendResponse(httpExchange, response);
         }
     }
 
@@ -267,7 +260,7 @@ public class MentorController implements HttpHandler {
 
 
             String response = template.render(model);
-            sendResponse(httpExchange, response);
+            UtilityService.sendResponse(httpExchange, response);
         }
 
         if (method.equals("POST")) {
@@ -324,7 +317,7 @@ public class MentorController implements HttpHandler {
             JtwigModel model = JtwigModel.newModel();
 
             response = template.render(model);
-            sendResponse(httpExchange, response);
+            UtilityService.sendResponse(httpExchange, response);
 
         }
 
@@ -378,10 +371,7 @@ public class MentorController implements HttpHandler {
 
         String response = template.render(model);
 
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        UtilityService.sendResponse(httpExchange, response);
     }
 
 
@@ -411,18 +401,10 @@ public class MentorController implements HttpHandler {
 
         String response = template.render(model);
 
-        sendResponse(httpExchange, response);
+        UtilityService.sendResponse(httpExchange, response);
     }
 
 
-
-    private void sendResponse(HttpExchange httpExchange, String response) throws  IOException {
-            httpExchange.sendResponseHeaders(200, response.length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-
-    }
 
     private String[] parseResponseURi(String uri) {
         //System.out.println("PARSING DATA");
@@ -460,7 +442,7 @@ public class MentorController implements HttpHandler {
             }
 
             String response = template.render(model);
-            sendResponse(httpExchange, response);
+            UtilityService.sendResponse(httpExchange, response);
         }
 
         else if (method.equals("POST")){
