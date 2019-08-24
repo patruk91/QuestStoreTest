@@ -78,11 +78,7 @@ public class AdminController implements HttpHandler {
 
             System.out.println("model render complete ");
 
-            httpExchange.sendResponseHeaders(200, response.length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-
+            UtilityService.sendResponse(httpExchange, response);
 
         }
         if (method.equals("POST")) {
