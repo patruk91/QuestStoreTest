@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import dao.DBException;
 import dao.LoginDAO;
 import dao.SessionDAO;
+import helpers.CookieHelper;
 import helpers.DataParser;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
@@ -20,6 +21,7 @@ public class LoginController implements HttpHandler {
 
     private LoginDAO loginDao = new LoginDAO();
     private SessionDAO sessionDao = new SessionDAO();
+    private CookieHelper cookieHelper = new CookieHelper();
 
 
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -32,7 +34,7 @@ public class LoginController implements HttpHandler {
             String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
             if (cookieStr != null){
 
-                String sessionId = removeQuotationFromSessionId(cookieStr);
+                String sessionId = cookieHelper.removeQuotationFromSessionId(cookieStr);
 
                 System.out.println("cookie str in removing sq: " + cookieStr);
                 try {
@@ -120,20 +122,4 @@ public class LoginController implements HttpHandler {
         }
 
     }
-
-    private String removeQuotationFromSessionId(String cookieString){
-        String[] cookieValues = cookieString.split("=");
-        String sessionIdwrong = cookieValues[1].trim();
-        StringBuilder sb = new StringBuilder(sessionIdwrong);
-        sb.deleteCharAt(sessionIdwrong.length()-1);
-        sb.deleteCharAt(0);
-        String sessionId = sb.toString();
-        return sessionId;
-
-    }
-
-
-
-
-
 }

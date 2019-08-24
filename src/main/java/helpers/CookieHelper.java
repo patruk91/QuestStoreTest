@@ -35,6 +35,17 @@ public class CookieHelper {
         return mentorId;
     }
 
+    public String removeQuotationFromSessionId(String cookieString){
+        String[] cookieValues = cookieString.split("=");
+        String sessionIdwrong = cookieValues[0].trim();
+        StringBuilder sb = new StringBuilder(sessionIdwrong);
+        sb.deleteCharAt(sessionIdwrong.length()-1);
+        sb.deleteCharAt(0);
+        String sessionId = sb.toString();
+        //System.out.println(sessionId + "session id in removequotation marks");
+        return sessionId;
+    }
+
 
     //this method create list with all cookies, in case if there is more than one cookie
     private List<HttpCookie> parseCookies(String cookieString){
@@ -51,16 +62,7 @@ public class CookieHelper {
         return cookies;
     }
 
-    public String removeQuotationFromSessionId(String cookieString){
-        String[] cookieValues = cookieString.split("=");
-        String sessionIdwrong = cookieValues[0].trim();
-        StringBuilder sb = new StringBuilder(sessionIdwrong);
-        sb.deleteCharAt(sessionIdwrong.length()-1);
-        sb.deleteCharAt(0);
-        String sessionId = sb.toString();
-        //System.out.println(sessionId + "session id in removequotation marks");
-        return sessionId;
-    }
+
 
     //this method return one cookie from list with session id (in case of sending more than one cookie)
     private Optional<HttpCookie> getCookieWithSessionId(HttpExchange httpExchange){
