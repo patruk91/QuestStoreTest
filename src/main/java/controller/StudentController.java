@@ -12,8 +12,6 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.*;
-import java.net.URLDecoder;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,10 +28,10 @@ public class StudentController implements HttpHandler {
         try {
             String uri = httpExchange.getRequestURI().toString();
             if (uri.equals("/student/artifacts")) {
-                artifacts(httpExchange);
+                showArtifacts(httpExchange);
             }
             if (uri.equals("/student/quests")) {
-                quests(httpExchange);
+                showQuests(httpExchange);
             } else {
                 profile(httpExchange);
             }
@@ -47,9 +45,7 @@ public class StudentController implements HttpHandler {
 
     }
 
-    private void quests(HttpExchange httpExchange) throws DBException, IOException {
-
-
+    private void showQuests(HttpExchange httpExchange) throws DBException, IOException {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/student/quests.twig");
         JtwigModel model = JtwigModel.newModel();
 
@@ -57,19 +53,12 @@ public class StudentController implements HttpHandler {
         List<Quest> questList = questDAO.getQuestsList();
 
         model.with("questList", questList);
-
-
         String response = template.render(model);
 
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-
-
+        UtilityService.sendResponse(httpExchange, response);
     }
 
-    private void artifacts(HttpExchange httpExchange) throws DBException, IOException {
+    private void showArtifacts(HttpExchange httpExchange) throws DBException, IOException {
 
         String method = httpExchange.getRequestMethod();
         JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/student/artifacts.twig");
@@ -86,10 +75,7 @@ public class StudentController implements HttpHandler {
 
         if (method.equals("POST")) { buyArtifact(httpExchange); }
 
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        UtilityService.sendResponse(httpExchange, response);
     }
 
     private void buyArtifact(HttpExchange httpExchange) throws IOException, DBException {
@@ -144,10 +130,7 @@ public class StudentController implements HttpHandler {
         model.with("experience_points", experience);
         model.with("class", room);
         String response = template.render(model);
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        UtilityService.sendResponse(httpExchange, response);
 
     }
 
