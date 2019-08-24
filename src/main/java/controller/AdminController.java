@@ -132,7 +132,7 @@ public class AdminController implements HttpHandler {
         model.with("totalMentors", totalMentors);
         String response = template.render(model);
 
-        sendResponse(httpExchange, response);
+        UtilityService.sendResponse(httpExchange, response);
     }
 
 
@@ -147,7 +147,7 @@ public class AdminController implements HttpHandler {
         model.with("mentors", mentorsList);
 
         String response = template.render(model);
-        sendResponse(httpExchange, response);
+        UtilityService.sendResponse(httpExchange, response);
     }
 
 
@@ -183,7 +183,7 @@ public class AdminController implements HttpHandler {
             JtwigModel model = JtwigModel.newModel();
 
             response = template.render(model);
-            sendResponse(httpExchange, response);
+            UtilityService.sendResponse(httpExchange, response);
 
         }
 
@@ -263,7 +263,7 @@ public class AdminController implements HttpHandler {
             model.with("address", mentor.getAddress());
 
             response = template.render(model);
-            sendResponse(httpExchange, response);
+            UtilityService.sendResponse(httpExchange, response);
 
         }
 
