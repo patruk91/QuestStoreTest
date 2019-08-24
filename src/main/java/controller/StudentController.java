@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import dao.*;
 import helpers.CookieHelper;
+import helpers.DataParser;
 import model.items.Artifact;
 import model.items.Quest;
 import model.users.User;
@@ -96,7 +97,7 @@ public class StudentController implements HttpHandler {
         BufferedReader br = new BufferedReader(isr);
         String formData = br.readLine();
 
-        Map inputs = parseFormData(formData);
+        Map inputs = DataParser.parseFormData(formData);
         int artifactId = Integer.parseInt(inputs.get("artifact_id").toString());
 
         Artifact artifact = artifactDAO.getArtifact(artifactId);
@@ -150,15 +151,5 @@ public class StudentController implements HttpHandler {
 
     }
 
-    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
-        Map<String, String> map = new HashMap<>();
-        String[] pairs = formData.split("&");
-        for (String pair : pairs) {
-            String[] keyValue = pair.split("=");
-            // We have to decode the value because it's urlencoded. see: https://en.wikipedia.org/wiki/POST_(HTTP)#Use_for_submitting_web_forms
-            String value = new URLDecoder().decode(keyValue[1], "UTF-8");
-            map.put(keyValue[0], value);
-        }
-        return map;
-    }
+
 }

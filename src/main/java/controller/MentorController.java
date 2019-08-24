@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import dao.*;
 import helpers.CookieHelper;
+import helpers.DataParser;
 import model.items.Artifact;
 import model.items.Quest;
 import model.users.Mentor;
@@ -94,7 +95,7 @@ public class MentorController implements HttpHandler {
             String formData = br.readLine();
 
             System.out.println("form data: " + formData + "!!!!");
-            inputs = parseFormData(formData);
+            inputs = DataParser.parseFormData(formData);
 
             String title = inputs.get("title");
             System.out.println("title");
@@ -145,7 +146,7 @@ public class MentorController implements HttpHandler {
             String formData = br.readLine();
 
             System.out.println("form data: " + formData + "!!!!");
-            inputs = parseFormData(formData);
+            inputs = DataParser.parseFormData(formData);
 
             artifactId = this.getIdFromUri(uri);
             int newPrice = Integer.valueOf(inputs.get("value"));
@@ -276,7 +277,7 @@ public class MentorController implements HttpHandler {
             String formData = br.readLine();
 
             System.out.println("form data: " + formData + "!!!!");
-            inputs = parseFormData(formData);
+            inputs = DataParser.parseFormData(formData);
 
             Student student = null;
             userId = this.getIdFromUri(uri);
@@ -334,7 +335,7 @@ public class MentorController implements HttpHandler {
             String formData = br.readLine();
 
             System.out.println("form data: " + formData + "!!!!");
-            inputs = parseFormData(formData);
+            inputs = DataParser.parseFormData(formData);
 
             User user = null;
             Student student = null;
@@ -365,17 +366,6 @@ public class MentorController implements HttpHandler {
         }
     }
 
-
-    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
-        Map<String, String> map = new HashMap<>();
-        String[] pairs = formData.split("&");
-        for (String pair : pairs) {
-            String[] keyValue = pair.split("=");
-            String value = new URLDecoder().decode(keyValue[1], "UTF-8");
-            map.put(keyValue[0], value);
-        }
-        return map;
-    }
 
     private void showMyStudents(HttpExchange httpExchange, int id) throws IOException, DBException {
         List<Student> studentsList = new ArrayList<>();
@@ -480,7 +470,7 @@ public class MentorController implements HttpHandler {
             String formData = br.readLine();
 
             System.out.println("form data: " + formData + "!!!!");
-            inputs = parseFormData(formData);
+            inputs = DataParser.parseFormData(formData);
             int questId = Integer.valueOf(inputs.get("questId"));
             System.out.println(questId);
 

@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import dao.DBException;
 import dao.LoginDAO;
 import dao.SessionDAO;
+import helpers.DataParser;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -67,10 +68,10 @@ public class LoginController implements HttpHandler {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
-            List<String> parsedForm = parseFormData(formData);
+
 
             //First element on list is login  second is password
-            List<String> inputs = this.parseFormData(formData);
+            List<String> inputs = DataParser.parseFormDataToList(formData);
             System.out.println(inputs);
 
             //check is user in database
@@ -131,16 +132,7 @@ public class LoginController implements HttpHandler {
 
     }
 
-    private List<String> parseFormData(String formData) throws UnsupportedEncodingException {
-        List<String> result = new ArrayList<>();
-        String[] pairs = formData.split("&");
-        for(String pair : pairs){
-            String[] keyValue = pair.split("=");
-            String value = new URLDecoder().decode(keyValue[1], "UTF-8");
-            result.add(value);
-        }
-        return result;
-    }
+
 
 
 

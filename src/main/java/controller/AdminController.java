@@ -3,6 +3,7 @@ package controller;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import dao.*;
+import helpers.DataParser;
 import model.items.Level;
 import model.users.Mentor;
 import model.users.User;
@@ -57,7 +58,6 @@ public class AdminController implements HttpHandler {
         if (method.equals("GET")) {
             String response;
 
-
             List<Level> levels = new ArrayList<>();
             try {
                 levels = adminDAO.getLevelList();
@@ -67,27 +67,16 @@ public class AdminController implements HttpHandler {
                 System.out.println(e.toString());
             }
 
-
             System.out.println("name" + levels.get(0).getName());
 
-
-            // get a template file
             JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/levelsPage.twig");
-
-            // create a model that will be passed to a template
             JtwigModel model = JtwigModel.newModel();
-
-            // fill the model with values;
             model.with("levels", levels);
 
-
             System.out.println("fillet model with data");
-            // render a template to a string
             response = template.render(model);
 
             System.out.println("model render complete ");
-            // send the results to a the client
-
 
             httpExchange.sendResponseHeaders(200, response.length());
             OutputStream os = httpExchange.getResponseBody();
@@ -104,7 +93,7 @@ public class AdminController implements HttpHandler {
 
 
             System.out.println("form data: " + formData + "!!!!");
-            inputs = parseFormData(formData);
+            inputs = DataParser.parseFormData(formData);
             String name = inputs.get("name");
             String rangeString = inputs.get("range");
 
@@ -209,7 +198,7 @@ public class AdminController implements HttpHandler {
             String formData = br.readLine();
 
             System.out.println("form data: " + formData + "!!!!");
-            inputs = parseFormData(formData);
+            inputs = DataParser.parseFormData(formData);
 
             User user = null;
             Mentor mentor = null;
@@ -239,21 +228,7 @@ public class AdminController implements HttpHandler {
     }
 
 
-    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
-        Map<String, String> map = new HashMap<>();
-        String[] pairs = formData.split("&");
-        for (String pair : pairs) {
-            String[] keyValue = pair.split("=");
-            // We have to decode the value because it's urlencoded. see: https://en.wikipedia.org/wiki/POST_(HTTP)#Use_for_submitting_web_forms
-            String value = new URLDecoder().decode(keyValue[1], "UTF-8");
-            map.put(keyValue[0], value);
-        }
-        return map;
-    }
-
     private String[] parseResponseURi(String uri) {
-
-
         System.out.println("PARSING DATA");
         String[] splitedUri = uri.split("/");
 
@@ -303,7 +278,7 @@ public class AdminController implements HttpHandler {
             String formData = br.readLine();
 
             System.out.println("form data: " + formData + "!!!!");
-            inputs = parseFormData(formData);
+            inputs = DataParser.parseFormData(formData);
 
             User user = null;
             Mentor mentor = null;
