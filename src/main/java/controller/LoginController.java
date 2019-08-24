@@ -56,10 +56,7 @@ public class LoginController implements HttpHandler {
             String response = template.render(model);
 
 
-            httpExchange.sendResponseHeaders(200, response.length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
+            UtilityService.sendResponse(httpExchange, response);
         }
 
 
@@ -113,10 +110,7 @@ public class LoginController implements HttpHandler {
                         "<h1> Sorry there is no such user " +
                         "!</h1></body><html>";
 
-                httpExchange.sendResponseHeaders(200, response.length());
-                OutputStream os = httpExchange.getResponseBody();
-                os.write(response.getBytes());
-                os.close();
+                UtilityService.sendResponse(httpExchange, response);
             }
 
         }
