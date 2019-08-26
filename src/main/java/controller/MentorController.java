@@ -112,8 +112,7 @@ public class MentorController implements HttpHandler {
             br.close();
             isr.close();
             String url = "/mentor/store";
-            httpExchange.getResponseHeaders().set("Location", url);
-            httpExchange.sendResponseHeaders(303, -1);
+            UtilityService.sendRedirect(httpExchange, url);
         }
     }
 
@@ -158,8 +157,7 @@ public class MentorController implements HttpHandler {
             br.close();
             isr.close();
             String url = "/mentor/store";
-            httpExchange.getResponseHeaders().set("Location", url);
-            httpExchange.sendResponseHeaders(303, -1);
+            UtilityService.sendRedirect(httpExchange, url);
         }
     }
 
@@ -294,8 +292,7 @@ public class MentorController implements HttpHandler {
             br.close();
             isr.close();
             String url = "/mentor/students";
-            httpExchange.getResponseHeaders().set("Location", url);
-            httpExchange.sendResponseHeaders(303, -1);
+            UtilityService.sendRedirect(httpExchange, url);
         }
     }
 
@@ -354,8 +351,7 @@ public class MentorController implements HttpHandler {
             br.close();
             isr.close();
             String url = "/mentor/students";
-            httpExchange.getResponseHeaders().set("Location", url);
-            httpExchange.sendResponseHeaders(303, -1);
+            UtilityService.sendRedirect(httpExchange, url);
         }
     }
 
@@ -478,8 +474,7 @@ public class MentorController implements HttpHandler {
             br.close();
             isr.close();
             String url = "/mentor/students";
-            httpExchange.getResponseHeaders().set("Location", url);
-            httpExchange.sendResponseHeaders(303, -1);
+            UtilityService.sendRedirect(httpExchange, url);
         }
     }
 }

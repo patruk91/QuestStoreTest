@@ -15,4 +15,9 @@ public class UtilityService {
         os.close();
 
     }
+
+    public static void sendRedirect(HttpExchange httpExchange, String url) throws IOException{
+        httpExchange.getResponseHeaders().set("Location", url);
+        httpExchange.sendResponseHeaders(303, -1);
+    }
 }
