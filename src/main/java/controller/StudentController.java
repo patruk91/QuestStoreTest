@@ -10,7 +10,6 @@ import model.items.Quest;
 import model.users.User;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
-
 import java.io.*;
 import java.util.List;
 import java.util.Map;
