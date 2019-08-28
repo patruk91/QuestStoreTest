@@ -21,6 +21,8 @@ public class Student extends User {
         this.artifactList = artifactList;
     }
 
+    public Student(){}
+
     public Student(String login, String password, String userType){
         super(login, password, userType);
     }
