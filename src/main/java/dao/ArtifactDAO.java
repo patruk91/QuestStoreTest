@@ -1,7 +1,6 @@
 package dao;
 
 import model.items.Artifact;
-import model.items.Quest;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -39,8 +38,6 @@ public class ArtifactDAO implements IArtifactDAO {
             resultSet.close();
             stmt.close();
             con.close();
-            System.out.println("Operation done successfully");
-            System.out.println("all artifact size: " + allArtifacts.size());
             return allArtifacts;
 
         } catch (SQLException e) {
@@ -122,8 +119,6 @@ public class ArtifactDAO implements IArtifactDAO {
                 id = result.getInt("artifact_id");
                 usersArtifacts.add(getArtifact(id));
             }
-
-
             return usersArtifacts;
 
         } catch (SQLException e) {

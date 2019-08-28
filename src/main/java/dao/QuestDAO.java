@@ -1,8 +1,6 @@
 package dao;
 
 import model.items.Quest;
-import model.users.Mentor;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +59,6 @@ public class QuestDAO implements IQuestDAO {
                 id = result.getInt("quest_id");
                 usersQuests.add(getQuest(id));
             }
-
-
             return usersQuests;
 
         } catch (SQLException e) {
@@ -95,8 +91,6 @@ public class QuestDAO implements IQuestDAO {
             stmt.close();
             con.close();
 
-            System.out.println("Operation done successfully");
-            System.out.println("all quests size: " + allQuests.size());
             return allQuests;
 
         } catch (SQLException e) {
@@ -112,8 +106,6 @@ public class QuestDAO implements IQuestDAO {
         try {
             connection = dbCreator.connectToDatabase();
             PreparedStatement statement = connection.prepareStatement(query);
-
-
             statement.setInt(1, quest.getReward());
             statement.setString(2, quest.getCategory());
             statement.setString(3, quest.getDescription());
@@ -135,15 +127,12 @@ public class QuestDAO implements IQuestDAO {
     }
 
     public void updateQuestCategory(Quest quest) throws DBException {
-        // Update based on quest id
         String query = "UPDATE quests SET quest_category = ? WHERE id = ?";
         try {
             connection = dbCreator.connectToDatabase();
             PreparedStatement statement = connection.prepareStatement(query);
-
             statement.setString(1, quest.getCategory());
             statement.setInt(2, quest.getId());
-
             statement.executeUpdate();
             connection.close();
 
@@ -152,7 +141,6 @@ public class QuestDAO implements IQuestDAO {
         } catch (Exception e) {
             throw new DBException("Unidentified exception occurred in updateQuestCategory(Quest quest)");
         }
-
     }
 
 
@@ -174,7 +162,6 @@ public class QuestDAO implements IQuestDAO {
 
 
     public void markAchievedQuests(int questId, int userId) throws DBException{
-
         DBCreator dbCreator = new DBCreator();
         try {
             Connection connection = dbCreator.connectToDatabase();

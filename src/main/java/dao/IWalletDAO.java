@@ -8,7 +8,6 @@ public interface IWalletDAO {
 
     int showWallet(int id) throws DBException;
     void buyArtifact(int userID, int artifactID) throws DBException;
-    void buyArtifactWithTeammates();
     Map<Integer, Integer> seeStudentsWallets() throws DBException;
 
 

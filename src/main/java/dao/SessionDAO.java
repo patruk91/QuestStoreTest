@@ -13,17 +13,13 @@ public class SessionDAO {
         try {
             Connection connection = dbCreator.connectToDatabase();
             PreparedStatement stm = connection.prepareStatement("select * from sessions where sessionid = ?");
-
             stm.setString(1, sessionId);
-
             ResultSet result = stm.executeQuery();
             connection.close();
-
 
             while (result.next()) {
                 userId = result.getInt("userid");
             }
-
             return userId;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -35,14 +31,11 @@ public class SessionDAO {
     }
 
     public void addSession(String sessionId, int userId) throws DBException {
-
         try {
             Connection connection = dbCreator.connectToDatabase();
             PreparedStatement stm = connection.prepareStatement("insert into sessions (sessionid, userid) values (?, ?)");
-
             stm.setString(1, sessionId);
             stm.setInt(2, userId);
-
             stm.executeUpdate();
             connection.close();
 

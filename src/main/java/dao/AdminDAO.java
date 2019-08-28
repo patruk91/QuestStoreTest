@@ -1,6 +1,5 @@
 package dao;
 
-import model.items.Artifact;
 import model.items.Level;
 
 import java.sql.*;
@@ -16,14 +15,11 @@ public class AdminDAO implements IAdminDAO {
     }
 
 
-
-
     @Override
     public void addLevel(String name, int maxValue) throws DBException {
         try {
             Connection connection = dbCreator.connectToDatabase();
             PreparedStatement stm = connection.prepareStatement("insert into level_of_exp (name, max_value) values (?, ?)");
-
             stm.setString(1, name);
             stm.setInt(2, maxValue);
 
@@ -42,9 +38,6 @@ public class AdminDAO implements IAdminDAO {
     public void createNewClass() {
 
     }
-
-
-
 
 
     @Override

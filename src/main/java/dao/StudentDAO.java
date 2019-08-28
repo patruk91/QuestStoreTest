@@ -8,17 +8,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 
 public class StudentDAO implements IStudentDAO {
-
     //this class contains methods to create and update student
-    // and show his level
-
-    //TODO Get DBCreator object to private filed of WallDao class instead of creating it in every method
-
 
     private Connection connection;
     private DBCreator dbCreator;
@@ -41,7 +35,6 @@ public class StudentDAO implements IStudentDAO {
             statement.setString(4, student.getEmail());
             statement.setString(5, student.getAddress());
             statement.setInt(6, student.getId());
-
             statement.setString(7, student.getLogin());
             statement.setString(8, student.getPassword());
             statement.setInt(9, student.getId());
@@ -70,7 +63,6 @@ public class StudentDAO implements IStudentDAO {
         try {
             Connection connection = dbCreator.connectToDatabase();
             PreparedStatement stm = connection.prepareStatement("select * from studentpersonals ORDER BY user_id");
-
             ResultSet result = stm.executeQuery();
             connection.close();
             Student student = null;
@@ -86,7 +78,6 @@ public class StudentDAO implements IStudentDAO {
                 student = new Student(id, firstName, lastName, phoneNum, email, address, roomID);
                studentList.add(student);
             }
-
             return studentList;
         } catch (SQLException e) {
             throw new DBException("SQLException occurred in getAllStudents()");
@@ -107,7 +98,6 @@ public class StudentDAO implements IStudentDAO {
             while (result.next()) {
                 int id = result.getInt("user_id");
                 String firstName = result.getString("first_name");
-               // System.out.println("student first name" + firstName);
                 String lastName = result.getString("last_name");
                 String phoneNum = result.getString("phone_number");
                 String email = result.getString("email");
@@ -192,12 +182,9 @@ public class StudentDAO implements IStudentDAO {
 
     private void createUser(User user) throws DBException {
         String query = "INSERT INTO users(login, password, usertype) VALUES (?,?,?)";
-
         try {
             connection = dbCreator.connectToDatabase();
             PreparedStatement statement = connection.prepareStatement(query);
-
-
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getUserType());
@@ -205,7 +192,6 @@ public class StudentDAO implements IStudentDAO {
             connection.close();
 
         } catch (SQLException e) {
-
             throw new DBException("SQLException occurred in createUser()");
 
         } catch (Exception e){
@@ -231,9 +217,7 @@ public class StudentDAO implements IStudentDAO {
             statement.setString(7, student.getLastName());
             statement.setString(8, student.getPhoneNum());
             statement.setInt(9, student.getId());
-
             statement.executeUpdate();
-
             connection.close();
 
         } catch (SQLException e) {
@@ -248,24 +232,18 @@ public class StudentDAO implements IStudentDAO {
     private int getUserIdWithLogin(User user) throws DBException {
         String query = "SELECT * FROM users WHERE login = ?;";
         try {
-
             connection = dbCreator.connectToDatabase();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, user.getLogin());
             ResultSet results = statement.executeQuery();
-
             results.next();
             int id = results.getInt("id");
             connection.close();
             return id;
-
-
         } catch (SQLException e) {
-
             throw new DBException("Did not find user with this login SLQ Exception");
 
         } catch (Exception e){
-
             throw new DBException("Did not find user with this login");
         }
 

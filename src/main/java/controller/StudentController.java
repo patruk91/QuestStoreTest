@@ -29,9 +29,10 @@ public class StudentController implements HttpHandler {
             if (uri.equals("/student/artifacts")) {
                 showArtifacts(httpExchange);
             }
-            if (uri.equals("/student/quests")) {
+            else if (uri.equals("/student/quests")) {
                 showQuests(httpExchange);
-            } else {
+            }
+            else {
                 profile(httpExchange);
             }
         } catch (IOException e) {

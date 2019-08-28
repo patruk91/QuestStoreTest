@@ -9,9 +9,8 @@ import java.util.Map;
 
 
 public class WalletDAO implements IWalletDAO {
-    //    this class contains methods to process wallet and purchase artifacts
+    // this class contains methods to process wallet and purchase artifacts
 
-    //TODO Get DBCreator object to private filed of WallDao class instead of creating it in every method
     private DBCreator dbCreator;
 
     public WalletDAO() {
@@ -73,25 +72,14 @@ public class WalletDAO implements IWalletDAO {
     }
 
 
-    //todo
-    public void buyArtifactWithTeammates() {
-    }
-
     private void updateMoneyAmount(int userID, int artifactID) throws DBException {
         try {
             DBCreator dbCreator = new DBCreator();
             Connection connection = dbCreator.connectToDatabase();
-
-            //REFACTOR: getCoolCoins(user id) is the same as showWallet(use id)
-            //old code:
-            //int coolcoins = getCoolCoins(userID);
-            //new code:
             int coolcoins = showWallet(userID);
-            //refactor end
 
             int artifactCost = getArtifactCost(artifactID);
             int restCoins = coolcoins - artifactCost;
-            System.out.println(restCoins);
             PreparedStatement stm = connection.prepareStatement("update  studentpersonals set coolcoins = ? where user_id = ?");
             stm.setInt(1, restCoins);
             stm.setInt(2, userID);
@@ -105,7 +93,6 @@ public class WalletDAO implements IWalletDAO {
 
     }
 
-    //todo
     private void addArtifactToItems(int userID, int artifactID) throws DBException {
         try {
             DBCreator dbCreator = new DBCreator();
@@ -123,13 +110,8 @@ public class WalletDAO implements IWalletDAO {
     }
 
     private boolean checkIfTransactionPossible(int userID, int artifactID) throws DBException {
-        /*refactor:
-        old code
-        int coolcoins = getCoolCoins(userID);
-        new code*/
         int coolcoins = showWallet(userID);
         int artifactCost = getArtifactCost(artifactID);
-        System.out.println(coolcoins >= artifactCost);
         return coolcoins >= artifactCost;
     }
 
@@ -144,7 +126,6 @@ public class WalletDAO implements IWalletDAO {
             if (result.next()) {
                 artifactCost = result.getInt("artifact_price");
             }
-            System.out.println("artifact cost" + artifactCost);
             connection.close();
             return artifactCost;
 
