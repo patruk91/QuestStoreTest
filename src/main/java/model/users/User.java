@@ -13,8 +13,6 @@ public abstract class User {
 
     User(){}
 
-
-
     User(int id, String login, String password, String firstName, String lastName, String phoneNum, String email, String address, String userType) {
         this.setId(id);
         this.setLogin(login);

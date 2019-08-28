@@ -1,7 +1,6 @@
 package dao;
 
 import model.items.Artifact;
-import java.sql.SQLException;
 import java.util.List;
 
 public interface IArtifactDAO {
@@ -13,7 +12,6 @@ public interface IArtifactDAO {
     void createArtifact(Artifact artifact) throws DBException;
     void updateArtifact(int artifactId, int newPrice)throws DBException;
 
-    //I am not shure in which interface this method should by but it's not implemented yet
     void markBoughtArtifacts(int studentId, int questId)  throws DBException;
     Artifact getArtifact(int id) throws DBException;
     List<Artifact> getUsersArtifacts(int id) throws DBException;
