@@ -1,8 +1,6 @@
 package dao;
 
 import model.items.Quest;
-
-import java.sql.SQLException;
 import java.util.List;
 
 public interface IQuestDAO {

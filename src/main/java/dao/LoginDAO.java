@@ -15,14 +15,11 @@ public class LoginDAO implements ILoginDAO {
 
     public void deleteSession(String sessionId) throws DBException{
         Connection connection;
-        System.out.println("session id passed to deleteSession method in loginDao: " + sessionId);
         try {
             String query = "DELETE FROM sessions WHERE sessionid LIKE ?";
-
             connection = dbCreator.connectToDatabase();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, sessionId);
-
             statement.executeUpdate();
             connection.close();
 

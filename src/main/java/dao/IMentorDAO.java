@@ -3,7 +3,6 @@ package dao;
 
 import model.users.Mentor;
 import model.users.User;
-
 import java.sql.SQLException;
 
 public interface IMentorDAO {

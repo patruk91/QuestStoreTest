@@ -17,12 +17,6 @@ public class Artifact {
         this.availability = availability;
     }
 
-    public Artifact(int id, String category, int price, boolean availability) {
-        this.id = id;
-        this.category = category;
-        this.price = price;
-        this.availability = availability;
-    }
 
     public Artifact(int id, String name, String category, int price, String description){
         this.id = id;

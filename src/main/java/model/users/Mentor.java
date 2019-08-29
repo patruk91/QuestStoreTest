@@ -1,7 +1,5 @@
 package model.users;
 
-
-
 public class Mentor extends User {
     private int roomID;
 

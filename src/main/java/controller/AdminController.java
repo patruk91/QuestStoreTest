@@ -3,6 +3,7 @@ package controller;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import dao.*;
+import helpers.DataParser;
 import model.items.Level;
 import model.users.Mentor;
 import model.users.User;
@@ -10,7 +11,6 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.*;
-import java.net.URLDecoder;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -21,7 +21,6 @@ public class AdminController implements HttpHandler {
     private StudentDAO studentDAO = new StudentDAO();
 
     public void handle(HttpExchange httpExchange) {
-
         int id = 1;
         try {
             String uri = httpExchange.getRequestURI().toString();
@@ -34,7 +33,6 @@ public class AdminController implements HttpHandler {
                 showMentors(httpExchange);
             } else if (uri.equals("/admin")) {
                 showProfile(httpExchange, id);
-
             } else if (uri.equals("/admin/createMentor")) {
                 addNewMentor(httpExchange);
             } else if (parsedUri.length > 2 && parsedUri[2].equals("update")) {
@@ -56,8 +54,6 @@ public class AdminController implements HttpHandler {
         AdminDAO adminDAO = new AdminDAO();
         if (method.equals("GET")) {
             String response;
-
-
             List<Level> levels = new ArrayList<>();
             try {
                 levels = adminDAO.getLevelList();
@@ -67,34 +63,11 @@ public class AdminController implements HttpHandler {
                 System.out.println(e.toString());
             }
 
-
-            System.out.println("name" + levels.get(0).getName());
-
-
-            // get a template file
             JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/levelsPage.twig");
-
-            // create a model that will be passed to a template
             JtwigModel model = JtwigModel.newModel();
-
-            // fill the model with values;
             model.with("levels", levels);
-
-
-            System.out.println("fillet model with data");
-            // render a template to a string
             response = template.render(model);
-
-            System.out.println("model render complete ");
-            // send the results to a the client
-
-
-            httpExchange.sendResponseHeaders(200, response.length());
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-
-
+            UtilityService.sendResponse(httpExchange, response);
         }
         if (method.equals("POST")) {
             Map<String, String> inputs;
@@ -102,20 +75,14 @@ public class AdminController implements HttpHandler {
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
 
-
-            System.out.println("form data: " + formData + "!!!!");
-            inputs = parseFormData(formData);
+            inputs = DataParser.parseFormData(formData);
             String name = inputs.get("name");
             String rangeString = inputs.get("range");
 
-
             adminDAO.addLevel(name, Integer.valueOf(rangeString));
 
-
             String url = "/admin/levels";
-            httpExchange.getResponseHeaders().set("Location", url);
-            httpExchange.sendResponseHeaders(303, -1);
-
+            UtilityService.sendRedirect(httpExchange, url);
         }
 
     }
@@ -131,13 +98,9 @@ public class AdminController implements HttpHandler {
         String phoneNumber = user.getPhoneNum();
         String email = user.getEmail();
         String address = user.getAddress();
-        System.out.println("admin first name" + firstName);
-        System.out.println("admin last name" + lastName);
         int totalStudents = studentDAO.getAllStudents().size();
         int totalMentors = mentorDao.getAllMentors().size();
 
-
-        // fill the model with values
         model.with("firstName", firstName);
         model.with("lastName", lastName);
         model.with("phoneNum", phoneNumber);
@@ -147,45 +110,17 @@ public class AdminController implements HttpHandler {
         model.with("totalMentors", totalMentors);
         String response = template.render(model);
 
-        sendResponse(httpExchange, response);
+        UtilityService.sendResponse(httpExchange, response);
     }
 
 
     private void showMentors(HttpExchange httpExchange) throws IOException, DBException {
-        // create a list with mentors from dao
-
         mentorsList = mentorDao.getAllMentors();
-
-
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/admin/mentorList.twig");
         JtwigModel model = JtwigModel.newModel();
         model.with("mentors", mentorsList);
-
         String response = template.render(model);
-        sendResponse(httpExchange, response);
-    }
-
-
-    private List<String> getMentorsNames(List<Mentor> mentorsList) {
-        List<String> mentorsNames = new ArrayList<>();
-        for (Mentor mentor : mentorsList
-        ) {
-            String firstName = mentor.getFirstName();
-            String lastName = mentor.getLastName();
-            String fullName = firstName + " " + lastName;
-            mentorsNames.add(fullName);
-        }
-        return mentorsNames;
-
-    }
-
-    private void sendResponse(HttpExchange httpExchange, String response) throws IOException {
-
-        httpExchange.sendResponseHeaders(200, response.getBytes().length);
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-
+        UtilityService.sendResponse(httpExchange, response);
     }
 
 
@@ -196,10 +131,8 @@ public class AdminController implements HttpHandler {
         if (method.equals("GET")) {
             JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/admin/createUpdateMentor.twig");
             JtwigModel model = JtwigModel.newModel();
-
             response = template.render(model);
-            sendResponse(httpExchange, response);
-
+            UtilityService.sendResponse(httpExchange, response);
         }
 
         if (method.equals("POST")) {
@@ -207,13 +140,10 @@ public class AdminController implements HttpHandler {
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
-
-            System.out.println("form data: " + formData + "!!!!");
-            inputs = parseFormData(formData);
+            inputs = DataParser.parseFormData(formData);
 
             User user = null;
             Mentor mentor = null;
-
 
             String name = inputs.get("name");
             String surname = inputs.get("surname");
@@ -223,63 +153,29 @@ public class AdminController implements HttpHandler {
             String adress = inputs.get("adress");
             String phone = inputs.get("phone");
             String mentorsClass = inputs.get("classes");
-            System.out.println(mentorsClass);
-
             user = new Mentor(login, password, "mentor");
             //default value of coolcoins and experience points is 0 as we create new student
             mentor = new Mentor(0, login, password, name, surname, phone, email, adress);
-
             mentorDao.addMentor(user, mentor);
 
             String url = "/admin/mentors";
-            httpExchange.getResponseHeaders().set("Location", url);
-            httpExchange.sendResponseHeaders(303, -1);
-
+            UtilityService.sendRedirect(httpExchange, url);
         }
     }
 
-
-    private static Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
-        Map<String, String> map = new HashMap<>();
-        String[] pairs = formData.split("&");
-        for (String pair : pairs) {
-            String[] keyValue = pair.split("=");
-            // We have to decode the value because it's urlencoded. see: https://en.wikipedia.org/wiki/POST_(HTTP)#Use_for_submitting_web_forms
-            String value = new URLDecoder().decode(keyValue[1], "UTF-8");
-            map.put(keyValue[0], value);
-        }
-        return map;
-    }
 
     private String[] parseResponseURi(String uri) {
-
-
-        System.out.println("PARSING DATA");
         String[] splitedUri = uri.split("/");
-
-        for (String element : splitedUri
-        ) {
-            System.out.println(element);
-        }
         return splitedUri;
-
     }
 
 
     private void updateProfile(String id, HttpExchange httpExchange) throws IOException, DBException {
-        System.out.println("PROFILE UPDATE" + id);
-
         String response = "";
         String method = httpExchange.getRequestMethod();
 
-
         if (method.equals("GET")) {
-            Mentor mentor = new Mentor("null", "null", "null");
-
-            mentor = userDAO.getFullMentor(Integer.parseInt(id));
-
-
-            String userAgent = httpExchange.getRequestHeaders().getFirst("User-agent");
+            Mentor mentor = userDAO.getFullMentor(Integer.parseInt(id));
             JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/admin/UpdateMentor.twig");
             JtwigModel model = JtwigModel.newModel();
 
@@ -292,22 +188,16 @@ public class AdminController implements HttpHandler {
             model.with("address", mentor.getAddress());
 
             response = template.render(model);
-            sendResponse(httpExchange, response);
-
+            UtilityService.sendResponse(httpExchange, response);
         }
 
         if (method.equals("POST")) {
-            Map<String, String> inputs = new HashMap<>();
+            Map<String, String> inputs;
             InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String formData = br.readLine();
 
-            System.out.println("form data: " + formData + "!!!!");
-            inputs = parseFormData(formData);
-
-            User user = null;
-            Mentor mentor = null;
-
+            inputs = DataParser.parseFormData(formData);
 
             String name = inputs.get("name");
             String surname = inputs.get("surname");
@@ -316,18 +206,11 @@ public class AdminController implements HttpHandler {
             String email = inputs.get("email");
             String adress = inputs.get("adress");
             String phone = inputs.get("phone");
-            String mentorsClass = inputs.get("classes");
-            System.out.println(mentorsClass);
-
-
-            mentor = new Mentor(Integer.valueOf(id), login, password, name, surname, phone, email, adress);
-
+            Mentor mentor = new Mentor(Integer.valueOf(id), login, password, name, surname, phone, email, adress);
             mentorDao.updateMentorByID(mentor);
 
             String url = "/admin/mentors";
-            httpExchange.getResponseHeaders().set("Location", url);
-            httpExchange.sendResponseHeaders(303, -1);
-
+            UtilityService.sendRedirect(httpExchange, url);
         }
     }
 
