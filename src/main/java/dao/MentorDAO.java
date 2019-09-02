@@ -30,7 +30,7 @@ public class MentorDAO implements IMentorDAO {
     }
 
     public List<Mentor> getAllMentors() throws DBException{
-        List<Mentor> mentorsList = new ArrayList();
+        List<Mentor> mentorsList = new ArrayList<>();
         try {
             Connection connection = dbCreator.connectToDatabase();
             PreparedStatement stm = connection.prepareStatement("select * from mentorspersonals ORDER BY user_id");
@@ -61,7 +61,7 @@ public class MentorDAO implements IMentorDAO {
 
     public void updateMentorByID(Mentor mentor) throws DBException {
         try {
-            String query = "UPDATE mentorsPersonals SET first_name = ?, last_name = ?, phone_number = ?, email = ?, address = ? WHERE user_id = ?;" +
+            String query = "UPDATE mentorsPersonals SET first_name = ?, last_name = ?, phone_number = ?, email = ?, address = ? WHERE user_id = ?" +
                     "UPDATE users set login = ?, password = ? WHERE id = ? ";
 
             connection = dbCreator.connectToDatabase();
@@ -91,7 +91,7 @@ public class MentorDAO implements IMentorDAO {
 
     public void updateMentorByFullName(Mentor mentor) throws DBException {
         try {
-            String query = "UPDATE mentorsPersonals SET phone_number = ?, email = ?, adress = ? WHERE first_name = ? AND last_name = ?";
+            String query = "UPDATE mentorsPersonals SET phone_number = ?, email = ?, address = ? WHERE first_name = ? AND last_name = ?";
 
             connection = dbCreator.connectToDatabase();
             PreparedStatement statement = connection.prepareStatement(query);
@@ -160,7 +160,7 @@ public class MentorDAO implements IMentorDAO {
             if (result.next()) {
                 userID = result.getInt("user_id");
             }
-            stm = connection.prepareStatement("select * from mentorspersonals left join classes on " + "mentorspersonals.user_id = classes.user_id where mentorspersonals.user_id = ?;");
+            stm = connection.prepareStatement("select * from mentorspersonals left join classes on mentorspersonals.user_id = classes.user_id where mentorspersonals.user_id = ?;");
             stm.setInt(1, userID);
             result = stm.executeQuery();
 
