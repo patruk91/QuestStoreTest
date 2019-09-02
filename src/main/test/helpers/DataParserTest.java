@@ -31,4 +31,11 @@ class DataParserTest {
         assertThrows(IllegalArgumentException.class, () -> DataParser.parseFormData(strToParse));
     }
 
+    @Test
+    void throwNullPointerExceptionWhenStringToParseIsNull() {
+        String strToParse = null;
+        assertThrows(NullPointerException.class, () -> DataParser.parseFormData(strToParse));
+    }
+
+
 }
