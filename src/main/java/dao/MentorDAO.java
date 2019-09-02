@@ -61,7 +61,7 @@ public class MentorDAO implements IMentorDAO {
 
     public void updateMentorByID(Mentor mentor) throws DBException {
         try {
-            String query = "UPDATE mentorsPersonals SET first_name = ?, last_name = ?, phone_number = ?, email = ?, address = ? WHERE user_id = ?" +
+            String query = "UPDATE mentorsPersonals SET first_name = ?, last_name = ?, phone_number = ?, email = ?, address = ? WHERE user_id = ?;" +
                     "UPDATE users set login = ?, password = ? WHERE id = ? ";
 
             connection = dbCreator.connectToDatabase();
