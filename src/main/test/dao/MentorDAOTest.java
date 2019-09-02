@@ -4,6 +4,8 @@ import model.users.Mentor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MentorDAOTest {
@@ -49,5 +51,15 @@ class MentorDAOTest {
         assertEquals(4, mentor.getId());
     }
 
-
+    @Test
+    void checkIfListOfMentorsIsNotNulle() {
+        MentorDAO mentorDAO = new MentorDAO();
+        List<Mentor> mentors = null;
+        try {
+            mentors = mentorDAO.getAllMentors();
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
+        assertNotNull(mentorDAO);
+    }
 }
