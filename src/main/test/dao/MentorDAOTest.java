@@ -19,6 +19,12 @@ class MentorDAOTest {
     }
 
     @Test
+    void throwExceptionIfTypeIsNotMentor() {
+        MentorDAO mentorDAO = new MentorDAO();
+        assertThrows(Exception.class, () -> mentorDAO.getMentorById(1));
+    }
+
+    @Test
     void checkIfMentorIsNotNull() {
         MentorDAO mentorDAO = new MentorDAO();
         Mentor mentor = null;
@@ -39,6 +45,9 @@ class MentorDAOTest {
         } catch (DBException e) {
             e.printStackTrace();
         }
+
         assertEquals(4, mentor.getId());
     }
+
+
 }
