@@ -7,11 +7,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MentorDAOTest {
-
-    @BeforeEach
-    void setUp() {
-    }
-
     @Test
     void throwExceptionIfMentorIdIsWrong() {
         MentorDAO mentorDAO = new MentorDAO();
@@ -48,6 +43,4 @@ class MentorDAOTest {
 
         assertEquals(4, mentor.getId());
     }
-
-
 }
