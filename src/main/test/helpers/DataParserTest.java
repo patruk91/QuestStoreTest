@@ -37,5 +37,24 @@ class DataParserTest {
         assertThrows(NullPointerException.class, () -> DataParser.parseFormData(strToParse));
     }
 
+    @Test
+    void checkIfStringToParseIsWithoutEqualSign() {
+        String strToParse = "user1";
+        assertThrows(IllegalArgumentException.class, () -> DataParser.parseFormData(strToParse));
+    }
+
+    @Test
+    void checkIfStringToParseHaveOneRecord() {
+        String strToParse = "user1=userowski1";
+        Map<String, String> expected = new HashMap<>();
+        expected.put("user1", "userowski1");
+        Map<String, String> actual = null;
+        try {
+            actual = DataParser.parseFormData(strToParse);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+       assertEquals(expected.get("user1"), actual.get("user1"));
+    }
 
 }
