@@ -52,7 +52,7 @@ class MentorDAOTest {
     }
 
     @Test
-    void checkIfListOfMentorsIsNotNulle() {
+    void checkIfListOfMentorsIsNotNull() {
         MentorDAO mentorDAO = new MentorDAO();
         List<Mentor> mentors = null;
         try {
@@ -60,6 +60,57 @@ class MentorDAOTest {
         } catch (DBException e) {
             e.printStackTrace();
         }
-        assertNotNull(mentorDAO);
+        assertNotNull(mentors);
+    }
+
+    @Test
+    void checkIfListOfMentorsIsPopulated() {
+        MentorDAO mentorDAO = new MentorDAO();
+        List<Mentor> mentors = null;
+        try {
+            mentors = mentorDAO.getAllMentors();
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
+        assertTrue(mentors.size() >= 0);
+    }
+
+    @Test
+    void throwsExceptionIfNoMentorByFullName() {
+        MentorDAO mentorDAO = new MentorDAO();
+        String firstName = "";
+        String lastName = "";
+        assertThrows(DBException.class, () -> mentorDAO.getMentorByFullName(firstName, lastName));
+    }
+
+    @Test
+    void throwsExceptionIfFirstNameIsNull() {
+        MentorDAO mentorDAO = new MentorDAO();
+        String firstName = null;
+        String lastName = "Daen";
+        assertThrows(DBException.class, () -> mentorDAO.getMentorByFullName(firstName, lastName));
+    }
+
+    @Test
+    void throwsExceptionIfLastNameIsNull() {
+        MentorDAO mentorDAO = new MentorDAO();
+        String firstName = "Aristotle";
+        String lastName = null;
+        assertThrows(DBException.class, () -> mentorDAO.getMentorByFullName(firstName, lastName));
+    }
+
+    @Test
+    void getMentorIdWhenFullNameIsGiven() {
+        MentorDAO mentorDAO = new MentorDAO();
+        String firstName = "Aristotle";
+        String lastName = "Daen";
+        Mentor mentor = null;
+        try {
+            mentor = mentorDAO.getMentorByFullName(firstName, lastName);
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
+        
+        assertEquals(4, mentor.getId());
     }
 }
