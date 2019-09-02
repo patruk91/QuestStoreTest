@@ -29,4 +29,16 @@ class MentorDAOTest {
         }
         assertNotNull(mentor);
     }
+
+    @Test
+    void checkIfMentorIdIsFour() {
+        MentorDAO mentorDAO = new MentorDAO();
+        Mentor mentor = null;
+        try {
+            mentor = mentorDAO.getMentorById(4);
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
+        assertEquals(4, mentor.getId());
+    }
 }
