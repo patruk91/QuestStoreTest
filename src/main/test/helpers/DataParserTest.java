@@ -58,8 +58,29 @@ class DataParserTest {
     }
 
     @Test
-    void checkIfStringToParseMultipleRecords() {
+    void checkIfStringToParseHaveMultipleRecords() {
         String strToParse = "user1=userowski1&user2=userowski2";
+        Map<String, String> expected = new HashMap<>();
+        expected.put("user1", "userowski1");
+        expected.put("user2", "userowski2");
+
+        Map<String, String> actual = null;
+        try {
+            actual = DataParser.parseFormData(strToParse);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Map<String, String> finalActual = actual;
+
+        assertAll(
+                () -> assertEquals(expected.get("user1"), finalActual.get("user1")),
+                () -> assertEquals(expected.get("user2"), finalActual.get("user2"))
+        );
+    }
+
+    @Test
+    void checkIfStringToParseHaveMultipleRecordsWithEmptySpaces() {
+        String strToParse = "user1= userowski1 & user2= userowski2";
         Map<String, String> expected = new HashMap<>();
         expected.put("user1", "userowski1");
         expected.put("user2", "userowski2");
