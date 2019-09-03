@@ -6,7 +6,7 @@ import java.io.OutputStream;
 
 public class UtilityService {
 
-    public static void sendResponse(HttpExchange httpExchange, String response) throws IOException {
+    public void sendResponse(HttpExchange httpExchange, String response) throws IOException {
 
         httpExchange.sendResponseHeaders(200, response.getBytes().length);
         OutputStream os = httpExchange.getResponseBody();
@@ -15,7 +15,7 @@ public class UtilityService {
 
     }
 
-    public static void sendRedirect(HttpExchange httpExchange, String url) throws IOException{
+    public void sendRedirect(HttpExchange httpExchange, String url) throws IOException{
         httpExchange.getResponseHeaders().set("Location", url);
         httpExchange.sendResponseHeaders(303, -1);
     }

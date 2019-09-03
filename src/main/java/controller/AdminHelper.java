@@ -22,17 +22,24 @@ public class AdminHelper {
     private MentorDAO mentorDao;
     private UserDAO userDAO;
     private StudentDAO studentDAO;
+    private AdminDAO adminDAO;
+    private UtilityService utilityService;
 
-    public AdminHelper(MentorDAO mentorDao, UserDAO userDAO, StudentDAO studentDAO) {
+    public AdminHelper(MentorDAO mentorDao,
+                       UserDAO userDAO,
+                       StudentDAO studentDAO,
+                       AdminDAO adminDAO,
+                       UtilityService utilityService) {
         this.mentorsList = new ArrayList();
         this.mentorDao = mentorDao;
         this.userDAO = userDAO;
         this.studentDAO = studentDAO;
+        this.adminDAO = adminDAO;
+        this.utilityService = utilityService;
     }
 
     public void showLevels(HttpExchange httpExchange) throws DBException, IOException {
         String method = httpExchange.getRequestMethod();
-        AdminDAO adminDAO = new AdminDAO();
         if (method.equals("GET")) {
             String response;
             List<Level> levels = new ArrayList<>();
@@ -48,7 +55,7 @@ public class AdminHelper {
             JtwigModel model = JtwigModel.newModel();
             model.with("levels", levels);
             response = template.render(model);
-            UtilityService.sendResponse(httpExchange, response);
+            utilityService.sendResponse(httpExchange, response);
         }
         if (method.equals("POST")) {
             Map<String, String> inputs;
@@ -63,7 +70,7 @@ public class AdminHelper {
             adminDAO.addLevel(name, Integer.valueOf(rangeString));
 
             String url = "/admin/levels";
-            UtilityService.sendRedirect(httpExchange, url);
+            utilityService.sendRedirect(httpExchange, url);
         }
 
     }
@@ -91,7 +98,7 @@ public class AdminHelper {
         model.with("totalMentors", totalMentors);
         String response = template.render(model);
 
-        UtilityService.sendResponse(httpExchange, response);
+        utilityService.sendResponse(httpExchange, response);
     }
 
 
@@ -101,7 +108,7 @@ public class AdminHelper {
         JtwigModel model = JtwigModel.newModel();
         model.with("mentors", mentorsList);
         String response = template.render(model);
-        UtilityService.sendResponse(httpExchange, response);
+        utilityService.sendResponse(httpExchange, response);
     }
 
 
@@ -113,7 +120,7 @@ public class AdminHelper {
             JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/admin/createUpdateMentor.twig");
             JtwigModel model = JtwigModel.newModel();
             response = template.render(model);
-            UtilityService.sendResponse(httpExchange, response);
+            utilityService.sendResponse(httpExchange, response);
         }
 
         if (method.equals("POST")) {
@@ -140,7 +147,7 @@ public class AdminHelper {
             mentorDao.addMentor(user, mentor);
 
             String url = "/admin/mentors";
-            UtilityService.sendRedirect(httpExchange, url);
+            utilityService.sendRedirect(httpExchange, url);
         }
     }
 
@@ -169,7 +176,7 @@ public class AdminHelper {
             model.with("address", mentor.getAddress());
 
             response = template.render(model);
-            UtilityService.sendResponse(httpExchange, response);
+            utilityService.sendResponse(httpExchange, response);
         }
 
         if (method.equals("POST")) {
@@ -191,7 +198,7 @@ public class AdminHelper {
             mentorDao.updateMentorByID(mentor);
 
             String url = "/admin/mentors";
-            UtilityService.sendRedirect(httpExchange, url);
+            utilityService.sendRedirect(httpExchange, url);
         }
     }
 }

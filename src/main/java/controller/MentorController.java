@@ -17,16 +17,32 @@ import java.util.*;
 
 public class MentorController implements HttpHandler {
 
-    private SessionDAO sessionDAO = new SessionDAO();
-    private UserDAO userDAO = new UserDAO();
-    private StudentDAO studentDao = new StudentDAO();
-    private CookieHelper cookieHelper = new CookieHelper(sessionDAO);
-    private MentorDAO mentorDAO = new MentorDAO();
-    private ArtifactDAO artifactDao = new ArtifactDAO();
-    private QuestDAO questDAO = new QuestDAO();
-    private WalletDAO walletDAO = new WalletDAO();
-    private ArtifactDAO artifactDAO = new ArtifactDAO();
+    private UserDAO userDAO;
+    private StudentDAO studentDao;
+    private CookieHelper cookieHelper;
+    private MentorDAO mentorDAO;
+    private ArtifactDAO artifactDao;
+    private QuestDAO questDAO;
+    private WalletDAO walletDAO;
+    private UtilityService utilityService;
 
+    public MentorController(UserDAO userDAO,
+                            StudentDAO studentDao,
+                            CookieHelper cookieHelper,
+                            MentorDAO mentorDAO,
+                            ArtifactDAO artifactDao,
+                            QuestDAO questDAO,
+                            WalletDAO walletDAO,
+                            UtilityService utilityService) {
+        this.userDAO = userDAO;
+        this.studentDao = studentDao;
+        this.cookieHelper = cookieHelper;
+        this.mentorDAO = mentorDAO;
+        this.artifactDao = artifactDao;
+        this.questDAO = questDAO;
+        this.walletDAO = walletDAO;
+        this.utilityService = utilityService;
+    }
 
     public void handle(HttpExchange httpExchange) {
 
@@ -82,7 +98,7 @@ public class MentorController implements HttpHandler {
             JtwigModel model = JtwigModel.newModel();
 
             response = template.render(model);
-            UtilityService.sendResponse(httpExchange, response);
+            utilityService.sendResponse(httpExchange, response);
 
         } else if (method.equals("POST")) {
             Map<String, String> inputs;
@@ -103,7 +119,7 @@ public class MentorController implements HttpHandler {
             br.close();
             isr.close();
             String url = "/mentor/store";
-            UtilityService.sendRedirect(httpExchange, url);
+            utilityService.sendRedirect(httpExchange, url);
         }
     }
 
@@ -123,7 +139,7 @@ public class MentorController implements HttpHandler {
             model.with("description", artifact.getDescription());
 
             String response = template.render(model);
-            UtilityService.sendResponse(httpExchange, response);
+            utilityService.sendResponse(httpExchange, response);
         }
 
         if (method.equals("POST")) {
@@ -140,7 +156,7 @@ public class MentorController implements HttpHandler {
             br.close();
             isr.close();
             String url = "/mentor/store";
-            UtilityService.sendRedirect(httpExchange, url);
+            utilityService.sendRedirect(httpExchange, url);
         }
     }
 
@@ -156,7 +172,7 @@ public class MentorController implements HttpHandler {
             JtwigModel model = JtwigModel.newModel();
 
             List<Quest> completedQuests = questDAO.getUsersQuests(UserId);
-            List<Artifact> purchasedArtifacts = artifactDAO.getUsersArtifacts(UserId);
+            List<Artifact> purchasedArtifacts = artifactDao.getUsersArtifacts(UserId);
 
             model.with("purchasedArtifacts", purchasedArtifacts);
             model.with("completedQuests", completedQuests);
@@ -170,7 +186,7 @@ public class MentorController implements HttpHandler {
             model.with("class", user.getRoomID());
 
             response = template.render(model);
-            UtilityService.sendResponse(httpExchange, response);
+            utilityService.sendResponse(httpExchange, response);
         }
     }
 
@@ -185,7 +201,7 @@ public class MentorController implements HttpHandler {
             List<Artifact> artifactList = artifactDAO.getArtifactsList();
             model.with("artifactList", artifactList);
             String response = template.render(model);
-            UtilityService.sendResponse(httpExchange, response);
+            utilityService.sendResponse(httpExchange, response);
         }
     }
 
@@ -200,7 +216,7 @@ public class MentorController implements HttpHandler {
             List<Quest> questList = questDAO.getQuestsList();
             model.with("questList", questList);
             String response = template.render(model);
-            UtilityService.sendResponse(httpExchange, response);
+            utilityService.sendResponse(httpExchange, response);
         }
     }
 
@@ -222,7 +238,7 @@ public class MentorController implements HttpHandler {
             model.with("adress", user.getAddress());
             model.with("phone", user.getPhoneNum());
             String response = template.render(model);
-            UtilityService.sendResponse(httpExchange, response);
+            utilityService.sendResponse(httpExchange, response);
             }
 
         if (method.equals("POST")) {
@@ -248,7 +264,7 @@ public class MentorController implements HttpHandler {
             br.close();
             isr.close();
             String url = "/mentor/students";
-            UtilityService.sendRedirect(httpExchange, url);
+            utilityService.sendRedirect(httpExchange, url);
         }
     }
 
@@ -267,7 +283,7 @@ public class MentorController implements HttpHandler {
             JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/mentor/createUpdateStudent.twig");
             JtwigModel model = JtwigModel.newModel();
             response = template.render(model);
-            UtilityService.sendResponse(httpExchange, response);
+            utilityService.sendResponse(httpExchange, response);
 
         }
 
@@ -294,7 +310,7 @@ public class MentorController implements HttpHandler {
             br.close();
             isr.close();
             String url = "/mentor/students";
-            UtilityService.sendRedirect(httpExchange, url);
+            utilityService.sendRedirect(httpExchange, url);
         }
     }
 
@@ -305,7 +321,7 @@ public class MentorController implements HttpHandler {
         JtwigModel model = JtwigModel.newModel();
         model.with("listName", studentsList);
         String response = template.render(model);
-        UtilityService.sendResponse(httpExchange, response);
+        utilityService.sendResponse(httpExchange, response);
     }
 
 
@@ -332,7 +348,7 @@ public class MentorController implements HttpHandler {
         model.with("class", room);
 
         String response = template.render(model);
-        UtilityService.sendResponse(httpExchange, response);
+        utilityService.sendResponse(httpExchange, response);
     }
 
 
@@ -363,7 +379,7 @@ public class MentorController implements HttpHandler {
             }
 
             String response = template.render(model);
-            UtilityService.sendResponse(httpExchange, response);
+            utilityService.sendResponse(httpExchange, response);
         }
 
         else if (method.equals("POST")){
@@ -392,7 +408,7 @@ public class MentorController implements HttpHandler {
             br.close();
             isr.close();
             String url = "/mentor/students";
-            UtilityService.sendRedirect(httpExchange, url);
+            utilityService.sendRedirect(httpExchange, url);
         }
     }
 }

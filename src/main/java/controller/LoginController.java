@@ -16,10 +16,18 @@ import java.util.List;
 import java.util.UUID;
 
 public class LoginController implements HttpHandler {
-    private LoginDAO loginDao = new LoginDAO();
-    private SessionDAO sessionDao = new SessionDAO();
-    private CookieHelper cookieHelper = new CookieHelper(sessionDao);
+    private LoginDAO loginDao;
+    private SessionDAO sessionDao;
+    private CookieHelper cookieHelper;
+    private UtilityService utilityService;
 
+    public LoginController(LoginDAO loginDao, SessionDAO sessionDao,
+                           CookieHelper cookieHelper, UtilityService utilityService) {
+        this.loginDao = loginDao;
+        this.sessionDao = sessionDao;
+        this.cookieHelper = cookieHelper;
+        this.utilityService = utilityService;
+    }
 
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
@@ -43,7 +51,7 @@ public class LoginController implements HttpHandler {
             JtwigTemplate template = JtwigTemplate.classpathTemplate("/templates/login.twig");
             JtwigModel model = JtwigModel.newModel();
             String response = template.render(model);
-            UtilityService.sendResponse(httpExchange, response);
+            utilityService.sendResponse(httpExchange, response);
         }
 
 
@@ -73,7 +81,7 @@ public class LoginController implements HttpHandler {
                 }
 
                 httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
-                UtilityService.sendRedirect(httpExchange, url);
+                utilityService.sendRedirect(httpExchange, url);
             }
 
             else {
@@ -81,7 +89,7 @@ public class LoginController implements HttpHandler {
                 String response = "<html><body>" +
                         "<h1> Sorry there is no such user " +
                         "!</h1></body><html>";
-                UtilityService.sendResponse(httpExchange, response);
+                utilityService.sendResponse(httpExchange, response);
             }
         }
     }

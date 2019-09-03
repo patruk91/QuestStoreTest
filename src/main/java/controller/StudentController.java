@@ -16,13 +16,23 @@ import java.util.Map;
 
 public class StudentController implements HttpHandler {
 
-    private SessionDAO sessionDAO = new SessionDAO();
-    private UserDAO userDAO = new UserDAO();
-    private CookieHelper cookieHelper = new CookieHelper(sessionDAO);
-    private QuestDAO questDAO = new QuestDAO();
-    private ArtifactDAO artifactDAO = new ArtifactDAO();
-    private StudentDAO studentDAO = new StudentDAO();
+    private UserDAO userDAO;
+    private CookieHelper cookieHelper;
+    private QuestDAO questDAO;
+    private ArtifactDAO artifactDAO;
+    private StudentDAO studentDAO;
+    private UtilityService utilityService;
 
+    public StudentController(UserDAO userDAO, CookieHelper cookieHelper,
+                             QuestDAO questDAO, ArtifactDAO artifactDAO,
+                             StudentDAO studentDAO, UtilityService utilityService) {
+        this.userDAO = userDAO;
+        this.cookieHelper = cookieHelper;
+        this.questDAO = questDAO;
+        this.artifactDAO = artifactDAO;
+        this.studentDAO = studentDAO;
+        this.utilityService = utilityService;
+    }
 
     public void handle(HttpExchange httpExchange) throws IOException {
         try {
@@ -53,7 +63,7 @@ public class StudentController implements HttpHandler {
         List<Quest> questList = questDAO.getQuestsList();
         model.with("questList", questList);
         String response = template.render(model);
-        UtilityService.sendResponse(httpExchange, response);
+        utilityService.sendResponse(httpExchange, response);
     }
 
     private void showArtifacts(HttpExchange httpExchange) throws DBException, IOException {
@@ -69,7 +79,7 @@ public class StudentController implements HttpHandler {
         model.with("artifactList", artifactList);
         String response = template.render(model);
         if (method.equals("POST")) { buyArtifact(httpExchange); }
-        UtilityService.sendResponse(httpExchange, response);
+        utilityService.sendResponse(httpExchange, response);
     }
 
     private void buyArtifact(HttpExchange httpExchange) throws IOException, DBException {
@@ -124,7 +134,7 @@ public class StudentController implements HttpHandler {
         model.with("experience_points", experience);
         model.with("class", room);
         String response = template.render(model);
-        UtilityService.sendResponse(httpExchange, response);
+        utilityService.sendResponse(httpExchange, response);
 
     }
 
