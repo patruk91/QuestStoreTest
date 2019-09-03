@@ -1,8 +1,5 @@
 import com.sun.net.httpserver.HttpServer;
-import controller.AdminController;
-import controller.LoginController;
-import controller.MentorController;
-import controller.StudentController;
+import controller.*;
 import dao.MentorDAO;
 import dao.StudentDAO;
 import dao.UserDAO;
@@ -15,12 +12,13 @@ public class App {
         MentorDAO mentorDao = new MentorDAO();
         UserDAO userDAO = new UserDAO();
         StudentDAO studentDAO = new StudentDAO();
+        AdminHelper adminHelper = new AdminHelper(mentorDao, userDAO, studentDAO);
 
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
         server.createContext("/static", new Static());
         server.createContext("/student", new StudentController());
-        server.createContext("/admin", new AdminController(mentorDao, userDAO, studentDAO));
+        server.createContext("/admin", new AdminController(adminHelper));
         server.createContext("/mentor", new MentorController());
         server.createContext("/login", new LoginController());
 
