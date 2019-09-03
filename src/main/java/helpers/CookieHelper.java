@@ -13,7 +13,11 @@ public class CookieHelper {
     //this class contains methods to proceed cookie, get session id from it, create list with all possible cookies
     // find cookie by name (not index)
 
-    SessionDAO sessionDAO = new SessionDAO();
+    private SessionDAO sessionDAO;
+
+    public CookieHelper(SessionDAO sessionDAO) {
+        this.sessionDAO = sessionDAO;
+    }
 
     //this method return userId form db (sessions table) found by session id taken from cookie
     public int getUserIdBySessionID(HttpExchange httpExchange){

@@ -17,9 +17,10 @@ import java.util.*;
 
 public class MentorController implements HttpHandler {
 
+    private SessionDAO sessionDAO = new SessionDAO();
     private UserDAO userDAO = new UserDAO();
     private StudentDAO studentDao = new StudentDAO();
-    private CookieHelper cookieHelper = new CookieHelper();
+    private CookieHelper cookieHelper = new CookieHelper(sessionDAO);
     private MentorDAO mentorDAO = new MentorDAO();
     private ArtifactDAO artifactDao = new ArtifactDAO();
     private QuestDAO questDAO = new QuestDAO();

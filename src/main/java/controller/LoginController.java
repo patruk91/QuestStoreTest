@@ -18,7 +18,7 @@ import java.util.UUID;
 public class LoginController implements HttpHandler {
     private LoginDAO loginDao = new LoginDAO();
     private SessionDAO sessionDao = new SessionDAO();
-    private CookieHelper cookieHelper = new CookieHelper();
+    private CookieHelper cookieHelper = new CookieHelper(sessionDao);
 
 
     public void handle(HttpExchange httpExchange) throws IOException {

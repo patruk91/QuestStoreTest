@@ -16,8 +16,9 @@ import java.util.Map;
 
 public class StudentController implements HttpHandler {
 
+    private SessionDAO sessionDAO = new SessionDAO();
     private UserDAO userDAO = new UserDAO();
-    private CookieHelper cookieHelper = new CookieHelper();
+    private CookieHelper cookieHelper = new CookieHelper(sessionDAO);
     private QuestDAO questDAO = new QuestDAO();
     private ArtifactDAO artifactDAO = new ArtifactDAO();
     private StudentDAO studentDAO = new StudentDAO();
