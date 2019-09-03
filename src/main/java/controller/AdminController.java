@@ -15,10 +15,17 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class AdminController implements HttpHandler {
-    private List mentorsList = new ArrayList();
-    private MentorDAO mentorDao = new MentorDAO();
-    private UserDAO userDAO = new UserDAO();
-    private StudentDAO studentDAO = new StudentDAO();
+    private List mentorsList;
+    private MentorDAO mentorDao;
+    private UserDAO userDAO;
+    private StudentDAO studentDAO;
+
+    public AdminController(MentorDAO mentorDao, UserDAO userDAO, StudentDAO studentDAO) {
+        this.mentorsList = new ArrayList();
+        this.mentorDao = mentorDao;
+        this.userDAO = userDAO;
+        this.studentDAO = studentDAO;
+    }
 
     public void handle(HttpExchange httpExchange) {
         int id = 1;
