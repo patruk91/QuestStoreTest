@@ -1,5 +1,6 @@
 package controller;
 
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import dao.*;
 import model.items.Level;
@@ -7,14 +8,9 @@ import model.users.Admin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -57,7 +53,46 @@ class AdminHelperTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    void checkIfMethodIsInvokeAtPostRequest() {
+        // arrange
+        String responseMethod = "POST";
+        HttpExchange httpExchangeMock = mock(HttpExchange.class);
+        AdminDAO adminDAOMock = spy(AdminDAO.class);
+        UtilityService utilityService = spy(UtilityService.class);
+        when(httpExchangeMock.getRequestMethod()).thenReturn(responseMethod);
+        InputStream inputStream = new ByteArrayInputStream("name=super+hard&range=120".getBytes());
+        when(httpExchangeMock.getRequestBody()).thenReturn(inputStream);
+        Headers headers = new Headers();
+        when(httpExchangeMock.getResponseHeaders()).thenReturn(headers);
+        try {
+            doNothing().when(httpExchangeMock).sendResponseHeaders(anyInt(), anyInt());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            doNothing().when(adminDAOMock).addLevel(anyString(), anyInt());
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
 
 
+        AdminHelper SUT = new AdminHelper(new MentorDAO(), new UserDAO(), new StudentDAO(), adminDAOMock, utilityService);
+        // act
+        try {
+            SUT.showLevels(httpExchangeMock);
+        } catch (DBException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // assert
+        try {
+            verify(utilityService).sendRedirect(any(), any());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
