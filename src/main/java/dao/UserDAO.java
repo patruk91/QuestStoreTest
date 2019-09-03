@@ -75,7 +75,8 @@ public class UserDAO implements IUserDAO {
                 List<Quest> questList = questDAO.getUsersQuests(user_id);
                 List<Artifact> artifactList = artifactDAO.getUsersArtifacts(user_id);
 
-                student = new Student(user_id, login, password, firstName, lastName, phoneNumber, email, address, "student", coolcoins, classID, questList, artifactList, experiencePoints);
+                student = new Student(user_id, login, password, firstName, lastName, phoneNumber, email,
+                        address, "student", coolcoins, classID, questList, artifactList, experiencePoints);
                 return student;
             }
             return null;
