@@ -9,11 +9,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MentorDAOTest {
-
-    @BeforeEach
-    void setUp() {
-    }
-
     @Test
     void throwExceptionIfMentorIdIsWrong() {
         MentorDAO mentorDAO = new MentorDAO();
